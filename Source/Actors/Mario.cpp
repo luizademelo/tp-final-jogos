@@ -26,7 +26,6 @@ Mario::Mario(Game* game, const float forwardSpeed, const float jumpSpeed)
     //  utilize o componente para desenho de sprites estáticos `DrawSpriteComponent`. Crie um desses
     //  componentes com a textura `Assets/Sprites/Mario/Idle.png` e dimensões (Game::TILE_SIZE, Game::TILE_SIZE).
     // new DrawAnimatedComponent(this, "../Assets/Sprites/MarioPack/texture.png", "../Assets/Sprites/MarioPack/texture.json");
-
     // --------------
     // TODO - PARTES 2 e 3
     // --------------
@@ -46,7 +45,7 @@ Mario::Mario(Game* game, const float forwardSpeed, const float jumpSpeed)
     //  (0,0,Game::TILE_SIZE - 4.0f, Game::TILE_SIZE) e o tipo ColliderLayer::Player da AABB. Se quiser desenhar
     //  a AABB do Mario para testar as colisões, crie um componente `DrawPolygonComponent` com os vértices da AABB.
     //  Armazene o ponteiro desse componente no atributo `mColliderComponent` da classe Mario.
-    mColliderComponent = new AABBColliderComponent(this, 0, 0, Game::TILE_SIZE - 4.0f, Game::TILE_SIZE, ColliderLayer::Player);
+    mColliderComponent = new AABBColliderComponent(this, 11, 11, Game::TILE_SIZE - 4.0f, Game::TILE_SIZE, ColliderLayer::Player);
 
     // --------------
     // TODO - PARTE 4
@@ -60,9 +59,9 @@ Mario::Mario(Game* game, const float forwardSpeed, const float jumpSpeed)
     // TODO 4.2 (~4 linhas): Utilize a função `AddAnimation` para adicionar as animações "dead", "idle",
     //  "jump" e "run".
     mDrawComponent->AddAnimation("dead", {0});
-    mDrawComponent->AddAnimation("idle", {1});
-    mDrawComponent->AddAnimation("jump", {2});
-    mDrawComponent->AddAnimation("run", {3,4,5});
+    mDrawComponent->AddAnimation("idle", {7});
+    mDrawComponent->AddAnimation("jump", {6});
+    mDrawComponent->AddAnimation("run", {4,6});
 
     // TODO 3.4 (~2 linhas): Utilize a função `SetAnimation` para definir a animação inicial como "idle". Em seguida,
     //  utilize a função `SetAnimFPS` para definir a taxa de atualização de quadros da animação para 10.0f.
