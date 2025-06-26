@@ -22,12 +22,12 @@ Goomba::Goomba(Game* game, float forwardSpeed, float deathTime)
                                                    ColliderLayer::Enemy);
 
     mDrawComponent = new DrawAnimatedComponent(this,
-                                                  "../Assets/Sprites/Goomba/Goomba.png",
-                                                  "../Assets/Sprites/Goomba/Goomba.json");
+                                                  "../Assets/Sprites/Enemy/texture.png",
+                                                  "../Assets/Sprites/Enemy/texture.json");
 
-    mDrawComponent->AddAnimation("Dead", {0});
-    mDrawComponent->AddAnimation("Idle", {1});
-    mDrawComponent->AddAnimation("walk", {1, 2});
+    mDrawComponent->AddAnimation("Dead", {16});
+    mDrawComponent->AddAnimation("Idle", {5});
+    mDrawComponent->AddAnimation("walk", {4,5,6,7});
     mDrawComponent->SetAnimation("walk");
     mDrawComponent->SetAnimFPS(5.0f);
 }

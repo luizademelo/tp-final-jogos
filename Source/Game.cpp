@@ -63,7 +63,7 @@ bool Game::Initialize()
         return false;
     }
 
-    mWindow = SDL_CreateWindow("TP4: Super Mario Bros", 0, 0, mWindowWidth, mWindowHeight, 0);
+    mWindow = SDL_CreateWindow("TP4: Super Mario Bros", 100, 100, mWindowWidth, mWindowHeight, 0);
     if (!mWindow)
     {
         SDL_Log("Failed to create window: %s", SDL_GetError());
@@ -577,6 +577,7 @@ void Game::UpdateCamera()
     if (!mMario) return;
 
     float horizontalCameraPos = mMario->GetPosition().x - (mWindowWidth / 2.0f);
+    float verticalCameraPos = mMario ->GetPosition().y - (mWindowHeight / 2.0f);
 
     if (horizontalCameraPos > mCameraPos.x)
     {
@@ -585,6 +586,9 @@ void Game::UpdateCamera()
         horizontalCameraPos = Math::Clamp(horizontalCameraPos, 0.0f, maxCameraPos);
 
         mCameraPos.x = horizontalCameraPos;
+    }
+    if (verticalCameraPos > mCameraPos.y) {
+        mCameraPos.y = verticalCameraPos;
     }
 }
 

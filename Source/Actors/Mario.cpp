@@ -22,13 +22,13 @@ Mario::Mario(Game* game, const float forwardSpeed, const float jumpSpeed)
                                                    ColliderLayer::Player);
 
     mDrawComponent = new DrawAnimatedComponent(this,
-                                              "../Assets/Sprites/Mario/Mario.png",
-                                              "../Assets/Sprites/Mario/Mario.json");
+                                              "../Assets/Sprites/Hero/texture.png",
+                                              "../Assets/Sprites/Hero/texture.json");
 
     mDrawComponent->AddAnimation("Dead", {0});
-    mDrawComponent->AddAnimation("idle", {1});
-    mDrawComponent->AddAnimation("jump", {2});
-    mDrawComponent->AddAnimation("run", {3, 4, 5});
+    mDrawComponent->AddAnimation("idle", {7});
+    mDrawComponent->AddAnimation("jump", {6});
+    mDrawComponent->AddAnimation("run", {4, 6});
     mDrawComponent->AddAnimation("win", {7});
 
     mDrawComponent->SetAnimation("idle");
@@ -82,12 +82,12 @@ void Mario::OnUpdate(float deltaTime)
     }
 
     // Limit Mario's position to the camera view
-    mPosition.x = Math::Max(mPosition.x, mGame->GetCameraPos().x);
+    // mPosition.x = Math::Max(mPosition.x, mGame->GetCameraPos().x);
 
     // Kill mario if he falls below the screen
     if (mGame->GetGamePlayState() == Game::GamePlayState::Playing && mPosition.y > mGame->GetWindowHeight())
     {
-        Kill();
+        // Kill();
     }
 
     if (mIsOnPole)
