@@ -3,11 +3,13 @@ cmake_minimum_required(VERSION 3.26)
 set(CMAKE_CXX_STANDARD 17)
 
 # Configurando o nome e executável do projeto
-set(PROJECT_NAME "tp3-smb")
+set(PROJECT_NAME "tp4-smb-1-2")
 project(${PROJECT_NAME})
 
 find_package(SDL2 2.32.2 EXACT REQUIRED)
 find_package(SDL2_image REQUIRED)
+find_package(SDL2_ttf REQUIRED)
+find_package(SDL2_mixer REQUIRED)
 
 add_executable(${PROJECT_NAME}
         Source/Main.cpp
@@ -40,6 +42,23 @@ add_executable(${PROJECT_NAME}
         Source/Actors/Goomba.h
         Source/Actors/Spawner.cpp
         Source/Actors/Spawner.h
+        Source/AudioSystem.cpp
+        Source/AudioSystem.h
+        Source/UIElements/UIScreen.h
+        Source/UIElements/UIScreen.cpp
+        Source/UIElements/UIFont.h
+        Source/UIElements/UIFont.cpp
+        Source/UIElements/UIButton.cpp
+        Source/UIElements/UIButton.h
+        Source/UIElements/UIText.cpp
+        Source/UIElements/UIText.h
+        Source/UIElements/UIElement.cpp
+        Source/UIElements/UIElement.h
+        Source/HUD.cpp
+        Source/UIElements/UIImage.cpp
+        Source/UIElements/UIImage.h
+        Source/SpatialHashing.cpp
+        Source/SpatialHashing.h
 )
 
-target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2 SDL2_image::SDL2_image)
+target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2 SDL2_image::SDL2_image SDL2_ttf::SDL2_ttf SDL2_mixer::SDL2_mixer)

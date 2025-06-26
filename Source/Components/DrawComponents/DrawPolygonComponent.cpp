@@ -13,7 +13,7 @@ DrawPolygonComponent::DrawPolygonComponent(class Actor* owner, std::vector<Vecto
 {
 }
 
-void DrawPolygonComponent::Draw(SDL_Renderer *renderer)
+void DrawPolygonComponent::Draw(SDL_Renderer *renderer, const Vector3 &modColor)
 {
     // Set draw color to green
     SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);

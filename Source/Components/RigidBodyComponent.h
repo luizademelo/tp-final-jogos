@@ -22,11 +22,13 @@ public:
     void SetAcceleration(const Vector2& acceleration) { mAcceleration = acceleration; }
 
     void SetApplyGravity(const bool applyGravity) { mApplyGravity = applyGravity; }
+    void SetApplyFriction(const bool applyFriction) { mApplyFriction = applyFriction;  }
 
     void ApplyForce(const Vector2 &force);
 
 private:
     bool mApplyGravity;
+    bool mApplyFriction;
 
     // Physical properties
     float mFrictionCoefficient;

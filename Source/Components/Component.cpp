@@ -30,6 +30,10 @@ void Component::ProcessInput(const Uint8* keyState)
 {
 }
 
+void Component::HandleKeyPress(const int key, bool isPressed)
+{
+}
+
 class Game* Component::GetGame() const
 {
     return mOwner->GetGame();

@@ -11,16 +11,16 @@ DrawComponent::DrawComponent(class Actor* owner, int drawOrder)
     ,mDrawOrder(drawOrder)
     ,mIsVisible(true)
 {
-    mOwner->GetGame()->AddDrawable(this);
+//    mOwner->GetGame()->AddDrawable(this);
 }
 
 DrawComponent::~DrawComponent()
 {
-    mOwner->GetGame()->RemoveDrawable(this);
+//    mOwner->GetGame()->RemoveDrawable(this);
 }
 
 
-void DrawComponent::Draw(SDL_Renderer *renderer)
+void DrawComponent::Draw(SDL_Renderer* renderer, const Vector3 &modColor)
 {
 
 }

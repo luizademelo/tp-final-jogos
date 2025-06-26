@@ -11,30 +11,21 @@ DrawSpriteComponent::DrawSpriteComponent(class Actor* owner, const std::string &
         ,mWidth(width)
         ,mHeight(height)
 {
-    // --------------
-    // TODO - PARTE 1
-    // --------------
-
-    // TODO 1.1 (1 linhas): Utilize a função LoadTexture da classe Game para criar uma textura a partir da
-    //  imagem `texturePath` passada como parâmetro no construtor. Armazene o ponteiro retornada (SDLTexture*)
-    //  na variável membro 'mSpriteSheetSurface'.
     mSpriteSheetSurface = mOwner->GetGame()->LoadTexture(texturePath);
 }
 
-void DrawSpriteComponent::Draw(SDL_Renderer *renderer)
+DrawSpriteComponent::~DrawSpriteComponent()
 {
-    // --------------
-    // TODO - PARTE 1
-    // --------------
+    DrawComponent::~DrawComponent();
 
-    // TODO 1.2 (~5 linhas): Utilize a função SDL_RenderCopyEx para desenhar a textura armazenada
-    //  no atributo mSpriteSheetSurface. Você terá que criar um SDL_Rect para definir a região
-    //  da tela onde será desenhado o sprite. Para que o objeto seja desenhado em relação a posição da câmera,
-    //  subtraia a posição da câmera da posição do objeto. Além disso, você terá que criar uma flag do tipo
-    //  SDL_RendererFlip para definir se o sprite será desenhado virado à direita ou à
-    //  esquerda. A orientação do sprite (esquerda ou direita) depende da rotação do objeto dono do sprite.
-    //  Se a rotação for zero, o sprite deve ser desenhado virado à direita. Se for igual a MAth::Pi, deve
-    //  ser desenhado à esquerda.
+    if (mSpriteSheetSurface) {
+        SDL_DestroyTexture(mSpriteSheetSurface);
+        mSpriteSheetSurface = nullptr;
+    }
+}
+
+void DrawSpriteComponent::Draw(SDL_Renderer *renderer, const Vector3 &modColor)
+{
     SDL_Rect dstRect = {
         static_cast<int>(mOwner->GetPosition().x - mOwner->GetGame()->GetCameraPos().x),
         static_cast<int>(mOwner->GetPosition().y - mOwner->GetGame()->GetCameraPos().y),
@@ -47,5 +38,12 @@ void DrawSpriteComponent::Draw(SDL_Renderer *renderer)
         flip = SDL_FLIP_HORIZONTAL;
     }
 
-    SDL_RenderCopyEx(renderer, mSpriteSheetSurface, nullptr, &dstRect, 0.0, nullptr, flip);
+    SDL_SetTextureBlendMode(mSpriteSheetSurface, SDL_BLENDMODE_BLEND);
+
+    SDL_SetTextureColorMod(mSpriteSheetSurface,
+                           static_cast<Uint8>(modColor.x),
+                           static_cast<Uint8>(modColor.y),
+                           static_cast<Uint8>(modColor.z));
+
+    SDL_RenderCopyEx(renderer, mSpriteSheetSurface, nullptr, &dstRect, mOwner->GetRotation(), nullptr, flip);
 }

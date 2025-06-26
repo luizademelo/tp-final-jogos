@@ -12,19 +12,25 @@ public:
 
     void OnProcessInput(const Uint8* keyState) override;
     void OnUpdate(float deltaTime) override;
+    void OnHandleKeyPress(const int key, const bool isPressed) override;
 
     void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override;
     void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) override;
 
     void Kill() override;
+    void Win(AABBColliderComponent *poleCollider);
 
 private:
+    static const int POLE_SLIDE_TIME = 1; // Time in seconds to slide down the pole
+
     void ManageAnimations();
 
     float mForwardSpeed;
     float mJumpSpeed;
+    float mPoleSlideTimer;
     bool mIsRunning;
-    bool mIsDead;
+    bool mIsOnPole;
+    bool mIsDying;
 
     class RigidBodyComponent* mRigidBodyComponent;
     class DrawAnimatedComponent* mDrawComponent;

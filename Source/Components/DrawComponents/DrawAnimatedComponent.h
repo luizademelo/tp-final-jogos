@@ -13,7 +13,7 @@ public:
     DrawAnimatedComponent(class Actor* owner, const std::string &spriteSheetPath, const std::string &spriteSheetData, int drawOrder = 100);
     ~DrawAnimatedComponent() override;
 
-    void Draw(SDL_Renderer* renderer) override;
+    void Draw(SDL_Renderer* renderer, const Vector3 &modColor = Color::White) override;
     void Update(float deltaTime) override;
 
     // Use to change the FPS of the animation

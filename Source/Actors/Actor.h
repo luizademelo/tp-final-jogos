@@ -8,7 +8,7 @@
 
 #pragma once
 #include <vector>
-#include <SDL2/SDL_stdinc.h>
+#include <SDL_stdinc.h>
 #include "../Math.h"
 #include "../Components/ColliderComponents/AABBColliderComponent.h"
 
@@ -25,14 +25,16 @@ public:
     Actor(class Game* game);
     virtual ~Actor();
 
-    // Update function called from Game (not overridable)
+    // Reinsert function called from Game (not overridable)
     void Update(float deltaTime);
     // ProcessInput function called from Game (not overridable)
     void ProcessInput(const Uint8* keyState);
+    // HandleKeyPress function called from Game (not overridable)
+    void HandleKeyPress(const int key, const bool isPressed);
 
     // Position getter/setter
     const Vector2& GetPosition() const { return mPosition; }
-    void SetPosition(const Vector2& pos) { mPosition = pos; }
+    void SetPosition(const Vector2& pos);
 
     Vector2 GetForward() const { return Vector2(Math::Cos(mRotation), -Math::Sin(mRotation)); }
 
@@ -71,6 +73,7 @@ public:
     void SetOnGround() { mIsOnGround = true; };
     void SetOffGround() { mIsOnGround = false; };
     bool IsOnGround() const { return mIsOnGround; };
+    bool IsVisibleOnCamera() const;
 
     // Any actor-specific collision code (overridable)
     virtual void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other);
@@ -82,8 +85,8 @@ protected:
 
     // Any actor-specific update code (overridable)
     virtual void OnUpdate(float deltaTime);
-    // Any actor-specific update code (overridable)
     virtual void OnProcessInput(const Uint8* keyState);
+    virtual void OnHandleKeyPress(const int key, const bool isPressed);
 
     // Actor's state
     ActorState mState;

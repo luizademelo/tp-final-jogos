@@ -16,6 +16,7 @@ public:
     void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) override;
 
     void Kill() override;
+    void BumpKill(const float bumpForce = 300.0f);
 
 private:
     bool mIsDying;
