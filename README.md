@@ -1,2 +1,12 @@
-# p4-smb-template
-Código base para o projeto P4: Super Mario Bros
+# Trabalho Prático Final - Desenvolvimento de Jogos Digitais
+
+## Screenshots
+
+## Título
+Missão Marmita
+
+## Descrição
+
+## Funcionalidades a serem testadas
+
+## Créditos
