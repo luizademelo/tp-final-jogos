@@ -3,6 +3,8 @@
 //
 
 #include "Goomba.h"
+
+#include "Shot.h"
 #include "../Game.h"
 #include "../Components/DrawComponents/DrawAnimatedComponent.h"
 #include "../Components/DrawComponents/DrawPolygonComponent.h"
@@ -30,6 +32,8 @@ Goomba::Goomba(Game* game, float forwardSpeed, float deathTime)
     mDrawComponent->AddAnimation("walk", {4,5,6,7});
     mDrawComponent->SetAnimation("walk");
     mDrawComponent->SetAnimFPS(5.0f);
+
+
 }
 
 void Goomba::Kill()
@@ -58,6 +62,12 @@ void Goomba::OnUpdate(float deltaTime)
         mDyingTimer -= deltaTime;
         if (mDyingTimer <= 0.0f) {
             mState = ActorState::Destroy;
+        }
+    }else {
+          mShootTimer -= deltaTime;
+        if (mShootTimer <= 0.0f) {
+            ShootProjectile();
+            mShootTimer = mShootCooldown;
         }
     }
 
@@ -90,3 +100,16 @@ void Goomba::OnVerticalCollision(const float minOverlap, AABBColliderComponent* 
         other->GetOwner()->Kill();
     }
 }
+
+void Goomba::ShootProjectile()
+{
+    Vector2 velocity = Vector2(-150.0f, 0.0f); // Shoots left
+    if (mRigidBodyComponent->GetVelocity().x > 0.0f) {
+        velocity.x = 150;
+    }
+    auto shot = new Shot(GetGame(), velocity);
+    Vector2 dir = mRigidBodyComponent->GetVelocity().x < 0 ? Vector2(-1, 0) : Vector2(1, 0);
+    Vector2 pos = GetPosition() + dir * Game::TILE_SIZE * 0.5f;
+    shot->SetPosition(pos);
+}
+

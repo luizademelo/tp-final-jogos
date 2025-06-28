@@ -1,0 +1,40 @@
+{
+  "frames": [
+    {
+      "filename": "clipart88462 (1).png",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 69,
+        "h": 48
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 69,
+        "h": 48
+      },
+      "sourceSize": {
+        "w": 69,
+        "h": 48
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  ],
+  "meta": {
+    "app": "http://free-tex-packer.com",
+    "version": "0.6.7",
+    "image": "texture.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 69,
+      "h": 48
+    },
+    "scale": 1
+  }
+}
