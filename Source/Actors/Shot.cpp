@@ -27,11 +27,7 @@ void Shot::OnUpdate(float deltaTime)
     if (mTimer > mLivenessTime) {
         mState = ActorState::Destroy;
     }
-    if (GetPosition().x < 0 || GetPosition().x > GetGame()->GetWindowWidth() ||
-        GetPosition().y < 0 || GetPosition().y > GetGame()->GetWindowHeight())
-    {
-        mState = ActorState::Destroy;
-    }
+
 
 }
 
