@@ -25,6 +25,7 @@ public:
     enum class GameScene
     {
         MainMenu,
+        HowToPlay,
         Level1,
         Level2
     };
@@ -62,6 +63,7 @@ public:
 
     // Level functions
     void LoadMainMenu();
+    void LoadHowToPlay();
     void LoadLevel(const std::string& levelName, const int levelWidth, const int levelHeight);
 
     std::vector<Actor *> GetNearbyActors(const Vector2& position, const int range = 1);

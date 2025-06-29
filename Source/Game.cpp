@@ -119,7 +119,7 @@ void Game::SetGameScene(Game::GameScene scene, float transitionTime)
     // Scene Manager FSM: using if/else instead of switch
     if (mSceneManagerState == SceneManagerState::None)
     {
-        if (scene == GameScene::MainMenu || scene == GameScene::Level1 || scene == GameScene::Level2)
+        if (scene == GameScene::MainMenu || scene == GameScene::Level1 || scene == GameScene::Level2 || scene == GameScene::HowToPlay)
         {
             mNextScene = scene;
             mSceneManagerState = SceneManagerState::Entering;
@@ -170,6 +170,9 @@ void Game::ChangeScene()
 
         // Initialize main menu actors
         LoadMainMenu();
+    }else if (mNextScene == GameScene::HowToPlay) {
+        mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
+        LoadHowToPlay();
     }
     else if (mNextScene == GameScene::Level1)
     {
@@ -256,12 +259,25 @@ void Game::LoadMainMenu()
     const Vector2 button1Pos = Vector2(mWindowWidth/2.0f - buttonSize.x/2.0f, titlePos.y + titleSize.y + 30.0f);
     const Vector2 button2Pos = Vector2(mWindowWidth/2.0f - buttonSize.x/2.0f, button1Pos.y + buttonSize.y + 5.0f);
 
-    mainMenu->AddButton("1 Player", button1Pos, buttonSize, [this]() {
+    mainMenu->AddButton("Iniciar", button1Pos, buttonSize, [this]() {
         SetGameScene(GameScene::Level1);
     });
 
-    mainMenu->AddButton("2 Players", button2Pos, buttonSize, nullptr);
+    mainMenu->AddButton("Como jogar", button2Pos, buttonSize, [this]() {SetGameScene(GameScene::HowToPlay);});
+
+    // mainMenu->AddButton("2 Players", button2Pos, buttonSize, nullptr);
 }
+
+void Game::LoadHowToPlay() {
+    UIScreen* menu = new UIScreen(this, "../Assets/Fonts/SMB.ttf");
+    menu->AddText("A -> anda pra esquerda", Vector2(100, 100), Vector2(300, 40));
+    menu->AddText("D -> anda pra direita", Vector2(100, 200), Vector2(300, 40));
+    menu->AddText("Espaço -> pula", Vector2(100, 300), Vector2(300, 40));
+    menu->AddText("X -> Atira", Vector2(100, 400), Vector2(300, 40));
+
+    menu->AddButton("Voltar", Vector2(100, 600), Vector2(300, 40), [this]() {SetGameScene(GameScene::MainMenu);});
+}
+
 
 void Game::LoadLevel(const std::string& levelName, const int levelWidth, const int levelHeight)
 {
@@ -519,7 +535,7 @@ void Game::UpdateGame()
     // ---------------------
     // Game Specific Updates
     // ---------------------
-    if(mGameScene != GameScene::MainMenu && mGamePlayState == GamePlayState::Playing)
+    if(mGameScene != GameScene::MainMenu && mGameScene != GameScene::HowToPlay && mGamePlayState == GamePlayState::Playing)
     {
         // Reinsert level time
         UpdateLevelTime(deltaTime);

@@ -4,6 +4,7 @@
 
 #include "Mario.h"
 #include "Block.h"
+#include "Shot.h"
 #include "../Game.h"
 #include "../Components/DrawComponents/DrawAnimatedComponent.h"
 #include "../Components/DrawComponents/DrawPolygonComponent.h"
@@ -57,6 +58,11 @@ void Mario::OnProcessInput(const uint8_t* state)
     {
         mIsRunning = false;
     }
+
+    if (state[SDL_SCANCODE_X] && mShootTimer <= 0.0f) {
+        Shoot();
+        mShootTimer = mShootCooldown;
+    }
 }
 
 void Mario::OnHandleKeyPress(const int key, const bool isPressed)
@@ -76,6 +82,8 @@ void Mario::OnHandleKeyPress(const int key, const bool isPressed)
 
 void Mario::OnUpdate(float deltaTime)
 {
+    mShootTimer -= deltaTime;
+    SDL_Log("Mshoot: %f", mShootTimer);
     // Check if Mario is off the ground
     if (mRigidBodyComponent && mRigidBodyComponent->GetVelocity().y != 0) {
         mIsOnGround = false;
@@ -220,4 +228,16 @@ void Mario::OnVerticalCollision(const float minOverlap, AABBColliderComponent* o
             block->OnBump();
         }
     }
+}
+
+void Mario::Shoot() {
+    Vector2 velocity = Vector2(100.0f, 0.0f); // Shoots right
+    if (mDrawComponent->GetOwner()->GetRotation() == Math::Pi) {
+        velocity.x = -100;
+    }
+    auto shot = new Shot(GetGame(), velocity, ColliderLayer::Player);
+    Vector2 dir = mDrawComponent->GetOwner()->GetRotation() == Math::Pi ? Vector2(-1, 0) : Vector2(1, 0);
+    Vector2 pos = GetPosition() + dir * Game::TILE_SIZE * 1.5f;
+    // pos.y -= 20;
+    shot->SetPosition(pos);
 }
