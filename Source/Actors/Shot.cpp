@@ -33,13 +33,11 @@ void Shot::OnUpdate(float deltaTime)
 
 
 void Shot::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) {
-    // if (other->GetLayer() != ColliderLayer::Blocks && other->GetLayer() != ColliderLayer::Pole) {
-    //     mState = ActorState::Destroy;
-    // }
+        mState = ActorState::Destroy;
 }
 void Shot::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) {
-    // if (other->GetLayer() != ColliderLayer::Blocks && other->GetLayer() != ColliderLayer::Pole) {
-    //     mState = ActorState::Destroy;
-    // }
+    if (other->GetLayer() != ColliderLayer::Blocks && other->GetLayer() != ColliderLayer::Pole) {
+        mState = ActorState::Destroy;
+    }
 }
 

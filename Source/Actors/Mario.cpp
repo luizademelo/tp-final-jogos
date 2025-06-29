@@ -237,7 +237,7 @@ void Mario::Shoot() {
     }
     auto shot = new Shot(GetGame(), velocity, ColliderLayer::Player);
     Vector2 dir = mDrawComponent->GetOwner()->GetRotation() == Math::Pi ? Vector2(-1, 0) : Vector2(1, 0);
-    Vector2 pos = GetPosition() + dir * Game::TILE_SIZE * 0.8f;
+    Vector2 pos = GetPosition() + dir * Game::TILE_SIZE * 1.5f;
     // pos.y -= 20;
     shot->SetPosition(pos);
 }
