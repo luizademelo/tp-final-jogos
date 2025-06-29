@@ -25,6 +25,7 @@ private:
     float mShootTimer = 2.0f; // Time between shots
     float mShootCooldown = 2.0f;
 
+
     class RigidBodyComponent* mRigidBodyComponent;
     class DrawAnimatedComponent* mDrawComponent;
     class AABBColliderComponent* mColliderComponent;

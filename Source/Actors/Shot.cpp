@@ -6,7 +6,7 @@
 #include "../Components/DrawComponents/DrawAnimatedComponent.h"
 #include "../Components/DrawComponents/DrawPolygonComponent.h"
 
-Shot::Shot(Game* game, const Vector2& velocity)
+Shot::Shot(Game* game, const Vector2& velocity, ColliderLayer layer)
     : Actor(game)
 {
 
@@ -15,7 +15,7 @@ Shot::Shot(Game* game, const Vector2& velocity)
     mRigidBodyComponent->SetVelocity(velocity);
     mColliderComponent = new AABBColliderComponent(this, 0, 0,
                                                    Game::TILE_SIZE, Game::TILE_SIZE,
-                                                   ColliderLayer::Enemy);
+                                                   layer);
     mDrawComponent->AddAnimation("Normal", {0});
     mDrawComponent->SetAnimation("Normal");
     mDrawComponent->SetAnimFPS(5.0f);
@@ -30,3 +30,16 @@ void Shot::OnUpdate(float deltaTime)
     }
 
 }
+
+
+void Shot::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) {
+    if (other->GetLayer() != ColliderLayer::Blocks && other->GetLayer() != ColliderLayer::Pole) {
+        mState = ActorState::Destroy;
+    }
+}
+void Shot::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) {
+    if (other->GetLayer() != ColliderLayer::Blocks && other->GetLayer() != ColliderLayer::Pole) {
+        mState = ActorState::Destroy;
+    }
+}
+

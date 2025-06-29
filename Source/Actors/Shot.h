@@ -12,8 +12,12 @@ class CircleColliderComponent;
 
 class Shot : public Actor {
 public:
-    Shot(Game* game, const Vector2& velocity);
+    Shot(Game* game, const Vector2& velocity,ColliderLayer layer);
     void OnUpdate(float deltaTime) override;
+
+    void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override;
+    void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) override;
+
 private:
     RigidBodyComponent* mRigidBodyComponent;
     AABBColliderComponent* mColliderComponent;

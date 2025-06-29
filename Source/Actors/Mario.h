@@ -19,6 +19,7 @@ public:
 
     void Kill() override;
     void Win(AABBColliderComponent *poleCollider);
+    void Shoot();
 
 private:
     static const int POLE_SLIDE_TIME = 1; // Time in seconds to slide down the pole
@@ -31,6 +32,8 @@ private:
     bool mIsRunning;
     bool mIsOnPole;
     bool mIsDying;
+    float mShootCooldown = 0.5f;
+    float mShootTimer = 0;
 
     class RigidBodyComponent* mRigidBodyComponent;
     class DrawAnimatedComponent* mDrawComponent;

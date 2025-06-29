@@ -107,7 +107,7 @@ void Goomba::ShootProjectile()
     if (mRigidBodyComponent->GetVelocity().x > 0.0f) {
         velocity.x = 150;
     }
-    auto shot = new Shot(GetGame(), velocity);
+    auto shot = new Shot(GetGame(), velocity, ColliderLayer::Enemy);
     Vector2 dir = mRigidBodyComponent->GetVelocity().x < 0 ? Vector2(-1, 0) : Vector2(1, 0);
     Vector2 pos = GetPosition() + dir * Game::TILE_SIZE * 0.5f;
     shot->SetPosition(pos);
