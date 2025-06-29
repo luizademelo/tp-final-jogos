@@ -23,6 +23,10 @@ Shot::Shot(Game* game, const Vector2& velocity, ColliderLayer layer)
 
 void Shot::OnUpdate(float deltaTime)
 {
+    mTimer += deltaTime;
+    if (mTimer > mLivenessTime) {
+        mState = ActorState::Destroy;
+    }
     if (GetPosition().x < 0 || GetPosition().x > GetGame()->GetWindowWidth() ||
         GetPosition().y < 0 || GetPosition().y > GetGame()->GetWindowHeight())
     {
@@ -33,13 +37,13 @@ void Shot::OnUpdate(float deltaTime)
 
 
 void Shot::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) {
-    if (other->GetLayer() != ColliderLayer::Blocks && other->GetLayer() != ColliderLayer::Pole) {
-        mState = ActorState::Destroy;
-    }
+    // if (other->GetLayer() != ColliderLayer::Blocks && other->GetLayer() != ColliderLayer::Pole) {
+    //     mState = ActorState::Destroy;
+    // }
 }
 void Shot::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) {
-    if (other->GetLayer() != ColliderLayer::Blocks && other->GetLayer() != ColliderLayer::Pole) {
-        mState = ActorState::Destroy;
-    }
+    // if (other->GetLayer() != ColliderLayer::Blocks && other->GetLayer() != ColliderLayer::Pole) {
+    //     mState = ActorState::Destroy;
+    // }
 }
 

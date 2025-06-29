@@ -231,13 +231,13 @@ void Mario::OnVerticalCollision(const float minOverlap, AABBColliderComponent* o
 }
 
 void Mario::Shoot() {
-    Vector2 velocity = Vector2(-100.0f, 0.0f); // Shoots left
-    if (mRigidBodyComponent->GetVelocity().x > 0.0f) {
-        velocity.x = 150;
+    Vector2 velocity = Vector2(100.0f, 0.0f); // Shoots right
+    if (mDrawComponent->GetOwner()->GetRotation() == Math::Pi) {
+        velocity.x = -100;
     }
     auto shot = new Shot(GetGame(), velocity, ColliderLayer::Player);
-    Vector2 dir = mRigidBodyComponent->GetVelocity().x < 0 ? Vector2(-1, 0) : Vector2(1, 0);
+    Vector2 dir = mDrawComponent->GetOwner()->GetRotation() == Math::Pi ? Vector2(-1, 0) : Vector2(1, 0);
     Vector2 pos = GetPosition() + dir * Game::TILE_SIZE * 0.8f;
-    pos.y -= 3;
+    // pos.y -= 20;
     shot->SetPosition(pos);
 }
