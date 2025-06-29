@@ -2,14 +2,14 @@
 // Created by Lucas N. Ferreira on 03/08/23.
 //
 
-#include "Mario.h"
+#include "Hero.h"
 #include "Block.h"
 #include "Shot.h"
 #include "../Game.h"
 #include "../Components/DrawComponents/DrawAnimatedComponent.h"
 #include "../Components/DrawComponents/DrawPolygonComponent.h"
 
-Mario::Mario(Game* game, const float forwardSpeed, const float jumpSpeed)
+Hero::Hero(Game* game, const float forwardSpeed, const float jumpSpeed)
         : Actor(game)
         , mIsRunning(false)
         , mIsOnPole(false)
@@ -36,7 +36,7 @@ Mario::Mario(Game* game, const float forwardSpeed, const float jumpSpeed)
     mDrawComponent->SetAnimFPS(10.0f);
 }
 
-void Mario::OnProcessInput(const uint8_t* state)
+void Hero::OnProcessInput(const uint8_t* state)
 {
     if(mGame->GetGamePlayState() != Game::GamePlayState::Playing) return;
 
@@ -65,7 +65,7 @@ void Mario::OnProcessInput(const uint8_t* state)
     }
 }
 
-void Mario::OnHandleKeyPress(const int key, const bool isPressed)
+void Hero::OnHandleKeyPress(const int key, const bool isPressed)
 {
     if(mGame->GetGamePlayState() != Game::GamePlayState::Playing) return;
 
@@ -80,19 +80,19 @@ void Mario::OnHandleKeyPress(const int key, const bool isPressed)
     }
 }
 
-void Mario::OnUpdate(float deltaTime)
+void Hero::OnUpdate(float deltaTime)
 {
     mShootTimer -= deltaTime;
     SDL_Log("Mshoot: %f", mShootTimer);
-    // Check if Mario is off the ground
+    // Check if Hero is off the ground
     if (mRigidBodyComponent && mRigidBodyComponent->GetVelocity().y != 0) {
         mIsOnGround = false;
     }
 
-    // Limit Mario's position to the camera view
+    // Limit Hero's position to the camera view
     // mPosition.x = Math::Max(mPosition.x, mGame->GetCameraPos().x);
 
-    // Kill mario if he falls below the screen
+    // Kill Hero if he falls below the screen
     if (mGame->GetGamePlayState() == Game::GamePlayState::Playing && mPosition.y > mGame->GetWindowHeight())
     {
         // Kill();
@@ -100,7 +100,7 @@ void Mario::OnUpdate(float deltaTime)
 
     if (mIsOnPole)
     {
-        // If Mario is on the pole, update the pole slide timer
+        // If Hero is on the pole, update the pole slide timer
         mPoleSlideTimer -= deltaTime;
         if (mPoleSlideTimer <= 0.0f)
         {
@@ -116,13 +116,13 @@ void Mario::OnUpdate(float deltaTime)
         }
     }
 
-    // If Mario is leaving the level, kill him if he enters the castle
+    // If Hero is leaving the level, kill him if he enters the castle
     const float castleDoorPos = Game::LEVEL_WIDTH * Game::TILE_SIZE - 10 * Game::TILE_SIZE;
 
     if (mGame->GetGamePlayState() == Game::GamePlayState::Leaving &&
         mPosition.x >= castleDoorPos)
     {
-        // Stop Mario and set the game scene to Level 2
+        // Stop Hero and set the game scene to Level 2
         mState = ActorState::Destroy;
         mGame->SetGameScene(Game::GameScene::Level2, 3.5f);
 
@@ -132,7 +132,7 @@ void Mario::OnUpdate(float deltaTime)
     ManageAnimations();
 }
 
-void Mario::ManageAnimations()
+void Hero::ManageAnimations()
 {
     if(mIsDying)
     {
@@ -156,7 +156,7 @@ void Mario::ManageAnimations()
     }
 }
 
-void Mario::Kill()
+void Hero::Kill()
 {
     mIsDying = true;
     mGame->SetGamePlayState(Game::GamePlayState::GameOver);
@@ -172,7 +172,7 @@ void Mario::Kill()
     mGame->ResetGameScene(3.5f); // Reset the game scene after 3 seconds
 }
 
-void Mario::Win(AABBColliderComponent *poleCollider)
+void Hero::Win(AABBColliderComponent *poleCollider)
 {
     mDrawComponent->SetAnimation("win");
     mGame->SetGamePlayState(Game::GamePlayState::LevelComplete);
@@ -193,7 +193,7 @@ void Mario::Win(AABBColliderComponent *poleCollider)
     mPoleSlideTimer = POLE_SLIDE_TIME; // Start the pole slide timer
 }
 
-void Mario::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other)
+void Hero::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other)
 {
     if (other->GetLayer() == ColliderLayer::Enemy)
     {
@@ -206,7 +206,7 @@ void Mario::OnHorizontalCollision(const float minOverlap, AABBColliderComponent*
     }
 }
 
-void Mario::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other)
+void Hero::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other)
 {
     if (other->GetLayer() == ColliderLayer::Enemy)
     {
@@ -230,7 +230,7 @@ void Mario::OnVerticalCollision(const float minOverlap, AABBColliderComponent* o
     }
 }
 
-void Mario::Shoot() {
+void Hero::Shoot() {
     Vector2 velocity = Vector2(100.0f, 0.0f); // Shoots right
     if (mDrawComponent->GetOwner()->GetRotation() == Math::Pi) {
         velocity.x = -100;

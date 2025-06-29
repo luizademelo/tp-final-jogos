@@ -16,9 +16,9 @@
 class Game
 {
 public:
-    static const int LEVEL_WIDTH = 215;
-    static const int LEVEL_HEIGHT = 26;
-    static const int TILE_SIZE = 32;
+    static const int LEVEL_WIDTH = 100;
+    static const int LEVEL_HEIGHT = 12;
+    static const int TILE_SIZE = 60;//32;
     static const int SPAWN_DISTANCE = 700;
     static const int TRANSITION_TIME = 1;
 
@@ -98,7 +98,7 @@ public:
     void TogglePause();
 
     // Game-specific
-    const class Mario* GetMario() { return mMario; }
+    const class Hero* GetMario() { return mHero; }
 
     void SetGamePlayState(GamePlayState state) { mGamePlayState = state; }
     GamePlayState GetGamePlayState() const { return mGamePlayState; }
@@ -155,7 +155,7 @@ private:
     Vector2 mCameraPos;
 
     // Game-specific
-    class Mario *mMario;
+    class Hero *mHero;
     class HUD *mHUD;
     SoundHandle mMusicHandle;
 

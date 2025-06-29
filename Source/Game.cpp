@@ -20,7 +20,7 @@
 #include "HUD.h"
 #include "SpatialHashing.h"
 #include "Actors/Actor.h"
-#include "Actors/Mario.h"
+#include "Actors/Hero.h"
 #include "Actors/Block.h"
 #include "Actors/Spawner.h"
 #include "UIElements/UIScreen.h"
@@ -36,7 +36,7 @@ Game::Game(int windowWidth, int windowHeight)
         ,mIsRunning(true)
         ,mWindowWidth(windowWidth)
         ,mWindowHeight(windowHeight)
-        ,mMario(nullptr)
+        ,mHero(nullptr)
         ,mHUD(nullptr)
         ,mBackgroundColor(0, 0, 0)
         ,mModColor(255, 255, 255)
@@ -63,7 +63,7 @@ bool Game::Initialize()
         return false;
     }
 
-    mWindow = SDL_CreateWindow("TP4: Super Mario Bros", 100, 100, mWindowWidth, mWindowHeight, 0);
+    mWindow = SDL_CreateWindow("TP4: Super Hero Bros", 100, 100, mWindowWidth, mWindowHeight, 0);
     if (!mWindow)
     {
         SDL_Log("Failed to create window: %s", SDL_GetError());
@@ -176,11 +176,11 @@ void Game::ChangeScene()
     }
     else if (mNextScene == GameScene::Level1)
     {
-        // Start Music
-        mMusicHandle = mAudio->PlaySound("MusicMain.ogg", true);
-
-        // Set background color
-        mBackgroundColor.Set(107.0f, 140.0f, 255.0f);
+        // // Start Music
+        // mMusicHandle = mAudio->PlaySound("MusicMain.ogg", true);
+        //
+        // // Set background color
+        // mBackgroundColor.Set(107.0f, 140.0f, 255.0f);
 
         // Create HUD
         mHUD = new HUD(this, "../Assets/Fonts/SMB.ttf");
@@ -190,29 +190,19 @@ void Game::ChangeScene()
         mHUD->SetTime(mGameTimeLimit);
         mHUD->SetLevelName("1-1");
 
-        // Set background color
-        SetBackgroundImage("../Assets/Sprites/Background.png", Vector2(TILE_SIZE,0), Vector2(6784,448));
-
-        // Draw Flag
-        auto flag = new Actor(this);
-        flag->SetPosition(Vector2(LEVEL_WIDTH * TILE_SIZE - (16 * TILE_SIZE) - 16, 3 * TILE_SIZE));
-
-        // Add a flag sprite
-        new DrawSpriteComponent(flag, "../Assets/Sprites/Background_Flag.png", 32.0f, 32.0f, 1);
-
-        // Add a flag pole taking the entire height
-        new AABBColliderComponent(flag, 30, 0, 4, TILE_SIZE * LEVEL_HEIGHT, ColliderLayer::Pole, true);
+        // Set background image
+        SetBackgroundImage("../Assets/Sprites/BackgroundLevel1.png", Vector2(0,0), Vector2(6000,600));
 
         // Initialize actors
         LoadLevel("../Assets/Levels/level1-1.csv", LEVEL_WIDTH, LEVEL_HEIGHT);
     }
     else if (mNextScene == GameScene::Level2)
     {
-        // Start Music
-        mMusicHandle = mAudio->PlaySound("MusicUnderground.ogg", true);
-
-        // Set background color
-        mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
+        // // Start Music
+        // mMusicHandle = mAudio->PlaySound("MusicUnderground.ogg", true);
+        //
+        // // Set background color
+        // mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
 
         // Set mod color
         mModColor.Set(0.0f, 255.0f, 200.0f);
@@ -225,8 +215,11 @@ void Game::ChangeScene()
         mHUD->SetTime(mGameTimeLimit);
         mHUD->SetLevelName("1-2");
 
+        // Set background color
+        SetBackgroundImage("../Assets/Sprites/BackgroundLevel1.png", Vector2(0,0), Vector2(6000,600));
+
         // Initialize actors
-        LoadLevel("../Assets/Levels/level1-2.csv", LEVEL_WIDTH, LEVEL_HEIGHT);
+        LoadLevel("../Assets/Levels/level1-1.csv", LEVEL_WIDTH, LEVEL_HEIGHT);
     }
 
     // Set new scene
@@ -245,9 +238,9 @@ void Game::LoadMainMenu()
         mainMenu->AddImage("../Assets/Sprites/Blocks/BlockA.png", blockPos, Vector2(TILE_SIZE, TILE_SIZE));
     }
 
-    // Draw Mario
+    // Draw Hero
     Vector2 marioPos = Vector2(4 * TILE_SIZE, (LEVEL_HEIGHT - 3) * TILE_SIZE);
-    mainMenu->AddImage("../Assets/Sprites/Mario/Idle.png", marioPos, Vector2(TILE_SIZE, TILE_SIZE));
+    mainMenu->AddImage("../Assets/Sprites/Hero/Idle.png", marioPos, Vector2(TILE_SIZE, TILE_SIZE));
 
     // Add title
     const Vector2 titleSize = Vector2(178.0f, 88.0f) * 2.0f;
@@ -264,18 +257,17 @@ void Game::LoadMainMenu()
     });
 
     mainMenu->AddButton("Como jogar", button2Pos, buttonSize, [this]() {SetGameScene(GameScene::HowToPlay);});
-
-    // mainMenu->AddButton("2 Players", button2Pos, buttonSize, nullptr);
+    
 }
 
 void Game::LoadHowToPlay() {
     UIScreen* menu = new UIScreen(this, "../Assets/Fonts/SMB.ttf");
-    menu->AddText("A -> anda pra esquerda", Vector2(100, 100), Vector2(300, 40));
-    menu->AddText("D -> anda pra direita", Vector2(100, 200), Vector2(300, 40));
-    menu->AddText("Espaço -> pula", Vector2(100, 300), Vector2(300, 40));
-    menu->AddText("X -> Atira", Vector2(100, 400), Vector2(300, 40));
+    menu->AddText("A -> Andar para esquerda", Vector2((GetWindowWidth() / 2) - 150, 100), Vector2(300, 40));
+    menu->AddText("D -> Andar para direita", Vector2((GetWindowWidth() / 2) - 150, 200), Vector2(300, 40));
+    menu->AddText("Espaço -> Pular", Vector2((GetWindowWidth() / 2) - 150, 300), Vector2(300, 40));
+    menu->AddText("X -> Atirar", Vector2((GetWindowWidth() / 2) - 150, 400), Vector2(300, 40));
 
-    menu->AddButton("Voltar", Vector2(100, 600), Vector2(300, 40), [this]() {SetGameScene(GameScene::MainMenu);});
+    menu->AddButton("Voltar", Vector2((GetWindowWidth() / 2) - 150, 600), Vector2(300, 40), [this]() {SetGameScene(GameScene::MainMenu);});
 }
 
 
@@ -298,14 +290,7 @@ void Game::BuildLevel(int** levelData, int width, int height)
 
     // Const map to convert tile ID to block type
     const std::map<int, const std::string> tileMap = {
-            {0, "../Assets/Sprites/Blocks/BlockA.png"},
-            {1, "../Assets/Sprites/Blocks/BlockC.png"},
-            {2, "../Assets/Sprites/Blocks/BlockF.png"},
-            {4, "../Assets/Sprites/Blocks/BlockB.png"},
-            {6, "../Assets/Sprites/Blocks/BlockI.png"},
-            {8, "../Assets/Sprites/Blocks/BlockD.png"},
-            {9, "../Assets/Sprites/Blocks/BlockH.png"},
-            {12, "../Assets/Sprites/Blocks/BlockG.png"}
+            {0, "../Assets/Sprites/Blocks/Floor.png"}
     };
 
     for (int y = 0; y < LEVEL_HEIGHT; ++y)
@@ -314,10 +299,10 @@ void Game::BuildLevel(int** levelData, int width, int height)
         {
             int tile = levelData[y][x];
 
-            if(tile == 16) // Mario
+            if(tile == 16) // Hero
             {
-                mMario = new Mario(this);
-                mMario->SetPosition(Vector2(x * TILE_SIZE, y * TILE_SIZE));
+                mHero = new Hero(this);
+                mHero->SetPosition(Vector2(x * TILE_SIZE, y * TILE_SIZE));
             }
             else if(tile == 10) // Spawner
             {
@@ -436,14 +421,14 @@ void Game::ProcessInputActors()
         {
             actor->ProcessInput(state);
 
-            if (actor == mMario) {
+            if (actor == mHero) {
                 isMarioOnCamera = true;
             }
         }
 
-        // If Mario is not on camera, process input for him
-        if (!isMarioOnCamera && mMario) {
-            mMario->ProcessInput(state);
+        // If Hero is not on camera, process input for him
+        if (!isMarioOnCamera && mHero) {
+            mHero->ProcessInput(state);
         }
     }
 }
@@ -461,14 +446,14 @@ void Game::HandleKeyPressActors(const int key, const bool isPressed)
         for (auto actor: actorsOnCamera) {
             actor->HandleKeyPress(key, isPressed);
 
-            if (actor == mMario) {
+            if (actor == mHero) {
                 isMarioOnCamera = true;
             }
         }
 
-        // If Mario is not on camera, handle key press for him
-        if (!isMarioOnCamera && mMario) {
-            mMario->HandleKeyPress(key, isPressed);
+        // If Hero is not on camera, handle key press for him
+        if (!isMarioOnCamera && mHero) {
+            mHero->HandleKeyPress(key, isPressed);
         }
     }
 
@@ -581,19 +566,19 @@ void Game::UpdateLevelTime(float deltaTime)
         }
         else
         {
-            // Kill Mario if time limit is reached
+            // Kill Hero if time limit is reached
             mHUD->SetTime(mGameTimeLimit);
-            mMario->Kill();
+            mHero->Kill();
         }
     }
 }
 
 void Game::UpdateCamera()
 {
-    if (!mMario) return;
+    if (!mHero) return;
 
-    float horizontalCameraPos = mMario->GetPosition().x - (mWindowWidth / 2.0f);
-    float verticalCameraPos = mMario ->GetPosition().y - (mWindowHeight / 2.0f);
+    float horizontalCameraPos = mHero->GetPosition().x - (mWindowWidth / 2.0f);
+    //float verticalCameraPos = mHero ->GetPosition().y - (mWindowHeight / 2.0f);
 
     if (horizontalCameraPos > mCameraPos.x)
     {
@@ -603,9 +588,9 @@ void Game::UpdateCamera()
 
         mCameraPos.x = horizontalCameraPos;
     }
-    if (verticalCameraPos > mCameraPos.y) {
-        mCameraPos.y = verticalCameraPos;
-    }
+    // if (verticalCameraPos > mCameraPos.y) {
+    //     mCameraPos.y = verticalCameraPos;
+    // }
 }
 
 void Game::UpdateActors(float deltaTime)
@@ -618,14 +603,14 @@ void Game::UpdateActors(float deltaTime)
     for (auto actor : actorsOnCamera)
     {
         actor->Update(deltaTime);
-        if (actor == mMario) {
+        if (actor == mHero) {
             isMarioOnCamera = true;
         }
     }
 
-    // If Mario is not on camera, update him (player should always be updated)
-    if (!isMarioOnCamera && mMario) {
-         mMario->Update(deltaTime);
+    // If Hero is not on camera, update him (player should always be updated)
+    if (!isMarioOnCamera && mHero) {
+         mHero->Update(deltaTime);
     }
 
     for (auto actor : actorsOnCamera)
@@ -633,8 +618,8 @@ void Game::UpdateActors(float deltaTime)
         if (actor->GetState() == ActorState::Destroy)
         {
             delete actor;
-            if (actor == mMario) {
-                mMario = nullptr;
+            if (actor == mHero) {
+                mHero = nullptr;
             }
         }
     }

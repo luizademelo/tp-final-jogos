@@ -5,10 +5,10 @@
 #pragma once
 #include "Actor.h"
 
-class Mario : public Actor
+class Hero : public Actor
 {
 public:
-    explicit Mario(Game* game, float forwardSpeed = 1500.0f, float jumpSpeed = -750.0f);
+    explicit Hero(Game* game, float forwardSpeed = 1500.0f, float jumpSpeed = -750.0f);
 
     void OnProcessInput(const Uint8* keyState) override;
     void OnUpdate(float deltaTime) override;
