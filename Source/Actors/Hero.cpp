@@ -19,7 +19,7 @@ Hero::Hero(Game* game, const float forwardSpeed, const float jumpSpeed)
         , mPoleSlideTimer(0.0f)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 5.0f);
-    mColliderComponent = new AABBColliderComponent(this, 0, 0, Game::TILE_SIZE - 4.0f,Game::TILE_SIZE,
+    mColliderComponent = new AABBColliderComponent(this, 0, 0, Game::TILE_SIZE - 8.0f,Game::TILE_SIZE,
                                                    ColliderLayer::Player);
 
     mDrawComponent = new DrawAnimatedComponent(this,

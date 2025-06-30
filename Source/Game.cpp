@@ -205,13 +205,13 @@ void Game::ChangeScene()
     else if (mNextScene == GameScene::Level2)
     {
         // // Start Music
-        // mMusicHandle = mAudio->PlaySound("MusicUnderground.ogg", true);
+        mMusicHandle = mAudio->PlaySound("level1_background2.wav", true);
         //
         // // Set background color
         // mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
 
         // Set mod color
-        mModColor.Set(0.0f, 255.0f, 200.0f);
+        // mModColor.Set(0.0f, 255.0f, 200.0f);
 
         // Create HUD
         mHUD = new HUD(this, "../Assets/Fonts/SMB.ttf");
