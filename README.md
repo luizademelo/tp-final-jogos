@@ -27,7 +27,20 @@ Nerdovaldo a finalmente almoçar com tranquilidade.
 ## Funcionalidades a serem testadas
 
  - Movimentação do protagonista (andar, pular)
+   - A para esquerda, D para direita e Espaço para pular
  - Ataque do protagonista
+   - X para disparar um atestado
+ - Sistema de vidas
+   - Jogador possui 3 vidas
+   - Cada nova tarefa que atinge Nerdovaldo retira vidas
+   - Perder todas as vidas indica que Nerdovaldo acumulou trabalho demais e perdeu a entrega
+ - Timer de nível
+   - Cada fase possui limite de tempo
+   - Esgotar o tempo significa que o entregador perdeu a paciência e foi embora
+ - Movimentação e ações dos inimigos
+   - Inimigos (colegas de trabalho) andam horizontalmente pelo cenário
+   - Os inimigos disparam tarefas em direção a Nerdovaldo
+   - Nerdovaldo pode neutralizar inimigos por meio de um atestado (seu ataque) ou após atingi-lo verticalmente
 
 ## Créditos
 
