@@ -6,6 +6,7 @@
 
 #include "Shot.h"
 #include "../Game.h"
+#include "../Math.h"
 #include "../Components/DrawComponents/DrawAnimatedComponent.h"
 #include "../Components/DrawComponents/DrawPolygonComponent.h"
 #include "../Random.h"
@@ -34,6 +35,7 @@ Enemy::Enemy(Game* game, float forwardSpeed, float deathTime)
     mDrawComponent->SetAnimFPS(5.0f);
     mDrawComponent->SetScale(1.5f);
 
+    SetRotation(Math::Pi);
 }
 
 void Enemy::Kill()
@@ -84,9 +86,11 @@ void Enemy::OnHorizontalCollision(const float minOverlap, AABBColliderComponent*
     {
         if (minOverlap > 0) {
             mRigidBodyComponent->SetVelocity(Vector2(-mForwardSpeed, 0.0f));
+            SetRotation(Math::Pi);
         }
         else {
             mRigidBodyComponent->SetVelocity(Vector2(mForwardSpeed, 0.0f));
+            SetRotation(0.0f);
         }
     }
 
