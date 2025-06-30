@@ -192,7 +192,7 @@ void Game::ChangeScene()
         // Reset HUD
         mGameTimeLimit = 400;
         mHUD->SetTime(mGameTimeLimit);
-        mHUD->SetLevelName("1-1");
+        mHUD->SetLevelName("Nivel 1");
 
         SetStairsPosition(5680);
 
@@ -219,7 +219,7 @@ void Game::ChangeScene()
         // Reset HUD
         mGameTimeLimit = 400;
         mHUD->SetTime(mGameTimeLimit);
-        mHUD->SetLevelName("1-2");
+        mHUD->SetLevelName("Nivel 2");
 
         // Set background color
         SetBackgroundImage("../Assets/Sprites/BackgroundLevel1.png", Vector2(0,0), Vector2(6000,600));
@@ -547,6 +547,8 @@ void Game::UpdateGame()
     {
         // Reinsert level time
         UpdateLevelTime(deltaTime);
+
+        UpdateLivesCount(mHero->GetLivesCount());
     }
 
     UpdateSceneManager(deltaTime);
@@ -574,6 +576,11 @@ void Game::UpdateSceneManager(float deltaTime)
         }
     }
 }
+
+void Game::UpdateLivesCount(float livesCount) {
+    mHUD->SetLifeCount(livesCount);
+}
+
 
 void Game::UpdateLevelTime(float deltaTime)
 {

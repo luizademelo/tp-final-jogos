@@ -24,11 +24,14 @@ public:
     void SetTime(int time);
 
     void SetLevelName(const std::string& levelName);
+    void SetLifeCount(int lifeCount);
 
 private:
     // HUD elements
     UIText* mScoreCounter;
     UIText* mLevelName;
-    UIText* mLivesCount;
+    // UIText* mLivesCount;
+    int mLivesCount = 3;
     UIText* mTimeText;
+    std::vector<UIImage*> mHearts;
 };

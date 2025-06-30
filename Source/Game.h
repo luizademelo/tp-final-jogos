@@ -121,6 +121,7 @@ private:
 
     // HUD functions
     void UpdateLevelTime(float deltaTime);
+    void UpdateLivesCount(float livesCount);
 
     // Load the level from a CSV file as a 2D array
     int **ReadLevelData(const std::string& fileName, int width, int height);

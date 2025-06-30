@@ -166,6 +166,11 @@ void Hero::ManageAnimations()
 
 void Hero::Kill()
 {
+    mLivesCount -= 1;
+    if (mLivesCount > 0) {
+        mGame->GetAudio()->PlaySound("Ouch.mp3");
+        return;
+    }
     mIsDying = true;
     mGame->SetGamePlayState(Game::GamePlayState::GameOver);
     mDrawComponent->SetAnimation("Dead");
