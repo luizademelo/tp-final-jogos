@@ -12,7 +12,7 @@
 Hero::Hero(Game* game, const float forwardSpeed, const float jumpSpeed)
         : Actor(game)
         , mIsRunning(false)
-        , mIsOnPole(false)
+        , mIsOnStairs(false)
         , mIsDying(false)
         , mForwardSpeed(forwardSpeed)
         , mJumpSpeed(jumpSpeed)
@@ -63,6 +63,10 @@ void Hero::OnProcessInput(const uint8_t* state)
         Shoot();
         mShootTimer = mShootCooldown;
     }
+
+    if (state[SDL_SCANCODE_P]) {
+        SDL_Log("x: %f, y: %f", GetPosition().x, GetPosition().y);
+    }
 }
 
 void Hero::OnHandleKeyPress(const int key, const bool isPressed)
@@ -83,7 +87,7 @@ void Hero::OnHandleKeyPress(const int key, const bool isPressed)
 void Hero::OnUpdate(float deltaTime)
 {
     mShootTimer -= deltaTime;
-    SDL_Log("Mshoot: %f", mShootTimer);
+    //SDL_Log("Mshoot: %f", mShootTimer);
     // Check if Hero is off the ground
     if (mRigidBodyComponent && mRigidBodyComponent->GetVelocity().y != 0) {
         mIsOnGround = false;
@@ -98,29 +102,32 @@ void Hero::OnUpdate(float deltaTime)
         // Kill();
     }
 
-    if (mIsOnPole)
-    {
-        // If Hero is on the pole, update the pole slide timer
-        mPoleSlideTimer -= deltaTime;
-        if (mPoleSlideTimer <= 0.0f)
-        {
-            mRigidBodyComponent->SetApplyGravity(true);
-            mRigidBodyComponent->SetApplyFriction(false);
-            mRigidBodyComponent->SetVelocity(Vector2::UnitX * 100.0f);
-            mGame->SetGamePlayState(Game::GamePlayState::Leaving);
-
-            // Play win sound
-            mGame->GetAudio()->PlaySound("StageClear.wav");
-            mIsOnPole = false;
-            mIsRunning = true;
-        }
+    if (GetPosition().x >= GetGame()->GetStairsPosition()) {
+        mGame->SetGamePlayState(Game::GamePlayState::Leaving);
     }
+
+    // if (mIsOnStairs)
+    // {
+    //     // If Hero is on the pole, update the pole slide timer
+    //     mPoleSlideTimer -= deltaTime;
+    //     if (mPoleSlideTimer <= 0.0f)
+    //     {
+    //         mRigidBodyComponent->SetApplyGravity(true);
+    //         mRigidBodyComponent->SetApplyFriction(false);
+    //         mRigidBodyComponent->SetVelocity(Vector2::UnitX * 100.0f);
+    //         mGame->SetGamePlayState(Game::GamePlayState::Leaving);
+    //
+    //         // Play win sound
+    //         mGame->GetAudio()->PlaySound("StageClear.wav");
+    //         mIsOnStairs = false;
+    //         mIsRunning = true;
+    //     }
+    // }
 
     // If Hero is leaving the level, kill him if he enters the castle
     const float castleDoorPos = Game::LEVEL_WIDTH * Game::TILE_SIZE - 10 * Game::TILE_SIZE;
 
-    if (mGame->GetGamePlayState() == Game::GamePlayState::Leaving &&
-        mPosition.x >= castleDoorPos)
+    if (mGame->GetGamePlayState() == Game::GamePlayState::Leaving)
     {
         // Stop Hero and set the game scene to Level 2
         mState = ActorState::Destroy;
@@ -138,7 +145,7 @@ void Hero::ManageAnimations()
     {
         mDrawComponent->SetAnimation("Dead");
     }
-    else if(mIsOnPole)
+    else if(mIsOnStairs)
     {
         mDrawComponent->SetAnimation("win");
     }
@@ -201,7 +208,7 @@ void Hero::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* 
     }
     else if (other->GetLayer() == ColliderLayer::Pole)
     {
-        mIsOnPole = true;
+        mIsOnStairs = true;
         Win(other);
     }
 }

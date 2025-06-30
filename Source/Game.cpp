@@ -190,6 +190,8 @@ void Game::ChangeScene()
         mHUD->SetTime(mGameTimeLimit);
         mHUD->SetLevelName("1-1");
 
+        SetStairsPosition(5680);
+
         // Set background image
         SetBackgroundImage("../Assets/Sprites/BackgroundLevel1.png", Vector2(0,0), Vector2(6000,600));
 
@@ -257,7 +259,7 @@ void Game::LoadMainMenu()
     });
 
     mainMenu->AddButton("Como jogar", button2Pos, buttonSize, [this]() {SetGameScene(GameScene::HowToPlay);});
-    
+
 }
 
 void Game::LoadHowToPlay() {
@@ -416,18 +418,18 @@ void Game::ProcessInputActors()
 
         const Uint8* state = SDL_GetKeyboardState(nullptr);
 
-        bool isMarioOnCamera = false;
+        bool isHeroOnCamera = false;
         for (auto actor: actorsOnCamera)
         {
             actor->ProcessInput(state);
 
             if (actor == mHero) {
-                isMarioOnCamera = true;
+                isHeroOnCamera = true;
             }
         }
 
         // If Hero is not on camera, process input for him
-        if (!isMarioOnCamera && mHero) {
+        if (!isHeroOnCamera && mHero) {
             mHero->ProcessInput(state);
         }
     }

@@ -100,6 +100,9 @@ public:
     // Game-specific
     const class Hero* GetMario() { return mHero; }
 
+    float GetStairsPosition() const { return mStairsPosition; }
+    void SetStairsPosition(float position) { mStairsPosition = position; }
+
     void SetGamePlayState(GamePlayState state) { mGamePlayState = state; }
     GamePlayState GetGamePlayState() const { return mGamePlayState; }
 
@@ -158,6 +161,7 @@ private:
     class Hero *mHero;
     class HUD *mHUD;
     SoundHandle mMusicHandle;
+    float mStairsPosition;
 
     float mGameTimer;
     int mGameTimeLimit;

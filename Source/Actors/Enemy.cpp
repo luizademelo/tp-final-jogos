@@ -2,7 +2,7 @@
 // Created by Lucas N. Ferreira on 30/09/23.
 //
 
-#include "Goomba.h"
+#include "Enemy.h"
 
 #include "Shot.h"
 #include "../Game.h"
@@ -10,7 +10,7 @@
 #include "../Components/DrawComponents/DrawPolygonComponent.h"
 #include "../Random.h"
 
-Goomba::Goomba(Game* game, float forwardSpeed, float deathTime)
+Enemy::Enemy(Game* game, float forwardSpeed, float deathTime)
         : Actor(game)
         , mDyingTimer(deathTime)
         , mIsDying(false)
@@ -36,7 +36,7 @@ Goomba::Goomba(Game* game, float forwardSpeed, float deathTime)
 
 }
 
-void Goomba::Kill()
+void Enemy::Kill()
 {
     mIsDying = true;
     mDrawComponent->SetAnimation("Dead");
@@ -44,7 +44,7 @@ void Goomba::Kill()
     mColliderComponent->SetEnabled(false);
 }
 
-void Goomba::BumpKill(const float bumpForce)
+void Enemy::BumpKill(const float bumpForce)
 {
     mDrawComponent->SetAnimation("Idle");
 
@@ -55,7 +55,7 @@ void Goomba::BumpKill(const float bumpForce)
     SetRotation(180);
 }
 
-void Goomba::OnUpdate(float deltaTime)
+void Enemy::OnUpdate(float deltaTime)
 {
     if (mIsDying)
     {
@@ -77,7 +77,7 @@ void Goomba::OnUpdate(float deltaTime)
     }
 }
 
-void Goomba::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other)
+void Enemy::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other)
 {
     if ((other->GetLayer() == ColliderLayer::Blocks || other->GetLayer() == ColliderLayer::Enemy))
     {
@@ -94,14 +94,14 @@ void Goomba::OnHorizontalCollision(const float minOverlap, AABBColliderComponent
     }
 }
 
-void Goomba::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other)
+void Enemy::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other)
 {
     if (other->GetLayer() == ColliderLayer::Player) {
         other->GetOwner()->Kill();
     }
 }
 
-void Goomba::ShootProjectile()
+void Enemy::ShootProjectile()
 {
     Vector2 velocity = Vector2(-150.0f, 0.0f); // Shoots left
     if (mRigidBodyComponent->GetVelocity().x > 0.0f) {

@@ -30,7 +30,7 @@ private:
     float mJumpSpeed;
     float mPoleSlideTimer;
     bool mIsRunning;
-    bool mIsOnPole;
+    bool mIsOnStairs;
     bool mIsDying;
     float mShootCooldown = 0.5f;
     float mShootTimer = 0;
