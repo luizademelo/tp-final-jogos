@@ -120,7 +120,7 @@ void Game::SetGameScene(Game::GameScene scene, float transitionTime)
     // Scene Manager FSM: using if/else instead of switch
     if (mSceneManagerState == SceneManagerState::None)
     {
-        if (scene == GameScene::MainMenu || scene == GameScene::Level1 || scene == GameScene::Level2 || scene == GameScene::HowToPlay)
+        if (scene == GameScene::MainMenu || scene == GameScene::Level1 || scene == GameScene::Level2 || scene == GameScene::HowToPlay || scene == GameScene::GameOver || scene == GameScene::Victory)
         {
             mNextScene = scene;
             mSceneManagerState = SceneManagerState::Entering;
@@ -153,7 +153,7 @@ void Game::LoadVictoryScreen()
                           Vector2(mWindowWidth, mWindowHeight));
     
     victoryScreen->AddButton("Voltar ao Menu", 
-                           Vector2(mWindowWidth/2.0f - 150.0f, mWindowHeight - 100.0f), 
+                           Vector2(mWindowWidth/2.0f - 150.0f, 600),
                            Vector2(300.0f, 40.0f),
                            [this]() { 
                                SetGameScene(GameScene::MainMenu); 
@@ -171,7 +171,7 @@ void Game::LoadGameOverScreen()
                           Vector2(mWindowWidth, mWindowHeight));
     
     gameOverScreen->AddButton("Voltar ao Menu", 
-                           Vector2(mWindowWidth/2.0f - 150.0f, mWindowHeight - 100.0f), 
+                           Vector2(mWindowWidth/2.0f - 150.0f, 600),
                            Vector2(300.0f, 40.0f),
                            [this]() { 
                                SetGameScene(GameScene::MainMenu); 
@@ -242,7 +242,8 @@ void Game::ChangeScene()
     else if (mNextScene == GameScene::Level2)
     {
         // // Start Music
-        mMusicHandle = mAudio->PlaySound("level1_background2.wav", true);
+        mAudio->StopSound(mMusicHandle);
+        mMusicHandle = mAudio->PlaySound("level2_background.wav", true);
         //
         // // Set background color
         // mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
@@ -267,7 +268,7 @@ void Game::ChangeScene()
     else if (mNextScene == GameScene::Victory)
     {
         // Set background color
-        mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
+        // mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
         
         // Load victory screen
         LoadVictoryScreen();
@@ -275,7 +276,7 @@ void Game::ChangeScene()
     else if (mNextScene == GameScene::GameOver)
     {
         // Set background color
-        mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
+        // mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
         
         // Load game over screen
         LoadGameOverScreen();
@@ -596,7 +597,7 @@ void Game::UpdateGame()
     // ---------------------
     // Game Specific Updates
     // ---------------------
-    if(mGameScene != GameScene::MainMenu && mGameScene != GameScene::HowToPlay && mGamePlayState == GamePlayState::Playing)
+    if(mGameScene != GameScene::MainMenu && mGameScene != GameScene::HowToPlay && mGameScene != GameScene::GameOver && mGameScene != GameScene::Victory && mGamePlayState == GamePlayState::Playing)
     {
         // Reinsert level time
         UpdateLevelTime(deltaTime);
@@ -653,6 +654,7 @@ void Game::UpdateLevelTime(float deltaTime)
             // mHUD->SetTime(mGameTimeLimit);
             // mHero->Kill();
             SetGameScene(GameScene::GameOver, 1.0f);
+            mSceneManagerState = SceneManagerState::Exiting;
 
         }
     }

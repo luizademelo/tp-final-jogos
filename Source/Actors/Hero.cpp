@@ -194,7 +194,7 @@ void Hero::Kill()
 
     if (mLivesCount <= 0)
     {
-        mGame->SetGameScene(GameScene::GameOver, 2.0f);
+        mGame->SetGameScene(Game::GameScene::GameOver, 2.0f);
     }
     else
     {

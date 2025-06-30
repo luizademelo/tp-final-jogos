@@ -96,6 +96,7 @@ public:
     SDL_Texture* LoadTexture(const std::string& texturePath);
 
     void SetGameScene(GameScene scene, float transitionTime = .0f);
+    GameScene GetGameScene(){return mGameScene; }
     void ResetGameScene(float transitionTime = .0f);
     void UnloadScene();
 
