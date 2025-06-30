@@ -28,7 +28,8 @@ public:
         HowToPlay,
         Level1,
         Level2,
-        Victory 
+        Victory,
+        GameOver
     };
 
     enum class SceneManagerState
@@ -65,6 +66,7 @@ public:
     // Level functions
     void LoadMainMenu();
     void LoadVictoryScreen();
+    void LoadGameOverScreen();
     void LoadHowToPlay();
     void UpdateMainMenuCursor(); // Nova função para atualizar cursor
     void LoadLevel(const std::string& levelName, const int levelWidth, const int levelHeight);

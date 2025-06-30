@@ -143,6 +143,43 @@ void Game::ResetGameScene(float transitionTime)
     SetGameScene(mGameScene, transitionTime);
 }
 
+
+void Game::LoadVictoryScreen()
+{
+    UIScreen* victoryScreen = new UIScreen(this, "../Assets/Fonts/SMB.ttf");
+    
+    victoryScreen->AddImage("../Assets/Sprites/VictoryScreen.png", 
+                          Vector2(0, 0), 
+                          Vector2(mWindowWidth, mWindowHeight));
+    
+    victoryScreen->AddButton("Voltar ao Menu", 
+                           Vector2(mWindowWidth/2.0f - 150.0f, mWindowHeight - 100.0f), 
+                           Vector2(300.0f, 40.0f),
+                           [this]() { 
+                               SetGameScene(GameScene::MainMenu); 
+                           });
+    
+    mAudio->PlaySound("victory.wav");
+}
+
+void Game::LoadGameOverScreen()
+{
+    UIScreen* gameOverScreen = new UIScreen(this, "../Assets/Fonts/SMB.ttf");
+    
+    gameOverScreen->AddImage("../Assets/Sprites/DefeatScreen.png", 
+                          Vector2(0, 0), 
+                          Vector2(mWindowWidth, mWindowHeight));
+    
+    gameOverScreen->AddButton("Voltar ao Menu", 
+                           Vector2(mWindowWidth/2.0f - 150.0f, mWindowHeight - 100.0f), 
+                           Vector2(300.0f, 40.0f),
+                           [this]() { 
+                               SetGameScene(GameScene::MainMenu); 
+                           });
+    
+    mAudio->PlaySound("defeat_chime.wav");
+}
+
 void Game::ChangeScene()
 {
     // Unload current Scene
@@ -234,6 +271,14 @@ void Game::ChangeScene()
         
         // Load victory screen
         LoadVictoryScreen();
+    }
+    else if (mNextScene == GameScene::GameOver)
+    {
+        // Set background color
+        mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
+        
+        // Load game over screen
+        LoadGameOverScreen();
     }
 
     // Set new scene
@@ -605,8 +650,10 @@ void Game::UpdateLevelTime(float deltaTime)
         else
         {
             // Kill Hero if time limit is reached
-            mHUD->SetTime(mGameTimeLimit);
-            mHero->Kill();
+            // mHUD->SetTime(mGameTimeLimit);
+            // mHero->Kill();
+            SetGameScene(GameScene::GameOver, 1.0f);
+
         }
     }
 }
@@ -868,26 +915,4 @@ void Game::UpdateMainMenuCursor()
         mUIStack.pop_back();
         LoadMainMenu();
     }
-}
-
-void Game::LoadVictoryScreen()
-{
-    // Create a new UI screen for the victory screen
-    UIScreen* victoryScreen = new UIScreen(this, "../Assets/Fonts/SMB.ttf");
-    
-    // Add the victory image as full screen
-    victoryScreen->AddImage("../Assets/Sprites/VictoryScreen.png", 
-                          Vector2(0, 0), 
-                          Vector2(mWindowWidth, mWindowHeight));
-    
-    // Add a button to return to main menu
-    victoryScreen->AddButton("Voltar ao Menu", 
-                           Vector2(mWindowWidth/2.0f - 150.0f, mWindowHeight - 100.0f), 
-                           Vector2(300.0f, 40.0f),
-                           [this]() { 
-                               SetGameScene(GameScene::MainMenu); 
-                           });
-    
-    // Play victory sound
-    mAudio->PlaySound("victory.wav");
 }

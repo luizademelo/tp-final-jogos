@@ -192,7 +192,14 @@ void Hero::Kill()
     mGame->GetAudio()->StopAllSounds();
     mGame->GetAudio()->PlaySound("DeadHero.mp3");
 
-    mGame->ResetGameScene(3.5f); // Reset the game scene after 3 seconds
+    if (mLivesCount <= 0)
+    {
+        mGame->SetGameScene(GameScene::GameOver, 2.0f);
+    }
+    else
+    {
+        mGame->ResetGameScene(3.5f); // Reset the game scene after 3 seconds
+    }
 }
 
 void Hero::Win(AABBColliderComponent *poleCollider)
