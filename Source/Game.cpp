@@ -227,6 +227,14 @@ void Game::ChangeScene()
         // Initialize actors
         LoadLevel("../Assets/Levels/level1-1.csv", LEVEL_WIDTH, LEVEL_HEIGHT);
     }
+    else if (mNextScene == GameScene::Victory)
+    {
+        // Set background color
+        mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
+        
+        // Load victory screen
+        LoadVictoryScreen();
+    }
 
     // Set new scene
     mGameScene = mNextScene;
@@ -860,4 +868,26 @@ void Game::UpdateMainMenuCursor()
         mUIStack.pop_back();
         LoadMainMenu();
     }
+}
+
+void Game::LoadVictoryScreen()
+{
+    // Create a new UI screen for the victory screen
+    UIScreen* victoryScreen = new UIScreen(this, "../Assets/Fonts/SMB.ttf");
+    
+    // Add the victory image as full screen
+    victoryScreen->AddImage("../Assets/Sprites/VictoryScreen.png", 
+                          Vector2(0, 0), 
+                          Vector2(mWindowWidth, mWindowHeight));
+    
+    // Add a button to return to main menu
+    victoryScreen->AddButton("Voltar ao Menu", 
+                           Vector2(mWindowWidth/2.0f - 150.0f, mWindowHeight - 100.0f), 
+                           Vector2(300.0f, 40.0f),
+                           [this]() { 
+                               SetGameScene(GameScene::MainMenu); 
+                           });
+    
+    // Play victory sound
+    mAudio->PlaySound("victory.wav");
 }

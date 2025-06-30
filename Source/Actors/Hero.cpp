@@ -130,10 +130,20 @@ void Hero::OnUpdate(float deltaTime)
 
     if (mGame->GetGamePlayState() == Game::GamePlayState::Leaving)
     {
-        // Stop Hero and set the game scene to Level 2
+        // Stop Hero movement
         mState = ActorState::Destroy;
-        mGame->SetGameScene(Game::GameScene::Level2, 3.5f);
-
+        
+        // Check if this is Level 2 and player has lives remaining
+        if (mGame->GetGameScene() == Game::GameScene::Level2 && mLivesCount > 0)
+        {
+            // Go to victory screen
+            mGame->SetGameScene(Game::GameScene::Victory, 1.5f);
+        }
+        else
+        {
+            // Otherwise proceed to Level 2 (from Level 1)
+            mGame->SetGameScene(Game::GameScene::Level2, 3.5f);
+        }
         return;
     }
 
