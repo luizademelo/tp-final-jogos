@@ -151,7 +151,7 @@ void Game::LoadVictoryScreen()
     // victoryScreen->AddImage("../Assets/Sprites/VictoryScreen.png",
     //                       Vector2(0, 0),
     //                       Vector2(mWindowWidth, mWindowHeight));
-    SetBackgroundImage("../Assets/Sprites/VictoryScreenVictoryScreen.png", Vector2(0, 0), Vector2(mWindowWidth, mWindowHeight));
+    SetBackgroundImage("../Assets/Sprites/VictoryScreen.png", Vector2(0, 0), Vector2(mWindowWidth, mWindowHeight));
     
     victoryScreen->AddButton("Voltar ao Menu", 
                            Vector2(mWindowWidth/2.0f - 150.0f, 600),
