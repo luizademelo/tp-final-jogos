@@ -27,7 +27,9 @@ public:
         MainMenu,
         HowToPlay,
         Level1,
-        Level2
+        Level2,
+        Victory,
+        GameOver
     };
 
     enum class SceneManagerState
@@ -63,6 +65,8 @@ public:
 
     // Level functions
     void LoadMainMenu();
+    void LoadVictoryScreen();
+    void LoadGameOverScreen();
     void LoadHowToPlay();
     void UpdateMainMenuCursor(); // Nova função para atualizar cursor
     void LoadLevel(const std::string& levelName, const int levelWidth, const int levelHeight);
@@ -92,6 +96,7 @@ public:
     SDL_Texture* LoadTexture(const std::string& texturePath);
 
     void SetGameScene(GameScene scene, float transitionTime = .0f);
+    GameScene GetGameScene(){return mGameScene; }
     void ResetGameScene(float transitionTime = .0f);
     void UnloadScene();
 

@@ -130,10 +130,20 @@ void Hero::OnUpdate(float deltaTime)
 
     if (mGame->GetGamePlayState() == Game::GamePlayState::Leaving)
     {
-        // Stop Hero and set the game scene to Level 2
+        // Stop Hero movement
         mState = ActorState::Destroy;
-        mGame->SetGameScene(Game::GameScene::Level2, 3.5f);
-
+        
+        // Check if this is Level 2 and player has lives remaining
+        if (mGame->GetGameScene() == Game::GameScene::Level2 && mLivesCount > 0)
+        {
+            // Go to victory screen
+            mGame->SetGameScene(Game::GameScene::Victory, 1.5f);
+        }
+        else
+        {
+            // Otherwise proceed to Level 2 (from Level 1)
+            mGame->SetGameScene(Game::GameScene::Level2, 3.5f);
+        }
         return;
     }
 
@@ -182,7 +192,14 @@ void Hero::Kill()
     mGame->GetAudio()->StopAllSounds();
     mGame->GetAudio()->PlaySound("DeadHero.mp3");
 
-    mGame->ResetGameScene(3.5f); // Reset the game scene after 3 seconds
+    if (mLivesCount <= 0)
+    {
+        mGame->SetGameScene(Game::GameScene::GameOver, 2.0f);
+    }
+    else
+    {
+        mGame->ResetGameScene(3.5f); // Reset the game scene after 3 seconds
+    }
 }
 
 void Hero::Win(AABBColliderComponent *poleCollider)

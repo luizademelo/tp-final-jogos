@@ -120,7 +120,7 @@ void Game::SetGameScene(Game::GameScene scene, float transitionTime)
     // Scene Manager FSM: using if/else instead of switch
     if (mSceneManagerState == SceneManagerState::None)
     {
-        if (scene == GameScene::MainMenu || scene == GameScene::Level1 || scene == GameScene::Level2 || scene == GameScene::HowToPlay)
+        if (scene == GameScene::MainMenu || scene == GameScene::Level1 || scene == GameScene::Level2 || scene == GameScene::HowToPlay || scene == GameScene::GameOver || scene == GameScene::Victory)
         {
             mNextScene = scene;
             mSceneManagerState = SceneManagerState::Entering;
@@ -141,6 +141,47 @@ void Game::SetGameScene(Game::GameScene scene, float transitionTime)
 void Game::ResetGameScene(float transitionTime)
 {
     SetGameScene(mGameScene, transitionTime);
+}
+
+
+void Game::LoadVictoryScreen()
+{
+    UIScreen* victoryScreen = new UIScreen(this, "../Assets/Fonts/SMB.ttf");
+    
+    // victoryScreen->AddImage("../Assets/Sprites/VictoryScreen.png",
+    //                       Vector2(0, 0),
+    //                       Vector2(mWindowWidth, mWindowHeight));
+    SetBackgroundImage("../Assets/Sprites/VictoryScreen.png", Vector2(0, 0), Vector2(mWindowWidth, mWindowHeight));
+    
+    victoryScreen->AddButton("Voltar ao Menu", 
+                           Vector2(mWindowWidth/2.0f - 150.0f, 600),
+                           Vector2(300.0f, 40.0f),
+                           [this]() { 
+                               SetGameScene(GameScene::MainMenu); 
+                           });
+    
+    mAudio->PlaySound("victory.wav");
+}
+
+void Game::LoadGameOverScreen()
+{
+    UIScreen* gameOverScreen = new UIScreen(this, "../Assets/Fonts/SMB.ttf");
+    
+    // gameOverScreen->AddImage("../Assets/Sprites/DefeatScreen.png",
+    //                       Vector2(0, 0),
+    //                       Vector2(mWindowWidth, mWindowHeight));
+    SetBackgroundImage("../Assets/Sprites/DefeatScreen.png",
+                          Vector2(0, 0),
+                          Vector2(mWindowWidth, mWindowHeight));
+    
+    gameOverScreen->AddButton("Voltar ao Menu", 
+                           Vector2(mWindowWidth/2.0f - 150.0f, 600),
+                           Vector2(300.0f, 40.0f),
+                           [this]() { 
+                               SetGameScene(GameScene::MainMenu); 
+                           });
+    
+    mAudio->PlaySound("defeat_chime.wav");
 }
 
 void Game::ChangeScene()
@@ -205,7 +246,8 @@ void Game::ChangeScene()
     else if (mNextScene == GameScene::Level2)
     {
         // // Start Music
-        mMusicHandle = mAudio->PlaySound("level1_background2.wav", true);
+        mAudio->StopSound(mMusicHandle);
+        mMusicHandle = mAudio->PlaySound("level2_background.wav", true);
         //
         // // Set background color
         // mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
@@ -226,6 +268,22 @@ void Game::ChangeScene()
 
         // Initialize actors
         LoadLevel("../Assets/Levels/level1-1.csv", LEVEL_WIDTH, LEVEL_HEIGHT);
+    }
+    else if (mNextScene == GameScene::Victory)
+    {
+        // Set background color
+        // mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
+        
+        // Load victory screen
+        LoadVictoryScreen();
+    }
+    else if (mNextScene == GameScene::GameOver)
+    {
+        // Set background color
+        // mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
+        
+        // Load game over screen
+        LoadGameOverScreen();
     }
 
     // Set new scene
@@ -543,7 +601,7 @@ void Game::UpdateGame()
     // ---------------------
     // Game Specific Updates
     // ---------------------
-    if(mGameScene != GameScene::MainMenu && mGameScene != GameScene::HowToPlay && mGamePlayState == GamePlayState::Playing)
+    if(mGameScene != GameScene::MainMenu && mGameScene != GameScene::HowToPlay && mGameScene != GameScene::GameOver && mGameScene != GameScene::Victory && mGamePlayState == GamePlayState::Playing)
     {
         // Reinsert level time
         UpdateLevelTime(deltaTime);
@@ -597,8 +655,11 @@ void Game::UpdateLevelTime(float deltaTime)
         else
         {
             // Kill Hero if time limit is reached
-            mHUD->SetTime(mGameTimeLimit);
-            mHero->Kill();
+            // mHUD->SetTime(mGameTimeLimit);
+            // mHero->Kill();
+            SetGameScene(GameScene::GameOver, 1.0f);
+            mSceneManagerState = SceneManagerState::Exiting;
+
         }
     }
 }
