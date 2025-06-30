@@ -64,6 +64,7 @@ public:
     // Level functions
     void LoadMainMenu();
     void LoadHowToPlay();
+    void UpdateMainMenuCursor(); // Nova função para atualizar cursor
     void LoadLevel(const std::string& levelName, const int levelWidth, const int levelHeight);
 
     std::vector<Actor *> GetNearbyActors(const Vector2& position, const int range = 1);
@@ -165,6 +166,9 @@ private:
 
     float mGameTimer;
     int mGameTimeLimit;
+
+    // Main menu cursor selection (0 = Iniciar, 1 = Como Jogar)
+    int mMenuCursorIndex;
 
     SDL_Texture *mBackgroundTexture;
     Vector2 mBackgroundSize;

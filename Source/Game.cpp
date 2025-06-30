@@ -51,6 +51,7 @@ Game::Game(int windowWidth, int windowHeight)
         ,mBackgroundTexture(nullptr)
         ,mBackgroundSize(Vector2::Zero)
         ,mBackgroundPosition(Vector2::Zero)
+        ,mMenuCursorIndex(0)
 {
 
 }
@@ -162,11 +163,14 @@ void Game::ChangeScene()
     // Scene Manager FSM: using if/else instead of switch
     if (mNextScene == GameScene::MainMenu)
     {
+        // Reset menu cursor to first option
+        mMenuCursorIndex = 0;
+        
         // Set background color
-        mBackgroundColor.Set(107.0f, 140.0f, 255.0f);
+        mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
 
-        // Set background color
-        SetBackgroundImage("../Assets/Sprites/Background.png", Vector2(TILE_SIZE,0), Vector2(6784,448));
+        // Set background image
+        SetBackgroundImage("../Assets/Sprites/LogoBackground.png", Vector2(0,0), Vector2(mWindowWidth, mWindowHeight));
 
         // Initialize main menu actors
         LoadMainMenu();
@@ -233,32 +237,20 @@ void Game::LoadMainMenu()
     // Load font
     UIScreen* mainMenu = new UIScreen(this, "../Assets/Fonts/SMB.ttf");
 
-    // Draw a row of blocks on the ground
-    for (int x = 0; x < LEVEL_WIDTH; ++x)
-    {
-        Vector2 blockPos = Vector2(x * TILE_SIZE, (LEVEL_HEIGHT - 2) * TILE_SIZE);
-        mainMenu->AddImage("../Assets/Sprites/Blocks/BlockA.png", blockPos, Vector2(TILE_SIZE, TILE_SIZE));
-    }
+    // Add menu buttons side by side at the bottom
+    const Vector2 buttonSize = Vector2(180.0f, 40.0f);
+    const float buttonSpacing = 60.0f; // Increased spacing between buttons
+    const float totalButtonWidth = (buttonSize.x * 2) + buttonSpacing;
+    const Vector2 button1Pos = Vector2(mWindowWidth/2.0f - totalButtonWidth/2.0f, mWindowHeight - 150.0f);
+    const Vector2 button2Pos = Vector2(button1Pos.x + buttonSize.x + buttonSpacing, button1Pos.y);
 
-    // Draw Hero
-    Vector2 marioPos = Vector2(4 * TILE_SIZE, (LEVEL_HEIGHT - 3) * TILE_SIZE);
-    mainMenu->AddImage("../Assets/Sprites/Hero/Idle.png", marioPos, Vector2(TILE_SIZE, TILE_SIZE));
+    // Add text labels instead of buttons to avoid background styling
+    mainMenu->AddText("Iniciar", Vector2(button1Pos.x + 20.0f, button1Pos.y + 10.0f), Vector2(buttonSize.x - 40.0f, 20.0f));
+    mainMenu->AddText("Como Jogar", Vector2(button2Pos.x + 20.0f, button2Pos.y + 10.0f), Vector2(buttonSize.x - 40.0f, 20.0f));
 
-    // Add title
-    const Vector2 titleSize = Vector2(178.0f, 88.0f) * 2.0f;
-    const Vector2 titlePos = Vector2(mWindowWidth/2.0f - titleSize.x/2.0f, 50.0f);
-    mainMenu->AddImage("../Assets/Sprites/Logo.png", titlePos, titleSize);
-
-    // Add menu buttons
-    const Vector2 buttonSize = Vector2(200.0f, 40.0f);
-    const Vector2 button1Pos = Vector2(mWindowWidth/2.0f - buttonSize.x/2.0f, titlePos.y + titleSize.y + 30.0f);
-    const Vector2 button2Pos = Vector2(mWindowWidth/2.0f - buttonSize.x/2.0f, button1Pos.y + buttonSize.y + 5.0f);
-
-    mainMenu->AddButton("Iniciar", button1Pos, buttonSize, [this]() {
-        SetGameScene(GameScene::Level1);
-    });
-
-    mainMenu->AddButton("Como jogar", button2Pos, buttonSize, [this]() {SetGameScene(GameScene::HowToPlay);});
+    // Add cursor indicators
+    mainMenu->AddText(mMenuCursorIndex == 0 ? ">" : " ", Vector2(button1Pos.x - 30.0f, button1Pos.y + 10.0f), Vector2(20.0f, 20.0f));
+    mainMenu->AddText(mMenuCursorIndex == 1 ? ">" : " ", Vector2(button2Pos.x - 30.0f, button2Pos.y + 10.0f), Vector2(20.0f, 20.0f));
 
 }
 
@@ -389,6 +381,35 @@ void Game::ProcessInput()
                 Quit();
                 break;
             case SDL_KEYDOWN:
+                // Handle main menu navigation
+                if (mGameScene == GameScene::MainMenu)
+                {
+                    if (event.key.keysym.sym == SDLK_a)
+                    {
+                        // Move cursor left
+                        mMenuCursorIndex = 0;
+                        UpdateMainMenuCursor();
+                    }
+                    else if (event.key.keysym.sym == SDLK_d)
+                    {
+                        // Move cursor right
+                        mMenuCursorIndex = 1;
+                        UpdateMainMenuCursor();
+                    }
+                    else if (event.key.keysym.sym == SDLK_RETURN)
+                    {
+                        // Execute selected option
+                        if (mMenuCursorIndex == 0)
+                        {
+                            SetGameScene(GameScene::Level1);
+                        }
+                        else if (mMenuCursorIndex == 1)
+                        {
+                            SetGameScene(GameScene::HowToPlay);
+                        }
+                    }
+                }
+                
                 // Handle key press for UI screens
                 if (!mUIStack.empty()) {
                     mUIStack.back()->HandleKeyPress(event.key.keysym.sym);
@@ -397,7 +418,7 @@ void Game::ProcessInput()
                 HandleKeyPressActors(event.key.keysym.sym, event.key.repeat == 0);
 
                 // Check if the Return key has been pressed to pause/unpause the game
-                if (event.key.keysym.sym == SDLK_RETURN)
+                if (event.key.keysym.sym == SDLK_RETURN && mGameScene != GameScene::MainMenu)
                 {
                     TogglePause();
                 }
@@ -821,4 +842,15 @@ void Game::Shutdown()
     SDL_DestroyRenderer(mRenderer);
     SDL_DestroyWindow(mWindow);
     SDL_Quit();
+}
+
+void Game::UpdateMainMenuCursor()
+{
+    if (mGameScene == GameScene::MainMenu && !mUIStack.empty())
+    {
+        // Remove the current menu and recreate it with updated cursor
+        delete mUIStack.back();
+        mUIStack.pop_back();
+        LoadMainMenu();
+    }
 }
