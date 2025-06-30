@@ -148,9 +148,10 @@ void Game::LoadVictoryScreen()
 {
     UIScreen* victoryScreen = new UIScreen(this, "../Assets/Fonts/SMB.ttf");
     
-    victoryScreen->AddImage("../Assets/Sprites/VictoryScreen.png", 
-                          Vector2(0, 0), 
-                          Vector2(mWindowWidth, mWindowHeight));
+    // victoryScreen->AddImage("../Assets/Sprites/VictoryScreen.png",
+    //                       Vector2(0, 0),
+    //                       Vector2(mWindowWidth, mWindowHeight));
+    SetBackgroundImage("../Assets/Sprites/VictoryScreenVictoryScreen.png", Vector2(0, 0), Vector2(mWindowWidth, mWindowHeight));
     
     victoryScreen->AddButton("Voltar ao Menu", 
                            Vector2(mWindowWidth/2.0f - 150.0f, 600),
@@ -166,8 +167,11 @@ void Game::LoadGameOverScreen()
 {
     UIScreen* gameOverScreen = new UIScreen(this, "../Assets/Fonts/SMB.ttf");
     
-    gameOverScreen->AddImage("../Assets/Sprites/DefeatScreen.png", 
-                          Vector2(0, 0), 
+    // gameOverScreen->AddImage("../Assets/Sprites/DefeatScreen.png",
+    //                       Vector2(0, 0),
+    //                       Vector2(mWindowWidth, mWindowHeight));
+    SetBackgroundImage("../Assets/Sprites/DefeatScreen.png",
+                          Vector2(0, 0),
                           Vector2(mWindowWidth, mWindowHeight));
     
     gameOverScreen->AddButton("Voltar ao Menu", 
