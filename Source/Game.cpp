@@ -64,7 +64,7 @@ bool Game::Initialize()
         return false;
     }
 
-    mWindow = SDL_CreateWindow("TP4: Super Hero Bros", 100, 100, mWindowWidth, mWindowHeight, 0);
+    mWindow = SDL_CreateWindow("Missão Marmita", 100, 100, mWindowWidth, mWindowHeight, 0);
     if (!mWindow)
     {
         SDL_Log("Failed to create window: %s", SDL_GetError());
