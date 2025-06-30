@@ -1,6 +1,12 @@
 # Trabalho Prático Final - Desenvolvimento de Jogos Digitais
 
 ## Screenshots
+![Captura de tela 2025-06-30 183602](https://github.com/user-attachments/assets/694c8f81-a904-40c6-9751-2c8931d028f5)
+![Captura de tela 2025-06-30 183626](https://github.com/user-attachments/assets/5275dced-62d3-4f42-a408-8d5efd882ea1)
+![Captura de tela 2025-06-30 183928](https://github.com/user-attachments/assets/5142330c-d1a9-41bf-b5f9-d0d4533da746)
+![Captura de tela 2025-06-30 183938](https://github.com/user-attachments/assets/6f8a3aa2-0679-4159-8cb1-6716c27f2731)
+![Captura de tela 2025-06-30 184114](https://github.com/user-attachments/assets/5eb12d0b-f70e-4291-a757-51f488278905)
+![Captura de tela 2025-06-30 184330](https://github.com/user-attachments/assets/d586d677-58f4-4c1e-ac91-5c1132918928)
 
 ## Título
 Missão Marmita
