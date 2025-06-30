@@ -177,7 +177,7 @@ void Game::ChangeScene()
     else if (mNextScene == GameScene::Level1)
     {
         // // Start Music
-        // mMusicHandle = mAudio->PlaySound("MusicMain.ogg", true);
+        mMusicHandle = mAudio->PlaySound("level1_background.wav", true);
         //
         // // Set background color
         // mBackgroundColor.Set(107.0f, 140.0f, 255.0f);

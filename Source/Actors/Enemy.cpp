@@ -38,6 +38,7 @@ Enemy::Enemy(Game* game, float forwardSpeed, float deathTime)
 
 void Enemy::Kill()
 {
+    mGame->GetAudio()->PlaySound("DeadEnemy.mp3");
     mIsDying = true;
     mDrawComponent->SetAnimation("Dead");
     mRigidBodyComponent->SetEnabled(false);
@@ -47,7 +48,7 @@ void Enemy::Kill()
 void Enemy::BumpKill(const float bumpForce)
 {
     mDrawComponent->SetAnimation("Idle");
-
+    mGame->GetAudio()->PlaySound("DeadEnemy.mp3");
     mRigidBodyComponent->SetVelocity(Vector2(bumpForce/2.0f, -bumpForce));
     mColliderComponent->SetEnabled(false);
 

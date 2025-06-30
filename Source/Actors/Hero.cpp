@@ -80,7 +80,7 @@ void Hero::OnHandleKeyPress(const int key, const bool isPressed)
         mIsOnGround = false;
 
         // Play jump sound
-        mGame->GetAudio()->PlaySound("Jump.wav");
+        mGame->GetAudio()->PlaySound("Jump.mp3");
     }
 }
 
@@ -174,7 +174,7 @@ void Hero::Kill()
     mColliderComponent->SetEnabled(false);
 
     mGame->GetAudio()->StopAllSounds();
-    mGame->GetAudio()->PlaySound("Dead.wav");
+    mGame->GetAudio()->PlaySound("DeadHero.mp3");
 
     mGame->ResetGameScene(3.5f); // Reset the game scene after 3 seconds
 }

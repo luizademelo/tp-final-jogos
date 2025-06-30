@@ -19,6 +19,7 @@ Shot::Shot(Game* game, const Vector2& velocity, ColliderLayer layer)
     mDrawComponent->AddAnimation("Normal", {0});
     mDrawComponent->SetAnimation("Normal");
     mDrawComponent->SetAnimFPS(5.0f);
+    mColliderLayer = layer;
 }
 
 void Shot::OnUpdate(float deltaTime)
@@ -33,11 +34,14 @@ void Shot::OnUpdate(float deltaTime)
 
 
 void Shot::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) {
-        mState = ActorState::Destroy;
+    if (other->GetLayer() == ColliderLayer::Player || other->GetLayer() == ColliderLayer::Enemy) {
+        other->GetOwner()->Kill();
+    }
+    mState = ActorState::Destroy;
 }
 void Shot::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) {
-    if (other->GetLayer() != ColliderLayer::Blocks && other->GetLayer() != ColliderLayer::Pole) {
-        mState = ActorState::Destroy;
-    }
+    // if (other->GetLayer() != ColliderLayer::Blocks && other->GetLayer() != ColliderLayer::Pole) {
+    //     mState = ActorState::Destroy;
+    // }
 }
 

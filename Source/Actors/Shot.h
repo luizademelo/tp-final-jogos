@@ -22,6 +22,7 @@ private:
     RigidBodyComponent* mRigidBodyComponent;
     AABBColliderComponent* mColliderComponent;
     DrawAnimatedComponent* mDrawComponent;
+    ColliderLayer mColliderLayer;
 
     float mLivenessTime = 3;
     float mTimer = 0;
