@@ -1,20 +1,45 @@
 {
   "frames": [
     {
-      "filename": "hero000.png",
+      "filename": "Dead.png",
       "frame": {
         "x": 0,
         "y": 0,
+        "w": 30,
+        "h": 43
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 8,
+        "y": 2,
+        "w": 30,
+        "h": 43
+      },
+      "sourceSize": {
         "w": 48,
         "h": 48
       },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "hero000.png",
+      "frame": {
         "x": 0,
-        "y": 0,
-        "w": 48,
-        "h": 48
+        "y": 43,
+        "w": 23,
+        "h": 43
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 12,
+        "y": 4,
+        "w": 23,
+        "h": 43
       },
       "sourceSize": {
         "w": 48,
@@ -28,18 +53,18 @@
     {
       "filename": "hero001.png",
       "frame": {
-        "x": 0,
-        "y": 48,
-        "w": 48,
-        "h": 48
+        "x": 30,
+        "y": 0,
+        "w": 23,
+        "h": 42
       },
       "rotated": false,
-      "trimmed": false,
+      "trimmed": true,
       "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 48,
-        "h": 48
+        "x": 12,
+        "y": 3,
+        "w": 23,
+        "h": 42
       },
       "sourceSize": {
         "w": 48,
@@ -53,43 +78,18 @@
     {
       "filename": "hero002.png",
       "frame": {
-        "x": 48,
-        "y": 0,
-        "w": 48,
-        "h": 48
+        "x": 0,
+        "y": 86,
+        "w": 23,
+        "h": 43
       },
       "rotated": false,
-      "trimmed": false,
+      "trimmed": true,
       "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 48,
-        "h": 48
-      },
-      "sourceSize": {
-        "w": 48,
-        "h": 48
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "hero003.png",
-      "frame": {
-        "x": 0,
-        "y": 96,
-        "w": 48,
-        "h": 48
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 48,
-        "h": 48
+        "x": 12,
+        "y": 4,
+        "w": 23,
+        "h": 43
       },
       "sourceSize": {
         "w": 48,
@@ -103,18 +103,43 @@
     {
       "filename": "hero004.png",
       "frame": {
-        "x": 48,
-        "y": 48,
+        "x": 23,
+        "y": 43,
+        "w": 21,
+        "h": 43
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 12,
+        "y": 3,
+        "w": 21,
+        "h": 43
+      },
+      "sourceSize": {
         "w": 48,
         "h": 48
       },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "hero003.png",
+      "frame": {
+        "x": 53,
         "y": 0,
-        "w": 48,
-        "h": 48
+        "w": 23,
+        "h": 42
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 12,
+        "y": 3,
+        "w": 23,
+        "h": 42
       },
       "sourceSize": {
         "w": 48,
@@ -128,43 +153,18 @@
     {
       "filename": "hero005.png",
       "frame": {
-        "x": 96,
-        "y": 0,
-        "w": 48,
-        "h": 48
+        "x": 0,
+        "y": 129,
+        "w": 19,
+        "h": 43
       },
       "rotated": false,
-      "trimmed": false,
+      "trimmed": true,
       "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 48,
-        "h": 48
-      },
-      "sourceSize": {
-        "w": 48,
-        "h": 48
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "hero006.png",
-      "frame": {
-        "x": 0,
-        "y": 144,
-        "w": 48,
-        "h": 48
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 48,
-        "h": 48
+        "x": 13,
+        "y": 2,
+        "w": 19,
+        "h": 43
       },
       "sourceSize": {
         "w": 48,
@@ -178,18 +178,18 @@
     {
       "filename": "hero007.png",
       "frame": {
-        "x": 48,
-        "y": 96,
-        "w": 48,
-        "h": 48
+        "x": 23,
+        "y": 86,
+        "w": 19,
+        "h": 43
       },
       "rotated": false,
-      "trimmed": false,
+      "trimmed": true,
       "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 48,
-        "h": 48
+        "x": 13,
+        "y": 2,
+        "w": 19,
+        "h": 43
       },
       "sourceSize": {
         "w": 48,
@@ -203,18 +203,18 @@
     {
       "filename": "hero008.png",
       "frame": {
-        "x": 96,
-        "y": 48,
-        "w": 48,
-        "h": 48
+        "x": 44,
+        "y": 42,
+        "w": 23,
+        "h": 43
       },
       "rotated": false,
-      "trimmed": false,
+      "trimmed": true,
       "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 48,
-        "h": 48
+        "x": 12,
+        "y": 3,
+        "w": 23,
+        "h": 43
       },
       "sourceSize": {
         "w": 48,
@@ -228,18 +228,18 @@
     {
       "filename": "hero009.png",
       "frame": {
-        "x": 144,
+        "x": 76,
         "y": 0,
-        "w": 48,
-        "h": 48
+        "w": 23,
+        "h": 43
       },
       "rotated": false,
-      "trimmed": false,
+      "trimmed": true,
       "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 48,
-        "h": 48
+        "x": 12,
+        "y": 2,
+        "w": 23,
+        "h": 43
       },
       "sourceSize": {
         "w": 48,
@@ -254,17 +254,17 @@
       "filename": "hero010.png",
       "frame": {
         "x": 0,
-        "y": 192,
-        "w": 48,
-        "h": 48
+        "y": 172,
+        "w": 23,
+        "h": 43
       },
       "rotated": false,
-      "trimmed": false,
+      "trimmed": true,
       "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 48,
-        "h": 48
+        "x": 12,
+        "y": 3,
+        "w": 23,
+        "h": 43
       },
       "sourceSize": {
         "w": 48,
@@ -278,18 +278,18 @@
     {
       "filename": "hero011.png",
       "frame": {
-        "x": 48,
-        "y": 144,
-        "w": 48,
-        "h": 48
+        "x": 42,
+        "y": 86,
+        "w": 23,
+        "h": 43
       },
       "rotated": false,
-      "trimmed": false,
+      "trimmed": true,
       "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 48,
-        "h": 48
+        "x": 12,
+        "y": 2,
+        "w": 23,
+        "h": 43
       },
       "sourceSize": {
         "w": 48,
@@ -303,18 +303,43 @@
     {
       "filename": "hero012.png",
       "frame": {
-        "x": 96,
-        "y": 96,
+        "x": 99,
+        "y": 0,
+        "w": 21,
+        "h": 43
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 15,
+        "y": 3,
+        "w": 21,
+        "h": 43
+      },
+      "sourceSize": {
         "w": 48,
         "h": 48
       },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "hero006.png",
+      "frame": {
+        "x": 67,
+        "y": 43,
+        "w": 19,
+        "h": 42
+      },
       "rotated": false,
-      "trimmed": false,
+      "trimmed": true,
       "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 48,
-        "h": 48
+        "x": 15,
+        "y": 3,
+        "w": 19,
+        "h": 42
       },
       "sourceSize": {
         "w": 48,
@@ -328,43 +353,18 @@
     {
       "filename": "hero013.png",
       "frame": {
-        "x": 144,
-        "y": 48,
-        "w": 48,
-        "h": 48
+        "x": 0,
+        "y": 215,
+        "w": 19,
+        "h": 43
       },
       "rotated": false,
-      "trimmed": false,
+      "trimmed": true,
       "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 48,
-        "h": 48
-      },
-      "sourceSize": {
-        "w": 48,
-        "h": 48
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "hero014.png",
-      "frame": {
-        "x": 192,
-        "y": 0,
-        "w": 48,
-        "h": 48
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 48,
-        "h": 48
+        "x": 16,
+        "y": 2,
+        "w": 19,
+        "h": 43
       },
       "sourceSize": {
         "w": 48,
@@ -378,18 +378,43 @@
     {
       "filename": "hero015.png",
       "frame": {
-        "x": 0,
-        "y": 240,
+        "x": 19,
+        "y": 129,
+        "w": 19,
+        "h": 43
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 16,
+        "y": 2,
+        "w": 19,
+        "h": 43
+      },
+      "sourceSize": {
         "w": 48,
         "h": 48
       },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "hero014.png",
+      "frame": {
+        "x": 65,
+        "y": 85,
+        "w": 19,
+        "h": 42
+      },
       "rotated": false,
-      "trimmed": false,
+      "trimmed": true,
       "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 48,
-        "h": 48
+        "x": 14,
+        "y": 3,
+        "w": 19,
+        "h": 42
       },
       "sourceSize": {
         "w": 48,
@@ -407,8 +432,8 @@
     "image": "texture.png",
     "format": "RGBA8888",
     "size": {
-      "w": 240,
-      "h": 288
+      "w": 120,
+      "h": 258
     },
     "scale": 1
   }

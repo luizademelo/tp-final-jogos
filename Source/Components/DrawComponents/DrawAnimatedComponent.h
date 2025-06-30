@@ -25,6 +25,8 @@ public:
     // Use to pause/unpause the animation
     void SetIsPaused(bool pause) { mIsPaused = pause; }
 
+    void SetScale(float scale){ mScale = scale; }
+
     // Add an animation of the corresponding name to the animation map
     void AddAnimation(const std::string& name, const std::vector<int>& images);
 
@@ -48,4 +50,5 @@ private:
 
     // Whether or not the animation is paused (defaults to false)
     bool mIsPaused = false;
+    float mScale = 1.0f;
 };

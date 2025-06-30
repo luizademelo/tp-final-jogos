@@ -1,0 +1,240 @@
+{
+  "frames": [
+    {
+      "filename": "tile001.png",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 66,
+        "h": 69
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 22,
+        "y": 7,
+        "w": 66,
+        "h": 69
+      },
+      "sourceSize": {
+        "w": 100,
+        "h": 97
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "tile000.png",
+      "frame": {
+        "x": 0,
+        "y": 69,
+        "w": 68,
+        "h": 67
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 18,
+        "y": 8,
+        "w": 68,
+        "h": 67
+      },
+      "sourceSize": {
+        "w": 100,
+        "h": 97
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "tile002.png",
+      "frame": {
+        "x": 0,
+        "y": 136,
+        "w": 68,
+        "h": 66
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 28,
+        "y": 9,
+        "w": 68,
+        "h": 66
+      },
+      "sourceSize": {
+        "w": 99,
+        "h": 97
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "tile003.png",
+      "frame": {
+        "x": 66,
+        "y": 0,
+        "w": 61,
+        "h": 62
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 21,
+        "y": 18,
+        "w": 61,
+        "h": 62
+      },
+      "sourceSize": {
+        "w": 100,
+        "h": 97
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "tile004.png",
+      "frame": {
+        "x": 0,
+        "y": 202,
+        "w": 59,
+        "h": 55
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 28,
+        "y": 22,
+        "w": 59,
+        "h": 55
+      },
+      "sourceSize": {
+        "w": 100,
+        "h": 97
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "tile005.png",
+      "frame": {
+        "x": 68,
+        "y": 62,
+        "w": 52,
+        "h": 53
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 34,
+        "y": 22,
+        "w": 52,
+        "h": 53
+      },
+      "sourceSize": {
+        "w": 99,
+        "h": 97
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "tile006.png",
+      "frame": {
+        "x": 127,
+        "y": 0,
+        "w": 46,
+        "h": 47
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 29,
+        "y": 33,
+        "w": 46,
+        "h": 47
+      },
+      "sourceSize": {
+        "w": 100,
+        "h": 97
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "tile007.png",
+      "frame": {
+        "x": 0,
+        "y": 257,
+        "w": 44,
+        "h": 43
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 33,
+        "y": 36,
+        "w": 44,
+        "h": 43
+      },
+      "sourceSize": {
+        "w": 100,
+        "h": 97
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "tile008.png",
+      "frame": {
+        "x": 59,
+        "y": 202,
+        "w": 36,
+        "h": 40
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 42,
+        "y": 37,
+        "w": 36,
+        "h": 40
+      },
+      "sourceSize": {
+        "w": 99,
+        "h": 97
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  ],
+  "meta": {
+    "app": "http://free-tex-packer.com",
+    "version": "0.6.7",
+    "image": "texture.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 173,
+      "h": 300
+    },
+    "scale": 1
+  }
+}

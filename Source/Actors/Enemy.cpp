@@ -32,7 +32,7 @@ Enemy::Enemy(Game* game, float forwardSpeed, float deathTime)
     mDrawComponent->AddAnimation("walk", {4,5,6,7});
     mDrawComponent->SetAnimation("walk");
     mDrawComponent->SetAnimFPS(5.0f);
-
+    mDrawComponent->SetScale(1.5f);
 
 }
 
@@ -108,9 +108,10 @@ void Enemy::ShootProjectile()
     if (mRigidBodyComponent->GetVelocity().x > 0.0f) {
         velocity.x = 150;
     }
-    auto shot = new Shot(GetGame(), velocity, ColliderLayer::Enemy);
+    auto shot = new Shot(GetGame(), velocity, ColliderLayer::Enemy, "../Assets/Sprites/Shots/Email/texture.png", "../Assets/Sprites/Shots/Email/texture.json");
     Vector2 dir = mRigidBodyComponent->GetVelocity().x < 0 ? Vector2(-1, 0) : Vector2(1, 0);
     Vector2 pos = GetPosition() + dir * Game::TILE_SIZE * 0.5f;
     shot->SetPosition(pos);
+    shot->GetComponent<DrawAnimatedComponent>()->SetScale(0.5f);
 }
 

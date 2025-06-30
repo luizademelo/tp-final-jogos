@@ -4,6 +4,7 @@
 
 #pragma once
 #include "Actor.h"
+#include <string>
 
 class DrawSpriteComponent;
 class DrawAnimatedComponent;
@@ -12,7 +13,7 @@ class CircleColliderComponent;
 
 class Shot : public Actor {
 public:
-    Shot(Game* game, const Vector2& velocity,ColliderLayer layer);
+    Shot(Game* game, const Vector2& velocity, ColliderLayer layer, std::string spriteSheetPath, std::string spriteSheetData);
     void OnUpdate(float deltaTime) override;
 
     void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override;

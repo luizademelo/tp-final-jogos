@@ -6,11 +6,11 @@
 #include "../Components/DrawComponents/DrawAnimatedComponent.h"
 #include "../Components/DrawComponents/DrawPolygonComponent.h"
 
-Shot::Shot(Game* game, const Vector2& velocity, ColliderLayer layer)
+Shot::Shot(Game* game, const Vector2& velocity, ColliderLayer layer, std::string spriteSheetPath, std::string spriteSheetData)
     : Actor(game)
 {
 
-    mDrawComponent = new DrawAnimatedComponent(this, "../Assets/Sprites/Shots/ToiletPaper/texture.png", "../Assets/Sprites/Shots/ToiletPaper/texture.json");
+    mDrawComponent = new DrawAnimatedComponent(this, spriteSheetPath, spriteSheetData);
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f);
     mRigidBodyComponent->SetVelocity(velocity);
     mColliderComponent = new AABBColliderComponent(this, 0, 0,
