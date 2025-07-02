@@ -35,7 +35,7 @@ Nerdovaldo a finalmente almoçar com tranquilidade.
  - Movimentação do protagonista (andar, pular)
    - A para esquerda, D para direita e Espaço para pular
  - Ataque do protagonista
-   - X para disparar um atestado
+   - X para disparar um ataque
  - Sistema de vidas
    - Jogador possui 3 vidas
    - Cada nova tarefa que atinge Nerdovaldo retira vidas
