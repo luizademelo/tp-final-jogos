@@ -40,6 +40,9 @@ void Shot::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* 
     if (this->mColliderLayer == ColliderLayer::Enemy && other->GetLayer() == ColliderLayer::Player) {
         other->GetOwner()->Kill();
     }
+    if (this->mColliderLayer == ColliderLayer::Player && other->GetLayer() == ColliderLayer::Blocks) {
+        mGame->GetAudio()->PlaySound("wood.wav");
+    }
     mState = ActorState::Destroy;
 }
 void Shot::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) {

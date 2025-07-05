@@ -56,3 +56,8 @@ void Block::OnVerticalCollision(const float minOverlap, AABBColliderComponent* o
     // }
 }
 
+void Block::OnHorizontalCollision(const float minOverlap, AABBColliderComponent *other) {
+
+}
+
+

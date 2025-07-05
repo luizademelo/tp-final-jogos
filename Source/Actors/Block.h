@@ -21,6 +21,7 @@ public:
     void OnUpdate(float deltaTime) override;
     void OnBump();
     void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) override;
+    void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override;
 
 private:
     const int BUMP_FORCE = 200;
