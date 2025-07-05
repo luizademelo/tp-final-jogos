@@ -120,7 +120,8 @@ void Game::SetGameScene(Game::GameScene scene, float transitionTime)
     // Scene Manager FSM: using if/else instead of switch
     if (mSceneManagerState == SceneManagerState::None)
     {
-        if (scene == GameScene::MainMenu || scene == GameScene::Level1 || scene == GameScene::Level2 || scene == GameScene::HowToPlay || scene == GameScene::GameOver || scene == GameScene::Victory)
+        if (scene == GameScene::MainMenu || scene == GameScene::Level1 || scene == GameScene::Level2 || scene == GameScene::Level3 || scene == GameScene::Level4 ||
+            scene == GameScene::HowToPlay || scene == GameScene::GameOver || scene == GameScene::Victory)
         {
             mNextScene = scene;
             mSceneManagerState = SceneManagerState::Entering;
@@ -166,10 +167,7 @@ void Game::LoadVictoryScreen()
 void Game::LoadGameOverScreen()
 {
     UIScreen* gameOverScreen = new UIScreen(this, "../Assets/Fonts/SMB.ttf");
-    
-    // gameOverScreen->AddImage("../Assets/Sprites/DefeatScreen.png",
-    //                       Vector2(0, 0),
-    //                       Vector2(mWindowWidth, mWindowHeight));
+
     SetBackgroundImage("../Assets/Sprites/DefeatScreen.png",
                           Vector2(0, 0),
                           Vector2(mWindowWidth, mWindowHeight));
@@ -215,20 +213,20 @@ void Game::ChangeScene()
 
         // Initialize main menu actors
         LoadMainMenu();
-    }else if (mNextScene == GameScene::HowToPlay) {
+    }
+
+    else if (mNextScene == GameScene::HowToPlay) {
         mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
         LoadHowToPlay();
     }
+
     else if (mNextScene == GameScene::Level1)
     {
-        // // Start Music
+        // Start Music
         mMusicHandle = mAudio->PlaySound("level1_background.wav", true);
-        //
-        // // Set background color
-        // mBackgroundColor.Set(107.0f, 140.0f, 255.0f);
 
         // Create HUD
-        mHUD = new HUD(this, "../Assets/Fonts/SMB.ttf");
+        mHUD = new HUD(this, "../Assets/Fonts/NickelodeonGames.ttf");
 
         // Reset HUD
         mGameTimeLimit = 400;
@@ -237,51 +235,90 @@ void Game::ChangeScene()
 
         SetStairsPosition(5680);
 
-        // Set background image
+        // Set background
         SetBackgroundImage("../Assets/Sprites/BackgroundLevel1.png", Vector2(0,0), Vector2(6000,600));
 
         // Initialize actors
-        LoadLevel("../Assets/Levels/level1-1.csv", LEVEL_WIDTH, LEVEL_HEIGHT);
+        LoadLevel("../Assets/Levels/level1.csv", LEVEL_WIDTH, LEVEL_HEIGHT);
     }
+
     else if (mNextScene == GameScene::Level2)
     {
-        // // Start Music
+        // Start Music
         mAudio->StopSound(mMusicHandle);
         mMusicHandle = mAudio->PlaySound("level2_background.wav", true);
-        //
-        // // Set background color
-        // mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
-
-        // Set mod color
-        // mModColor.Set(0.0f, 255.0f, 200.0f);
 
         // Create HUD
-        mHUD = new HUD(this, "../Assets/Fonts/SMB.ttf");
+        mHUD = new HUD(this, "../Assets/Fonts/NickelodeonGames.ttf");
 
         // Reset HUD
         mGameTimeLimit = 400;
         mHUD->SetTime(mGameTimeLimit);
         mHUD->SetLevelName("Nivel 2");
 
-        // Set background color
+        SetStairsPosition(5680);
+
+        // Set background
         SetBackgroundImage("../Assets/Sprites/BackgroundLevel1.png", Vector2(0,0), Vector2(6000,600));
 
         // Initialize actors
-        LoadLevel("../Assets/Levels/level1-1.csv", LEVEL_WIDTH, LEVEL_HEIGHT);
+        LoadLevel("../Assets/Levels/level2.csv", LEVEL_WIDTH, LEVEL_HEIGHT);
     }
+
+    else if (mNextScene == GameScene::Level3)
+    {
+        // Start Music
+        mAudio->StopSound(mMusicHandle);
+        mMusicHandle = mAudio->PlaySound("level3_background.wav", true);
+
+        // Create HUD
+        mHUD = new HUD(this, "../Assets/Fonts/NickelodeonGames.ttf");
+
+        // Reset HUD
+        mGameTimeLimit = 400;
+        mHUD->SetTime(mGameTimeLimit);
+        mHUD->SetLevelName("Nivel 3");
+
+        SetStairsPosition(5680);
+
+        // Set background
+        SetBackgroundImage("../Assets/Sprites/BackgroundLevel1.png", Vector2(0,0), Vector2(6000,600));
+
+        // Initialize actors
+        LoadLevel("../Assets/Levels/level3.csv", LEVEL_WIDTH, LEVEL_HEIGHT);
+    }
+
+    else if (mNextScene == GameScene::Level4)
+    {
+        // Start Music
+        mAudio->StopSound(mMusicHandle);
+        mMusicHandle = mAudio->PlaySound("level4_background.wav", true);
+
+        // Create HUD
+        mHUD = new HUD(this, "../Assets/Fonts/NickelodeonGames.ttf");
+
+        // Reset HUD
+        mGameTimeLimit = 400;
+        mHUD->SetTime(mGameTimeLimit);
+        mHUD->SetLevelName("Nivel 4");
+
+        SetStairsPosition(5680);
+
+        // Set background
+        SetBackgroundImage("../Assets/Sprites/BackgroundLevel1.png", Vector2(0,0), Vector2(6000,600));
+
+        // Initialize actors
+        LoadLevel("../Assets/Levels/level4.csv", LEVEL_WIDTH, LEVEL_HEIGHT);
+    }
+
     else if (mNextScene == GameScene::Victory)
     {
-        // Set background color
-        // mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
-        
         // Load victory screen
         LoadVictoryScreen();
     }
+
     else if (mNextScene == GameScene::GameOver)
     {
-        // Set background color
-        // mBackgroundColor.Set(0.0f, 0.0f, 0.0f);
-        
         // Load game over screen
         LoadGameOverScreen();
     }
@@ -342,7 +379,24 @@ void Game::BuildLevel(int** levelData, int width, int height)
 
     // Const map to convert tile ID to block type
     const std::map<int, const std::string> tileMap = {
-            {0, "../Assets/Sprites/Blocks/Floor.png"}
+        {10, "../Assets/Sprites/Blocks/Floor.png"},
+        {11, "../Assets/Sprites/Blocks/Level1/chair.png"},
+        {12, "../Assets/Sprites/Blocks/Level1/filingCabinet.png"},
+        {13, "../Assets/Sprites/Blocks/Level1/plant.png"},
+        {14, "../Assets/Sprites/Blocks/Level1/workTable.png"},
+        {15, "../Assets/Sprites/Blocks/Level2/coffeeMaker.png"},
+        {16, "../Assets/Sprites/Blocks/Level2/fountain.png"},
+        {17, "../Assets/Sprites/Blocks/Level2/picnicTable.png"},
+        {18, "../Assets/Sprites/Blocks/Level2/vendingMachine.png"},
+        {19, "../Assets/Sprites/Blocks/Level2/wasteCan.png"},
+        {20, "../Assets/Sprites/Blocks/Level3/desktop.png"},
+        {21, "../Assets/Sprites/Blocks/Level3/netcape.png"},
+        {22, "../Assets/Sprites/Blocks/Level3/server.png"},
+        {23, "../Assets/Sprites/Blocks/Level3/toolbox.png"},
+        {24, "../Assets/Sprites/Blocks/Level4/couch.png"},
+        {25, "../Assets/Sprites/Blocks/Level4/dumpster.png"},
+        {26, "../Assets/Sprites/Blocks/Level4/IdCounter.png"},
+        {27, "../Assets/Sprites/Blocks/Level4/ratchet.png"}
     };
 
     for (int y = 0; y < LEVEL_HEIGHT; ++y)
@@ -351,12 +405,12 @@ void Game::BuildLevel(int** levelData, int width, int height)
         {
             int tile = levelData[y][x];
 
-            if(tile == 16) // Hero
+            if(tile == 99) // Hero
             {
                 mHero = new Hero(this);
                 mHero->SetPosition(Vector2(x * TILE_SIZE, y * TILE_SIZE));
             }
-            else if(tile == 10) // Spawner
+            else if(tile == 98) // Spawner
             {
                 Spawner* spawner = new Spawner(this, SPAWN_DISTANCE);
                 spawner->SetPosition(Vector2(x * TILE_SIZE, y * TILE_SIZE));

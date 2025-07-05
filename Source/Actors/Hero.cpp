@@ -88,62 +88,50 @@ void Hero::OnHandleKeyPress(const int key, const bool isPressed)
 void Hero::OnUpdate(float deltaTime)
 {
     mShootTimer -= deltaTime;
-    //SDL_Log("Mshoot: %f", mShootTimer);
+
     // Check if Hero is off the ground
     if (mRigidBodyComponent && mRigidBodyComponent->GetVelocity().y != 0) {
         mIsOnGround = false;
     }
 
-    // Limit Hero's position to the camera view
-    // mPosition.x = Math::Max(mPosition.x, mGame->GetCameraPos().x);
-
     // Kill Hero if he falls below the screen
     if (mGame->GetGamePlayState() == Game::GamePlayState::Playing && mPosition.y > mGame->GetWindowHeight())
     {
-        // Kill();
+        Kill();
     }
 
     if (GetPosition().x >= GetGame()->GetStairsPosition()) {
         mGame->SetGamePlayState(Game::GamePlayState::Leaving);
     }
 
-    // if (mIsOnStairs)
-    // {
-    //     // If Hero is on the pole, update the pole slide timer
-    //     mPoleSlideTimer -= deltaTime;
-    //     if (mPoleSlideTimer <= 0.0f)
-    //     {
-    //         mRigidBodyComponent->SetApplyGravity(true);
-    //         mRigidBodyComponent->SetApplyFriction(false);
-    //         mRigidBodyComponent->SetVelocity(Vector2::UnitX * 100.0f);
-    //         mGame->SetGamePlayState(Game::GamePlayState::Leaving);
-    //
-    //         // Play win sound
-    //         mGame->GetAudio()->PlaySound("StageClear.wav");
-    //         mIsOnStairs = false;
-    //         mIsRunning = true;
-    //     }
-    // }
-
-    // If Hero is leaving the level, kill him if he enters the castle
-    const float castleDoorPos = Game::LEVEL_WIDTH * Game::TILE_SIZE - 10 * Game::TILE_SIZE;
-
     if (mGame->GetGamePlayState() == Game::GamePlayState::Leaving)
     {
         // Stop Hero movement
         mState = ActorState::Destroy;
-        
-        // Check if this is Level 2 and player has lives remaining
-        if (mGame->GetGameScene() == Game::GameScene::Level2 && mLivesCount > 0)
+
+        // Get current level
+        auto CurrentScene = GetGame()->GetGameScene();
+
+        if (CurrentScene == Game::GameScene::Level1)
         {
-            // Go to victory screen
+            mGame->SetGameScene(Game::GameScene::Level2, 1.5f);
+        }
+
+        else if (CurrentScene == Game::GameScene::Level2)
+        {
+            mGame->SetGameScene(Game::GameScene::Level3, 1.5f);
+        }
+
+        else if (CurrentScene == Game::GameScene::Level3)
+        {
+            mGame->SetGameScene(Game::GameScene::Level4, 1.5f);
+        }
+
+        else if (CurrentScene == Game::GameScene::Level4)
+        {
             mGame->SetGameScene(Game::GameScene::Victory, 1.5f);
         }
-        else
-        {
-            // Otherwise proceed to Level 2 (from Level 1)
-            mGame->SetGameScene(Game::GameScene::Level2, 3.5f);
-        }
+
         return;
     }
 
