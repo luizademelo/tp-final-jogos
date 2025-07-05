@@ -19,7 +19,7 @@ void Spawner::OnUpdate(float deltaTime)
     if (abs(GetGame()->GetMario()->GetPosition().x - GetPosition().x) < mSpawnDistance)
     {
         auto goomba = new Enemy(GetGame());
-        goomba->SetPosition(GetPosition());
+        goomba->SetPosition(GetPosition()  - Vector2(Game::TILE_SIZE, Game::TILE_SIZE));
         mState = ActorState::Destroy;
     }
 }

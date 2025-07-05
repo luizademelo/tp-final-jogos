@@ -226,7 +226,7 @@ void Game::ChangeScene()
         mMusicHandle = mAudio->PlaySound("level1_background.wav", true);
 
         // Create HUD
-        mHUD = new HUD(this, "../Assets/Fonts/NickelodeonGames.ttf");
+        mHUD = new HUD(this, "../Assets/Fonts/Movistar.ttf");
 
         // Reset HUD
         mGameTimeLimit = 400;
@@ -249,7 +249,7 @@ void Game::ChangeScene()
         mMusicHandle = mAudio->PlaySound("level2_background.wav", true);
 
         // Create HUD
-        mHUD = new HUD(this, "../Assets/Fonts/NickelodeonGames.ttf");
+        mHUD = new HUD(this, "../Assets/Fonts/Movistar.ttf");
 
         // Reset HUD
         mGameTimeLimit = 400;
@@ -272,7 +272,7 @@ void Game::ChangeScene()
         mMusicHandle = mAudio->PlaySound("level3_background.wav", true);
 
         // Create HUD
-        mHUD = new HUD(this, "../Assets/Fonts/NickelodeonGames.ttf");
+        mHUD = new HUD(this, "../Assets/Fonts/Movistar.ttf");
 
         // Reset HUD
         mGameTimeLimit = 400;
@@ -295,7 +295,7 @@ void Game::ChangeScene()
         mMusicHandle = mAudio->PlaySound("level4_background.wav", true);
 
         // Create HUD
-        mHUD = new HUD(this, "../Assets/Fonts/NickelodeonGames.ttf");
+        mHUD = new HUD(this, "../Assets/Fonts/Movistar.ttf");
 
         // Reset HUD
         mGameTimeLimit = 400;
@@ -408,7 +408,7 @@ void Game::BuildLevel(int** levelData, int width, int height)
             if(tile == 99) // Hero
             {
                 mHero = new Hero(this);
-                mHero->SetPosition(Vector2(x * TILE_SIZE, y * TILE_SIZE));
+                mHero->SetPosition(Vector2(x * TILE_SIZE - TILE_SIZE, y * TILE_SIZE - TILE_SIZE));
             }
             else if(tile == 98) // Spawner
             {

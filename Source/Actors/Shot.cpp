@@ -34,7 +34,10 @@ void Shot::OnUpdate(float deltaTime)
 
 
 void Shot::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) {
-    if (other->GetLayer() == ColliderLayer::Player || other->GetLayer() == ColliderLayer::Enemy) {
+    if (this->mColliderLayer == ColliderLayer::Player && other->GetLayer() == ColliderLayer::Enemy) {
+        other->GetOwner()->Kill();
+    }
+    if (this->mColliderLayer == ColliderLayer::Enemy && other->GetLayer() == ColliderLayer::Player) {
         other->GetOwner()->Kill();
     }
     mState = ActorState::Destroy;

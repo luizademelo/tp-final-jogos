@@ -18,11 +18,10 @@ Enemy::Enemy(Game* game, float forwardSpeed, float deathTime)
         , mForwardSpeed(forwardSpeed)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f);
+    mColliderComponent = new AABBColliderComponent(this, 0, 0, Game::TILE_SIZE * mScale ,Game::TILE_SIZE + int(Game::TILE_SIZE * mScale),
+                                                     ColliderLayer::Enemy);
     mRigidBodyComponent->SetVelocity(Vector2(-mForwardSpeed, 0.0f));
 
-    mColliderComponent = new AABBColliderComponent(this, 0, 0,
-                                                   Game::TILE_SIZE, Game::TILE_SIZE,
-                                                   ColliderLayer::Enemy);
 
     mDrawComponent = new DrawAnimatedComponent(this,
                                                   "../Assets/Sprites/Enemy/texture.png",
@@ -32,8 +31,8 @@ Enemy::Enemy(Game* game, float forwardSpeed, float deathTime)
     mDrawComponent->AddAnimation("Idle", {5});
     mDrawComponent->AddAnimation("walk", {4,5,6,7});
     mDrawComponent->SetAnimation("walk");
-    mDrawComponent->SetAnimFPS(5.0f);
-    mDrawComponent->SetScale(1.5f);
+    mDrawComponent->SetAnimFPS(10.0f);
+    mDrawComponent->SetScale(3.0f);
 
     SetRotation(Math::Pi);
 }
