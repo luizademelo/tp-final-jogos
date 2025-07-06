@@ -23,6 +23,7 @@
 #include "Actors/Hero.h"
 #include "Actors/Block.h"
 #include "Actors/Coffee.h"
+#include "Actors/Enemy.h"
 #include "Actors/Spawner.h"
 #include "UIElements/UIScreen.h"
 #include "Components/DrawComponents/DrawComponent.h"
@@ -65,7 +66,7 @@ bool Game::Initialize()
         return false;
     }
 
-    mWindow = SDL_CreateWindow("TP4: Super Hero Bros", 100, 100, mWindowWidth, mWindowHeight, 0);
+    mWindow = SDL_CreateWindow("Missão Marmita", 100, 100, mWindowWidth, mWindowHeight, 0);
     if (!mWindow)
     {
         SDL_Log("Failed to create window: %s", SDL_GetError());
@@ -411,7 +412,7 @@ void Game::BuildLevel(int** levelData, int width, int height)
             if(tile == 99) // Hero
             {
                 mHero = new Hero(this);
-                mHero->SetPosition(Vector2(x * TILE_SIZE - TILE_SIZE, y * TILE_SIZE - TILE_SIZE));
+                mHero->SetPosition(Vector2(x * TILE_SIZE, y * TILE_SIZE));
             }
             else if(tile == 98) // Spawner
             {
@@ -836,6 +837,12 @@ void Game::GenerateOutput()
             drawables.emplace_back(drawable);
         }
     }
+
+    // if (GetGameScene() == GameScene::Level1) {
+    //     for (auto collider : this->GetNearbyColliders(GetHero()->GetPosition())) {
+    //         collider->DrawCollider(mRenderer);
+    //     }
+    // }
 
     // Sort drawables by draw order
     std::sort(drawables.begin(), drawables.end(),

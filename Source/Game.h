@@ -106,7 +106,7 @@ public:
     void TogglePause();
 
     // Game-specific
-    const class Hero* GetMario() { return mHero; }
+    const class Hero* GetHero() { return mHero; }
 
     float GetStairsPosition() const { return mStairsPosition; }
     void SetStairsPosition(float position) { mStairsPosition = position; }

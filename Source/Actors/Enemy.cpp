@@ -16,13 +16,18 @@ Enemy::Enemy(Game* game, float forwardSpeed, float deathTime)
         , mDyingTimer(deathTime)
         , mIsDying(false)
         , mForwardSpeed(forwardSpeed)
+        , mDirectionChangeTimer(0.0f)  
+
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f);
-    mColliderComponent = new AABBColliderComponent(this, 0, 0, Game::TILE_SIZE * mScale ,Game::TILE_SIZE + int(Game::TILE_SIZE * mScale),
-                                                     ColliderLayer::Enemy);
+    mColliderComponent = new AABBColliderComponent(this, 
+                        Game::TILE_SIZE * 0.75f,
+                        28,
+                        Game::TILE_SIZE - 5,
+                        (Game::TILE_SIZE * 2) - 18,
+                      ColliderLayer::Enemy);
     mRigidBodyComponent->SetVelocity(Vector2(-mForwardSpeed, 0.0f));
-
-
+    
     mDrawComponent = new DrawAnimatedComponent(this,
                                                   "../Assets/Sprites/Enemy/texture.png",
                                                   "../Assets/Sprites/Enemy/texture.json");
@@ -73,6 +78,11 @@ void Enemy::OnUpdate(float deltaTime)
         }
     }
 
+    // Atualizar timer de mudança de direção
+    if (mDirectionChangeTimer > 0.0f) {
+        mDirectionChangeTimer -= deltaTime;
+    }
+
     if (GetPosition().y > GetGame()->GetWindowHeight())
     {
         mState = ActorState::Destroy;
@@ -81,28 +91,43 @@ void Enemy::OnUpdate(float deltaTime)
 
 void Enemy::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other)
 {
-    if ((other->GetLayer() == ColliderLayer::Blocks || other->GetLayer() == ColliderLayer::Enemy))
+    if (mIsDying || mDirectionChangeTimer > 0.0f) return;
+
+    if (other->GetLayer() == ColliderLayer::Blocks)
     {
-        if (minOverlap > 0) {
-            mRigidBodyComponent->SetVelocity(Vector2(-mForwardSpeed, 0.0f));
+        bool wasGoingRight = (mRigidBodyComponent->GetVelocity().x > 0);
+        
+        if (wasGoingRight) {
+            mRigidBodyComponent->SetVelocity(Vector2(-mForwardSpeed, mRigidBodyComponent->GetVelocity().y));
             SetRotation(Math::Pi);
-        }
-        else {
-            mRigidBodyComponent->SetVelocity(Vector2(mForwardSpeed, 0.0f));
+        } else {
+            mRigidBodyComponent->SetVelocity(Vector2(mForwardSpeed, mRigidBodyComponent->GetVelocity().y));
             SetRotation(0.0f);
         }
+        
+        mDirectionChangeTimer = 0.1f;
     }
 
-    if (other->GetLayer() == ColliderLayer::Player) {
-        other->GetOwner()->Kill();
-    }
+    // if (other->GetLayer() == ColliderLayer::Player) {
+    //     Actor* player = other->GetOwner();
+    //     RigidBodyComponent* playerRigidBody = player->GetComponent<RigidBodyComponent>();
+    //
+    //     // Só mata o player se ele não estiver caindo sobre o inimigo
+    //     if (playerRigidBody && playerRigidBody->GetVelocity().y <= 0) {
+    //         // Player não está caindo, então deve morrer
+    //         player->OnHorizontalCollision(minOverlap, mColliderComponent);
+    //     }
+    // }
 }
 
 void Enemy::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other)
 {
-    if (other->GetLayer() == ColliderLayer::Player) {
-        other->GetOwner()->Kill();
-    }
+    // if (other->GetLayer() == ColliderLayer::Player) {
+    //     // Se o player está colidindo por baixo do inimigo (minOverlap negativo)
+    //     if (minOverlap < 0) {
+    //         other->GetOwner()->OnVerticalCollision(minOverlap, mColliderComponent);
+    //     }
+    // }
 }
 
 void Enemy::ShootProjectile()

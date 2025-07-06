@@ -16,10 +16,10 @@ Spawner::Spawner(Game* game, float spawnDistance)
 
 void Spawner::OnUpdate(float deltaTime)
 {
-    if (abs(GetGame()->GetMario()->GetPosition().x - GetPosition().x) < mSpawnDistance)
+    if (abs(GetGame()->GetHero()->GetPosition().x - GetPosition().x) < mSpawnDistance)
     {
-        auto goomba = new Enemy(GetGame());
-        goomba->SetPosition(GetPosition()  - Vector2(Game::TILE_SIZE, Game::TILE_SIZE));
+        auto enemy = new Enemy(GetGame());
+        enemy->SetPosition(GetPosition()  - Vector2(Game::TILE_SIZE, Game::TILE_SIZE));
         mState = ActorState::Destroy;
     }
 }

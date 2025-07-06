@@ -24,6 +24,7 @@ private:
     float mDyingTimer;
     float mShootTimer = 2.0f; // Time between shots
     float mShootCooldown = 2.0f;
+    float mDirectionChangeTimer;
 
 
     class RigidBodyComponent* mRigidBodyComponent;

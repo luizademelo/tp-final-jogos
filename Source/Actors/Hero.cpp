@@ -21,8 +21,12 @@ Hero::Hero(Game* game, const float forwardSpeed, const float jumpSpeed)
         , mPoleSlideTimer(0.0f)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 5.0f);
-    mColliderComponent = new AABBColliderComponent(this, 0, 0, Game::TILE_SIZE * mScale ,Game::TILE_SIZE + int(Game::TILE_SIZE * mScale),
-                                                   ColliderLayer::Player);
+    mColliderComponent = new AABBColliderComponent(this, 
+                        -1,
+                        -5,
+                        Game::TILE_SIZE,
+                        (Game::TILE_SIZE * 2) + 10,
+                        ColliderLayer::Player);
 
     mDrawComponent = new DrawAnimatedComponent(this,
                                               "../Assets/Sprites/Hero/texture.png",
@@ -89,6 +93,11 @@ void Hero::OnHandleKeyPress(const int key, const bool isPressed)
 
 void Hero::OnUpdate(float deltaTime)
 {
+
+    if (mImmunityTimer > 0.0f) {
+        mImmunityTimer -= deltaTime;
+    }
+
     mShootTimer -= deltaTime;
 
     if (mIsDying)
@@ -186,16 +195,27 @@ void Hero::ManageAnimations()
 
 void Hero::Kill()
 {
+    // Se tem power-up, apenas perde o power-up na primeira "morte"
     if (mHasPowerUp) {
+        mHasPowerUp = false;
+        SetImmunityTimer(1.0f);
+        GetGame()->GetAudio()->PlaySound("Ouch.mp3");
         return;
     }
-    mLivesCount -= 1;
+    
+    // Se não tem power-up, perde vida
+    mLivesCount--;
+    
     if (mLivesCount > 0) {
+        // Ainda tem vidas, apenas toca som e dá imunidade
         mGame->GetAudio()->PlaySound("Ouch.mp3");
+        SetImmunityTimer(1.0f);
         return;
     }
+    
+    // Se chegou aqui, não tem mais vidas
     mIsDying = true;
-    // mGame->SetGamePlayState(Game::GamePlayState::GameOver);
+
     mDrawComponent->SetAnimation("Dead");
 
     // Disable collider and rigid body
@@ -205,14 +225,8 @@ void Hero::Kill()
     mGame->GetAudio()->StopAllSounds();
     mGame->GetAudio()->PlaySound("DeadHero.mp3");
 
-    // if (mLivesCount <= 0)
-    // {
-    //     mGame->SetGameScene(Game::GameScene::GameOver, 2.0f);
-    // }
-    // else
-    // {
-    //     mGame->ResetGameScene(3.5f); // Reset the game scene after 3 seconds
-    // }
+    mGame->SetGameScene(Game::GameScene::GameOver, 2.0f);
+
 }
 
 void Hero::Win(AABBColliderComponent *poleCollider)
@@ -238,15 +252,41 @@ void Hero::Win(AABBColliderComponent *poleCollider)
 
 void Hero::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other)
 {
-    if (other->GetLayer() == ColliderLayer::Enemy)
-    {
-        Kill();
+    if (other->GetLayer() == ColliderLayer::Enemy && mImmunityTimer <= 0.0f) {
+        // Se não tem power-up, perde vida
+        if (!mHasPowerUp) {
+            // Determinar direção do impulso (contrária à colisão)
+            float knockbackDirection = (minOverlap > 0) ? -1.0f : 1.0f;
+            float knockbackForce = 300.0f;
+
+            // Aplicar impulso horizontal e pequeno pulo
+            mRigidBodyComponent->SetVelocity(Vector2(knockbackDirection * knockbackForce, -100.0f));
+
+            // Reproduzir som "ouch"
+            GetGame()->GetAudio()->PlaySound("Ouch.mp3");
+            
+            // Reduzir vida
+            mLivesCount--;
+
+            // Se ficou sem vidas, morre
+            if (mLivesCount <= 0) {
+                Kill();
+                return;
+            }
+            
+            // Definir período de imunidade
+            SetImmunityTimer(1.0f);
+
+        }
+        else {
+            // Com power-up, apenas perde o power-up
+            mHasPowerUp = false;
+            SetImmunityTimer(1.0f);
+            GetGame()->GetAudio()->PlaySound("Ouch.mp3");
+        }
     }
-    else if (other->GetLayer() == ColliderLayer::Pole)
-    {
-        mIsOnStairs = true;
-        Win(other);
-    }else if (other->GetLayer() == ColliderLayer::Coffee) {
+
+    else if (other->GetLayer() == ColliderLayer::Coffee) {
         this->SetPowerUp();
         Coffee* coffee = static_cast<Coffee*>(other->GetOwner());
         coffee->SetState(ActorState::Destroy);
@@ -258,11 +298,22 @@ void Hero::OnVerticalCollision(const float minOverlap, AABBColliderComponent* ot
 {
     if (other->GetLayer() == ColliderLayer::Enemy)
     {
-        other->GetOwner()->Kill();
-        mRigidBodyComponent->SetVelocity(Vector2(mRigidBodyComponent->GetVelocity().x, mJumpSpeed / 2.5f));
-
-        // Play jump sound
-        mGame->GetAudio()->PlaySound("Stomp.wav");
+        // Verificar se o Hero está caindo (velocidade Y positiva) e o overlap indica que está por cima
+        if (minOverlap > 0) { //&& mRigidBodyComponent->GetVelocity().y > 0) {
+            // Hero está pousando em cima do inimigo
+            other->GetOwner()->Kill();
+            // Dar um pequeno pulo após pisar no inimigo
+            mRigidBodyComponent->SetVelocity(Vector2(mRigidBodyComponent->GetVelocity().x, -200.0f));
+            
+            // Play stomp sound
+            mGame->GetAudio()->PlaySound("Stomp.wav");
+        }
+        else {
+            // Se não está pisando por cima, o herói deve morrer
+            if (mImmunityTimer <= 0.0f) {
+                Kill();
+            }
+        }
     }
     else if (other->GetLayer() == ColliderLayer::Blocks)
     {
@@ -275,7 +326,8 @@ void Hero::OnVerticalCollision(const float minOverlap, AABBColliderComponent* ot
             Block* block = static_cast<Block*>(other->GetOwner());
             block->OnBump();
         }
-    }else if (other->GetLayer() == ColliderLayer::Coffee) {
+    }
+    else if (other->GetLayer() == ColliderLayer::Coffee) {
         this->SetPowerUp();
         Coffee* coffee = static_cast<Coffee*>(other->GetOwner());
         coffee->SetState(ActorState::Destroy);
