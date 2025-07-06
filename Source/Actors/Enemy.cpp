@@ -98,11 +98,9 @@ void Enemy::OnHorizontalCollision(const float minOverlap, AABBColliderComponent*
         bool wasGoingRight = (mRigidBodyComponent->GetVelocity().x > 0);
         
         if (wasGoingRight) {
-            // Mudar para esquerda
             mRigidBodyComponent->SetVelocity(Vector2(-mForwardSpeed, mRigidBodyComponent->GetVelocity().y));
             SetRotation(Math::Pi);
         } else {
-            // Mudar para direita
             mRigidBodyComponent->SetVelocity(Vector2(mForwardSpeed, mRigidBodyComponent->GetVelocity().y));
             SetRotation(0.0f);
         }
@@ -114,8 +112,10 @@ void Enemy::OnHorizontalCollision(const float minOverlap, AABBColliderComponent*
         Actor* player = other->GetOwner();
         RigidBodyComponent* playerRigidBody = player->GetComponent<RigidBodyComponent>();
         
+        // Só mata o player se ele não estiver caindo sobre o inimigo
         if (playerRigidBody && playerRigidBody->GetVelocity().y <= 0) {
-            player->Kill();
+            // Player não está caindo, então deve morrer
+            player->OnHorizontalCollision(minOverlap, mColliderComponent);
         }
     }
 }
@@ -123,8 +123,9 @@ void Enemy::OnHorizontalCollision(const float minOverlap, AABBColliderComponent*
 void Enemy::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other)
 {
     if (other->GetLayer() == ColliderLayer::Player) {
+        // Se o player está colidindo por baixo do inimigo (minOverlap negativo)
         if (minOverlap < 0) {
-            other->GetOwner()->Kill();
+            other->GetOwner()->OnVerticalCollision(minOverlap, mColliderComponent);
         }
     }
 }

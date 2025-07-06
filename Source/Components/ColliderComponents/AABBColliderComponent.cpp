@@ -44,9 +44,10 @@ bool AABBColliderComponent::Intersect(const AABBColliderComponent& b) const
     float overlapX = std::min(GetMax().x, b.GetMax().x) - std::max(GetMin().x, b.GetMin().x);
     float overlapY = std::min(GetMax().y, b.GetMax().y) - std::max(GetMin().y, b.GetMin().y);
 
+    // Para colisões críticas (player-enemy), usar threshold menor
     if ((mLayer == ColliderLayer::Player && b.mLayer == ColliderLayer::Enemy) ||
         (mLayer == ColliderLayer::Enemy && b.mLayer == ColliderLayer::Player)) {
-        const float overlapThreshold = 1.0f; 
+        const float overlapThreshold = 2.0f; // Aumentar um pouco para melhor detecção
         return (overlapX > overlapThreshold && overlapY > overlapThreshold);
     }
 

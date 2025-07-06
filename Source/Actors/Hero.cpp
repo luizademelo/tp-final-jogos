@@ -182,14 +182,25 @@ void Hero::ManageAnimations()
 
 void Hero::Kill()
 {
+    // Se tem power-up, apenas perde o power-up na primeira "morte"
     if (mHasPowerUp) {
+        mHasPowerUp = false;
+        SetImmunityTimer(1.0f);
+        GetGame()->GetAudio()->PlaySound("Ouch.mp3");
         return;
     }
-    mLivesCount -= 1;
+    
+    // Se não tem power-up, perde vida
+    mLivesCount--;
+    
     if (mLivesCount > 0) {
+        // Ainda tem vidas, apenas toca som e dá imunidade
         mGame->GetAudio()->PlaySound("Ouch.mp3");
+        SetImmunityTimer(1.0f);
         return;
     }
+    
+    // Se chegou aqui, não tem mais vidas
     mIsDying = true;
     mGame->SetGamePlayState(Game::GamePlayState::GameOver);
     mDrawComponent->SetAnimation("Dead");
@@ -201,14 +212,7 @@ void Hero::Kill()
     mGame->GetAudio()->StopAllSounds();
     mGame->GetAudio()->PlaySound("DeadHero.mp3");
 
-    if (mLivesCount <= 0)
-    {
-        mGame->SetGameScene(Game::GameScene::GameOver, 2.0f);
-    }
-    else
-    {
-        mGame->ResetGameScene(3.5f); // Reset the game scene after 3 seconds
-    }
+    mGame->SetGameScene(Game::GameScene::GameOver, 2.0f);
 }
 
 void Hero::Win(AABBColliderComponent *poleCollider)
@@ -235,8 +239,8 @@ void Hero::Win(AABBColliderComponent *poleCollider)
 void Hero::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other)
 {
     if (other->GetLayer() == ColliderLayer::Enemy && mImmunityTimer <= 0.0f) {
-        // Verificar se o Hero não está caindo sobre o inimigo
-        if (mRigidBodyComponent->GetVelocity().y <= 0) {
+        // Se não tem power-up, perde vida
+        if (!mHasPowerUp) {
             // Determinar direção do impulso (contrária à colisão)
             float knockbackDirection = (minOverlap > 0) ? -1.0f : 1.0f;
             float knockbackForce = 300.0f;
@@ -247,8 +251,22 @@ void Hero::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* 
             // Reproduzir som "ouch"
             GetGame()->GetAudio()->PlaySound("Ouch.mp3");
             
+            // Reduzir vida
+            mLivesCount--;
+            
             // Definir período de imunidade
-            SetImmunityTimer(0.5f);
+            SetImmunityTimer(1.0f);
+            
+            // Se ficou sem vidas, morre
+            if (mLivesCount <= 0) {
+                Kill();
+            }
+        }
+        else {
+            // Com power-up, apenas perde o power-up
+            mHasPowerUp = false;
+            SetImmunityTimer(1.0f);
+            GetGame()->GetAudio()->PlaySound("Ouch.mp3");
         }
     }
     else if (other->GetLayer() == ColliderLayer::Pole)
@@ -268,14 +286,21 @@ void Hero::OnVerticalCollision(const float minOverlap, AABBColliderComponent* ot
 {
     if (other->GetLayer() == ColliderLayer::Enemy)
     {
-        // Verificar se o Hero está caindo (velocidade Y positiva) e colidindo por cima
+        // Verificar se o Hero está caindo (velocidade Y positiva) e o overlap indica que está por cima
         if (mRigidBodyComponent->GetVelocity().y > 0 && minOverlap > 0) {
             // Hero está pousando em cima do inimigo
             other->GetOwner()->Kill();
-            mRigidBodyComponent->SetVelocity(Vector2(mRigidBodyComponent->GetVelocity().x, mJumpSpeed / 2.5f));
+            // Dar um pequeno pulo após pisar no inimigo
+            mRigidBodyComponent->SetVelocity(Vector2(mRigidBodyComponent->GetVelocity().x, -200.0f));
             
             // Play stomp sound
             mGame->GetAudio()->PlaySound("Stomp.wav");
+        }
+        else {
+            // Se não está pisando por cima, o herói deve morrer
+            if (mImmunityTimer <= 0.0f) {
+                Kill();
+            }
         }
     }
     else if (other->GetLayer() == ColliderLayer::Blocks)
@@ -297,6 +322,7 @@ void Hero::OnVerticalCollision(const float minOverlap, AABBColliderComponent* ot
         mGame->GetAudio()->PlaySound("Collect.mp3");
     }
 }
+
 void Hero::Shoot() {
     Vector2 velocity = Vector2(100.0f, 0.0f); // Shoots right
     if (mDrawComponent->GetOwner()->GetRotation() == Math::Pi) {
