@@ -90,6 +90,19 @@ void Hero::OnHandleKeyPress(const int key, const bool isPressed)
 void Hero::OnUpdate(float deltaTime)
 {
     mShootTimer -= deltaTime;
+
+    if (mIsDying)
+    {
+        mDyingTimer -= deltaTime;
+        if (mDyingTimer <= 0.0f)
+        {
+            mState = ActorState::Destroy;
+            mGame->SetGameScene(Game::GameScene::GameOver, 0.0f);
+            mGame->SetGamePlayState(Game::GamePlayState::GameOver);
+        }
+        return; // evita qualquer outra lógica
+    }
+
     if (mHasPowerUp) {
         mPowerUpTimer -= deltaTime;
         SDL_Log("Power up: %d", mPowerUpTimer);
@@ -182,7 +195,7 @@ void Hero::Kill()
         return;
     }
     mIsDying = true;
-    mGame->SetGamePlayState(Game::GamePlayState::GameOver);
+    // mGame->SetGamePlayState(Game::GamePlayState::GameOver);
     mDrawComponent->SetAnimation("Dead");
 
     // Disable collider and rigid body
@@ -192,14 +205,14 @@ void Hero::Kill()
     mGame->GetAudio()->StopAllSounds();
     mGame->GetAudio()->PlaySound("DeadHero.mp3");
 
-    if (mLivesCount <= 0)
-    {
-        mGame->SetGameScene(Game::GameScene::GameOver, 2.0f);
-    }
-    else
-    {
-        mGame->ResetGameScene(3.5f); // Reset the game scene after 3 seconds
-    }
+    // if (mLivesCount <= 0)
+    // {
+    //     mGame->SetGameScene(Game::GameScene::GameOver, 2.0f);
+    // }
+    // else
+    // {
+    //     mGame->ResetGameScene(3.5f); // Reset the game scene after 3 seconds
+    // }
 }
 
 void Hero::Win(AABBColliderComponent *poleCollider)

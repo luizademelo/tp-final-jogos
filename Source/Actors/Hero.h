@@ -39,6 +39,7 @@ private:
     int mLivesCount = 3;
     float mPowerUpTimer = 5;
     bool mHasPowerUp = false;
+    float mDyingTimer = 2;
 
     class RigidBodyComponent* mRigidBodyComponent;
     class DrawAnimatedComponent* mDrawComponent;

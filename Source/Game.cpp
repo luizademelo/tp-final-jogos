@@ -179,8 +179,9 @@ void Game::LoadGameOverScreen()
                            [this]() { 
                                SetGameScene(GameScene::MainMenu); 
                            });
-    
+
     mAudio->PlaySound("defeat_chime.wav");
+
 }
 
 void Game::ChangeScene()
@@ -320,6 +321,7 @@ void Game::ChangeScene()
 
     else if (mNextScene == GameScene::GameOver)
     {
+        // mHero->SetState(ActorState::Destroy);
         // Load game over screen
         LoadGameOverScreen();
     }
