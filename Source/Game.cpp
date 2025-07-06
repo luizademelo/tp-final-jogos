@@ -260,7 +260,7 @@ void Game::ChangeScene()
         SetStairsPosition(5680);
 
         // Set background
-        SetBackgroundImage("../Assets/Sprites/BackgroundLevel1.png", Vector2(0,0), Vector2(6000,600));
+        SetBackgroundImage("../Assets/Sprites/BackgroundLevel2.png", Vector2(0,0), Vector2(6000,600));
 
         // Initialize actors
         LoadLevel("../Assets/Levels/level2.csv", LEVEL_WIDTH, LEVEL_HEIGHT);
@@ -283,7 +283,7 @@ void Game::ChangeScene()
         SetStairsPosition(5680);
 
         // Set background
-        SetBackgroundImage("../Assets/Sprites/BackgroundLevel1.png", Vector2(0,0), Vector2(6000,600));
+        SetBackgroundImage("../Assets/Sprites/BackgroundLevel3.png", Vector2(0,0), Vector2(6000,600));
 
         // Initialize actors
         LoadLevel("../Assets/Levels/level3.csv", LEVEL_WIDTH, LEVEL_HEIGHT);
@@ -306,7 +306,7 @@ void Game::ChangeScene()
         SetStairsPosition(5680);
 
         // Set background
-        SetBackgroundImage("../Assets/Sprites/BackgroundLevel1.png", Vector2(0,0), Vector2(6000,600));
+        SetBackgroundImage("../Assets/Sprites/BackgroundLevel4.png", Vector2(0,0), Vector2(6000,600));
 
         // Initialize actors
         LoadLevel("../Assets/Levels/level4.csv", LEVEL_WIDTH, LEVEL_HEIGHT);
