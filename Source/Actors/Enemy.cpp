@@ -33,12 +33,20 @@ Enemy::Enemy(Game* game, float forwardSpeed, float deathTime)
     mDrawComponent->SetAnimation("walk");
     mDrawComponent->SetAnimFPS(10.0f);
     mDrawComponent->SetScale(3.0f);
-
+    mLifeBar = new LifeHeart(game, this->GetPosition() + Vector2(0, -10));
     SetRotation(Math::Pi);
 }
 
 void Enemy::Kill()
 {
+    if (mLifeBar->GetLifePercentage() == 1) {
+        mLifeBar->SetAnimation("Half");
+        mLifeBar->SetLifePercentage(0.5);
+        return;
+    }else {
+        mLifeBar->SetAnimation("Empty");
+        mLifeBar->SetState(ActorState::Destroy);
+    }
     mGame->GetAudio()->PlaySound("DeadEnemy.mp3");
     mIsDying = true;
     mDrawComponent->SetAnimation("Dead");
@@ -59,6 +67,7 @@ void Enemy::BumpKill(const float bumpForce)
 
 void Enemy::OnUpdate(float deltaTime)
 {
+
     if (mIsDying)
     {
         mDyingTimer -= deltaTime;
@@ -71,6 +80,7 @@ void Enemy::OnUpdate(float deltaTime)
             ShootProjectile();
             mShootTimer = mShootCooldown;
         }
+        mLifeBar->SetPosition(mPosition + Vector2(50, -10));
     }
 
     if (GetPosition().y > GetGame()->GetWindowHeight())
