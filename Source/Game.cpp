@@ -180,8 +180,9 @@ void Game::LoadGameOverScreen()
                            [this]() { 
                                SetGameScene(GameScene::MainMenu); 
                            });
-    
+
     mAudio->PlaySound("defeat_chime.wav");
+
 }
 
 void Game::ChangeScene()
@@ -321,6 +322,7 @@ void Game::ChangeScene()
 
     else if (mNextScene == GameScene::GameOver)
     {
+        // mHero->SetState(ActorState::Destroy);
         // Load game over screen
         LoadGameOverScreen();
     }
@@ -608,13 +610,13 @@ void Game::TogglePause()
         if (mGamePlayState == GamePlayState::Playing)
         {
             mGamePlayState = GamePlayState::Paused;
-            mAudio->PlaySound("Coin.wav");
+            mAudio->PlaySound("Click.mp3");
             mAudio->PauseSound(mMusicHandle);
         }
         else if (mGamePlayState == GamePlayState::Paused)
         {
             mGamePlayState = GamePlayState::Playing;
-            mAudio->PlaySound("Coin.wav");
+            mAudio->PlaySound("Click.mp3");
             mAudio->ResumeSound(mMusicHandle);
         }
     }

@@ -44,9 +44,10 @@ private:
     float mPowerUpTimer = 5;
     bool mHasPowerUp = false;
     float mImmunityTimer = 0.0f;
+    float mDyingTimer = 2;
 
     class RigidBodyComponent* mRigidBodyComponent;
     class DrawAnimatedComponent* mDrawComponent;
     class AABBColliderComponent* mColliderComponent;
-    class DrawAnimatedComponent* mCircleDrawComponent;
+    class DrawSpriteComponent* mCircleDrawComponent;
 };

@@ -99,6 +99,19 @@ void Hero::OnUpdate(float deltaTime)
     }
 
     mShootTimer -= deltaTime;
+
+    if (mIsDying)
+    {
+        mDyingTimer -= deltaTime;
+        if (mDyingTimer <= 0.0f)
+        {
+            mState = ActorState::Destroy;
+            mGame->SetGameScene(Game::GameScene::GameOver, 0.0f);
+            mGame->SetGamePlayState(Game::GamePlayState::GameOver);
+        }
+        return; // evita qualquer outra lógica
+    }
+
     if (mHasPowerUp) {
         mPowerUpTimer -= deltaTime;
         SDL_Log("Power up: %d", mPowerUpTimer);
@@ -202,7 +215,7 @@ void Hero::Kill()
     
     // Se chegou aqui, não tem mais vidas
     mIsDying = true;
-    mGame->SetGamePlayState(Game::GamePlayState::GameOver);
+    // mGame->SetGamePlayState(Game::GamePlayState::GameOver);
     mDrawComponent->SetAnimation("Dead");
 
     // Disable collider and rigid body
@@ -213,6 +226,14 @@ void Hero::Kill()
     mGame->GetAudio()->PlaySound("DeadHero.mp3");
 
     mGame->SetGameScene(Game::GameScene::GameOver, 2.0f);
+    // if (mLivesCount <= 0)
+    // {
+    //     mGame->SetGameScene(Game::GameScene::GameOver, 2.0f);
+    // }
+    // else
+    // {
+    //     mGame->ResetGameScene(3.5f); // Reset the game scene after 3 seconds
+    // }
 }
 
 void Hero::Win(AABBColliderComponent *poleCollider)
@@ -323,15 +344,19 @@ void Hero::OnVerticalCollision(const float minOverlap, AABBColliderComponent* ot
 
 void Hero::Shoot() {
     Vector2 velocity = Vector2(100.0f, 0.0f); // Shoots right
-    if (mDrawComponent->GetOwner()->GetRotation() == Math::Pi) {
+    bool isLeft = mDrawComponent->GetOwner()->GetRotation() == Math::Pi ? true : false;
+    if (isLeft) {
         velocity.x = -100;
     }
-    auto shot = new Shot(GetGame(), velocity, ColliderLayer::Player, "../Assets/Sprites/Shots/Bullets/texture.png", "../Assets/Sprites/Shots/Bullets/texture.json");
+    auto shot = new Shot(GetGame(), velocity, ColliderLayer::Player, "../Assets/Sprites/Shots/PaperPlane/texture.png", "../Assets/Sprites/Shots/PaperPlane/texture.json");
+    shot->SetScale(3.0f);
+    if (isLeft) {
+        shot->SetRotation(Math::Pi);
+    }
+
     Vector2 dir = mDrawComponent->GetOwner()->GetRotation() == Math::Pi ? Vector2(-1, 0) : Vector2(1, 0);
     Vector2 pos = GetPosition() + dir * Game::TILE_SIZE ;
-    // pos.y -= 20;
     shot->SetPosition(pos);
-    shot->GetComponent<DrawAnimatedComponent>()->SetScale(0.5f);
 }
 
 void Hero::SetPowerUp() {
