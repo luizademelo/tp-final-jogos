@@ -21,8 +21,12 @@ Hero::Hero(Game* game, const float forwardSpeed, const float jumpSpeed)
         , mPoleSlideTimer(0.0f)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 5.0f);
-    mColliderComponent = new AABBColliderComponent(this, 0, 0, Game::TILE_SIZE * mScale ,Game::TILE_SIZE + int(Game::TILE_SIZE * mScale),
-                                                   ColliderLayer::Player);
+    mColliderComponent = new AABBColliderComponent(this, 
+                        Game::TILE_SIZE * 0.25f,  
+                        Game::TILE_SIZE * 0.1f,   
+                        Game::TILE_SIZE * 0.5f,   
+                        Game::TILE_SIZE + int(Game::TILE_SIZE * mScale),
+                        ColliderLayer::Player);
 
     mDrawComponent = new DrawAnimatedComponent(this,
                                               "../Assets/Sprites/Hero/texture.png",
@@ -89,6 +93,11 @@ void Hero::OnHandleKeyPress(const int key, const bool isPressed)
 
 void Hero::OnUpdate(float deltaTime)
 {
+    
+    if (mImmunityTimer > 0.0f) {
+        mImmunityTimer -= deltaTime;
+    }
+
     mShootTimer -= deltaTime;
     if (mHasPowerUp) {
         mPowerUpTimer -= deltaTime;
@@ -225,15 +234,29 @@ void Hero::Win(AABBColliderComponent *poleCollider)
 
 void Hero::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other)
 {
-    if (other->GetLayer() == ColliderLayer::Enemy)
-    {
-        Kill();
+    if (other->GetLayer() == ColliderLayer::Enemy && mImmunityTimer <= 0.0f) {
+        // Verificar se o Hero não está caindo sobre o inimigo
+        if (mRigidBodyComponent->GetVelocity().y <= 0) {
+            // Determinar direção do impulso (contrária à colisão)
+            float knockbackDirection = (minOverlap > 0) ? -1.0f : 1.0f;
+            float knockbackForce = 300.0f;
+
+            // Aplicar impulso horizontal e pequeno pulo
+            mRigidBodyComponent->SetVelocity(Vector2(knockbackDirection * knockbackForce, -100.0f));
+
+            // Reproduzir som "ouch"
+            GetGame()->GetAudio()->PlaySound("Ouch.mp3");
+            
+            // Definir período de imunidade
+            SetImmunityTimer(0.5f);
+        }
     }
     else if (other->GetLayer() == ColliderLayer::Pole)
     {
         mIsOnStairs = true;
         Win(other);
-    }else if (other->GetLayer() == ColliderLayer::Coffee) {
+    }
+    else if (other->GetLayer() == ColliderLayer::Coffee) {
         this->SetPowerUp();
         Coffee* coffee = static_cast<Coffee*>(other->GetOwner());
         coffee->SetState(ActorState::Destroy);
@@ -245,11 +268,15 @@ void Hero::OnVerticalCollision(const float minOverlap, AABBColliderComponent* ot
 {
     if (other->GetLayer() == ColliderLayer::Enemy)
     {
-        other->GetOwner()->Kill();
-        mRigidBodyComponent->SetVelocity(Vector2(mRigidBodyComponent->GetVelocity().x, mJumpSpeed / 2.5f));
-
-        // Play jump sound
-        mGame->GetAudio()->PlaySound("Stomp.wav");
+        // Verificar se o Hero está caindo (velocidade Y positiva) e colidindo por cima
+        if (mRigidBodyComponent->GetVelocity().y > 0 && minOverlap > 0) {
+            // Hero está pousando em cima do inimigo
+            other->GetOwner()->Kill();
+            mRigidBodyComponent->SetVelocity(Vector2(mRigidBodyComponent->GetVelocity().x, mJumpSpeed / 2.5f));
+            
+            // Play stomp sound
+            mGame->GetAudio()->PlaySound("Stomp.wav");
+        }
     }
     else if (other->GetLayer() == ColliderLayer::Blocks)
     {
@@ -262,14 +289,14 @@ void Hero::OnVerticalCollision(const float minOverlap, AABBColliderComponent* ot
             Block* block = static_cast<Block*>(other->GetOwner());
             block->OnBump();
         }
-    }else if (other->GetLayer() == ColliderLayer::Coffee) {
+    }
+    else if (other->GetLayer() == ColliderLayer::Coffee) {
         this->SetPowerUp();
         Coffee* coffee = static_cast<Coffee*>(other->GetOwner());
         coffee->SetState(ActorState::Destroy);
         mGame->GetAudio()->PlaySound("Collect.mp3");
     }
 }
-
 void Hero::Shoot() {
     Vector2 velocity = Vector2(100.0f, 0.0f); // Shoots right
     if (mDrawComponent->GetOwner()->GetRotation() == Math::Pi) {

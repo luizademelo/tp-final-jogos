@@ -23,6 +23,10 @@ public:
     int GetLivesCount(){return mLivesCount; }
     void SetPowerUp();
 
+    void SetImmunityTimer(float seconds) {
+        mImmunityTimer = seconds;
+    }
+
 private:
     static const int POLE_SLIDE_TIME = 1; // Time in seconds to slide down the pole
 
@@ -39,6 +43,7 @@ private:
     int mLivesCount = 3;
     float mPowerUpTimer = 5;
     bool mHasPowerUp = false;
+    float mImmunityTimer = 0.0f;
 
     class RigidBodyComponent* mRigidBodyComponent;
     class DrawAnimatedComponent* mDrawComponent;

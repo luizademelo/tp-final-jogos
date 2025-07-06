@@ -16,13 +16,18 @@ Enemy::Enemy(Game* game, float forwardSpeed, float deathTime)
         , mDyingTimer(deathTime)
         , mIsDying(false)
         , mForwardSpeed(forwardSpeed)
+        , mDirectionChangeTimer(0.0f)  
+
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f);
-    mColliderComponent = new AABBColliderComponent(this, 0, 0, Game::TILE_SIZE * mScale ,Game::TILE_SIZE + int(Game::TILE_SIZE * mScale),
-                                                     ColliderLayer::Enemy);
+    mColliderComponent = new AABBColliderComponent(this, 
+                      Game::TILE_SIZE * 0.25f, 
+                      Game::TILE_SIZE * 0.1f,  
+                      Game::TILE_SIZE * 0.5f,  
+                      Game::TILE_SIZE + int(Game::TILE_SIZE * mScale), 
+                      ColliderLayer::Enemy);
     mRigidBodyComponent->SetVelocity(Vector2(-mForwardSpeed, 0.0f));
-
-
+    
     mDrawComponent = new DrawAnimatedComponent(this,
                                                   "../Assets/Sprites/Enemy/texture.png",
                                                   "../Assets/Sprites/Enemy/texture.json");
@@ -73,6 +78,11 @@ void Enemy::OnUpdate(float deltaTime)
         }
     }
 
+    // Atualizar timer de mudança de direção
+    if (mDirectionChangeTimer > 0.0f) {
+        mDirectionChangeTimer -= deltaTime;
+    }
+
     if (GetPosition().y > GetGame()->GetWindowHeight())
     {
         mState = ActorState::Destroy;
@@ -81,27 +91,41 @@ void Enemy::OnUpdate(float deltaTime)
 
 void Enemy::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other)
 {
-    if ((other->GetLayer() == ColliderLayer::Blocks || other->GetLayer() == ColliderLayer::Enemy))
+    if (mIsDying || mDirectionChangeTimer > 0.0f) return;
+
+    if (other->GetLayer() == ColliderLayer::Blocks)
     {
-        if (minOverlap > 0) {
-            mRigidBodyComponent->SetVelocity(Vector2(-mForwardSpeed, 0.0f));
+        bool wasGoingRight = (mRigidBodyComponent->GetVelocity().x > 0);
+        
+        if (wasGoingRight) {
+            // Mudar para esquerda
+            mRigidBodyComponent->SetVelocity(Vector2(-mForwardSpeed, mRigidBodyComponent->GetVelocity().y));
             SetRotation(Math::Pi);
-        }
-        else {
-            mRigidBodyComponent->SetVelocity(Vector2(mForwardSpeed, 0.0f));
+        } else {
+            // Mudar para direita
+            mRigidBodyComponent->SetVelocity(Vector2(mForwardSpeed, mRigidBodyComponent->GetVelocity().y));
             SetRotation(0.0f);
         }
+        
+        mDirectionChangeTimer = 0.1f;
     }
 
     if (other->GetLayer() == ColliderLayer::Player) {
-        other->GetOwner()->Kill();
+        Actor* player = other->GetOwner();
+        RigidBodyComponent* playerRigidBody = player->GetComponent<RigidBodyComponent>();
+        
+        if (playerRigidBody && playerRigidBody->GetVelocity().y <= 0) {
+            player->Kill();
+        }
     }
 }
 
 void Enemy::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other)
 {
     if (other->GetLayer() == ColliderLayer::Player) {
-        other->GetOwner()->Kill();
+        if (minOverlap < 0) {
+            other->GetOwner()->Kill();
+        }
     }
 }
 
