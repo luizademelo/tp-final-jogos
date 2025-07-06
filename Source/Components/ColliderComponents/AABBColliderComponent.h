@@ -8,6 +8,7 @@
 #include "../RigidBodyComponent.h"
 #include <vector>
 #include <map>
+#include <SDL_render.h>
 #include <set>
 
 enum class ColliderLayer
@@ -25,9 +26,8 @@ public:
     // Collider ignore map
     const std::map<ColliderLayer, const std::set<ColliderLayer>> ColliderIgnoreMap = {
         {ColliderLayer::Player, {}},
-        {ColliderLayer::Enemy,  {}},
-        {ColliderLayer::Blocks, {ColliderLayer::Blocks}},
-        {ColliderLayer::Pole, {}}
+        {ColliderLayer::Enemy,  {ColliderLayer::Coffee}},
+        {ColliderLayer::Blocks, {ColliderLayer::Blocks}}
     };
 
     AABBColliderComponent(class Actor* owner, int dx, int dy, int w, int h,
@@ -45,6 +45,8 @@ public:
     Vector2 GetMax() const;
     Vector2 GetCenter() const;
     ColliderLayer GetLayer() const { return mLayer; }
+
+    void DrawCollider(SDL_Renderer* renderer) const;
 
 private:
     float GetMinVerticalOverlap(AABBColliderComponent* b) const;
