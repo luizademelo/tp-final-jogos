@@ -8,6 +8,7 @@
 #include "../RigidBodyComponent.h"
 #include <vector>
 #include <map>
+#include <SDL_render.h>
 #include <set>
 
 enum class ColliderLayer
@@ -45,6 +46,8 @@ public:
     Vector2 GetMax() const;
     Vector2 GetCenter() const;
     ColliderLayer GetLayer() const { return mLayer; }
+
+    void DrawCollider(SDL_Renderer* renderer) const;
 
 private:
     float GetMinVerticalOverlap(AABBColliderComponent* b) const;

@@ -22,10 +22,10 @@ Hero::Hero(Game* game, const float forwardSpeed, const float jumpSpeed)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 5.0f);
     mColliderComponent = new AABBColliderComponent(this, 
-                        Game::TILE_SIZE * 0.25f,  
-                        Game::TILE_SIZE * 0.1f,   
-                        Game::TILE_SIZE * 0.5f,   
-                        Game::TILE_SIZE + int(Game::TILE_SIZE * mScale),
+                        -1,
+                        -5,
+                        Game::TILE_SIZE,
+                        (Game::TILE_SIZE * 2) + 10,
                         ColliderLayer::Player);
 
     mDrawComponent = new DrawAnimatedComponent(this,
@@ -93,7 +93,7 @@ void Hero::OnHandleKeyPress(const int key, const bool isPressed)
 
 void Hero::OnUpdate(float deltaTime)
 {
-    
+
     if (mImmunityTimer > 0.0f) {
         mImmunityTimer -= deltaTime;
     }
@@ -253,14 +253,16 @@ void Hero::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* 
             
             // Reduzir vida
             mLivesCount--;
-            
-            // Definir período de imunidade
-            SetImmunityTimer(1.0f);
-            
+
             // Se ficou sem vidas, morre
             if (mLivesCount <= 0) {
                 Kill();
+                return;
             }
+            
+            // Definir período de imunidade
+            SetImmunityTimer(1.0f);
+
         }
         else {
             // Com power-up, apenas perde o power-up
@@ -269,11 +271,7 @@ void Hero::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* 
             GetGame()->GetAudio()->PlaySound("Ouch.mp3");
         }
     }
-    else if (other->GetLayer() == ColliderLayer::Pole)
-    {
-        mIsOnStairs = true;
-        Win(other);
-    }
+
     else if (other->GetLayer() == ColliderLayer::Coffee) {
         this->SetPowerUp();
         Coffee* coffee = static_cast<Coffee*>(other->GetOwner());
@@ -287,7 +285,7 @@ void Hero::OnVerticalCollision(const float minOverlap, AABBColliderComponent* ot
     if (other->GetLayer() == ColliderLayer::Enemy)
     {
         // Verificar se o Hero está caindo (velocidade Y positiva) e o overlap indica que está por cima
-        if (mRigidBodyComponent->GetVelocity().y > 0 && minOverlap > 0) {
+        if (minOverlap > 0) { //&& mRigidBodyComponent->GetVelocity().y > 0) {
             // Hero está pousando em cima do inimigo
             other->GetOwner()->Kill();
             // Dar um pequeno pulo após pisar no inimigo

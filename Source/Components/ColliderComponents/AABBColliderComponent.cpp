@@ -170,3 +170,17 @@ void AABBColliderComponent::ResolveVerticalCollisions(RigidBodyComponent *rigidB
         mOwner->SetOnGround();
     }
 }
+
+void AABBColliderComponent::DrawCollider(SDL_Renderer *renderer) const {
+    auto cam = GetGame()->GetCameraPos();  // Vector2 com x,y da câmera
+    SDL_Rect r;
+    r.x = static_cast<int>(GetMin().x - cam.x);
+    r.y = static_cast<int>(GetMin().y - cam.y);
+    r.w = mWidth;
+    r.h = mHeight;
+
+    // pinta de vermelho e desenha only outline
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+    SDL_RenderDrawRect(renderer, &r);
+}
+

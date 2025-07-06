@@ -21,10 +21,10 @@ Enemy::Enemy(Game* game, float forwardSpeed, float deathTime)
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f);
     mColliderComponent = new AABBColliderComponent(this, 
-                      Game::TILE_SIZE * 0.25f, 
-                      Game::TILE_SIZE * 0.1f,  
-                      Game::TILE_SIZE * 0.5f,  
-                      Game::TILE_SIZE + int(Game::TILE_SIZE * mScale), 
+                        Game::TILE_SIZE * 0.75f,
+                        28,
+                        Game::TILE_SIZE - 5,
+                        (Game::TILE_SIZE * 2) - 18,
                       ColliderLayer::Enemy);
     mRigidBodyComponent->SetVelocity(Vector2(-mForwardSpeed, 0.0f));
     
@@ -73,7 +73,7 @@ void Enemy::OnUpdate(float deltaTime)
     }else {
           mShootTimer -= deltaTime;
         if (mShootTimer <= 0.0f) {
-            ShootProjectile();
+            //ShootProjectile();
             mShootTimer = mShootCooldown;
         }
     }
@@ -108,26 +108,26 @@ void Enemy::OnHorizontalCollision(const float minOverlap, AABBColliderComponent*
         mDirectionChangeTimer = 0.1f;
     }
 
-    if (other->GetLayer() == ColliderLayer::Player) {
-        Actor* player = other->GetOwner();
-        RigidBodyComponent* playerRigidBody = player->GetComponent<RigidBodyComponent>();
-        
-        // Só mata o player se ele não estiver caindo sobre o inimigo
-        if (playerRigidBody && playerRigidBody->GetVelocity().y <= 0) {
-            // Player não está caindo, então deve morrer
-            player->OnHorizontalCollision(minOverlap, mColliderComponent);
-        }
-    }
+    // if (other->GetLayer() == ColliderLayer::Player) {
+    //     Actor* player = other->GetOwner();
+    //     RigidBodyComponent* playerRigidBody = player->GetComponent<RigidBodyComponent>();
+    //
+    //     // Só mata o player se ele não estiver caindo sobre o inimigo
+    //     if (playerRigidBody && playerRigidBody->GetVelocity().y <= 0) {
+    //         // Player não está caindo, então deve morrer
+    //         player->OnHorizontalCollision(minOverlap, mColliderComponent);
+    //     }
+    // }
 }
 
 void Enemy::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other)
 {
-    if (other->GetLayer() == ColliderLayer::Player) {
-        // Se o player está colidindo por baixo do inimigo (minOverlap negativo)
-        if (minOverlap < 0) {
-            other->GetOwner()->OnVerticalCollision(minOverlap, mColliderComponent);
-        }
-    }
+    // if (other->GetLayer() == ColliderLayer::Player) {
+    //     // Se o player está colidindo por baixo do inimigo (minOverlap negativo)
+    //     if (minOverlap < 0) {
+    //         other->GetOwner()->OnVerticalCollision(minOverlap, mColliderComponent);
+    //     }
+    // }
 }
 
 void Enemy::ShootProjectile()
