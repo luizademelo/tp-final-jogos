@@ -15,7 +15,8 @@ enum class ColliderLayer
     Player,
     Enemy,
     Blocks,
-    Pole
+    Pole,
+    Coffee
 };
 
 class AABBColliderComponent : public Component

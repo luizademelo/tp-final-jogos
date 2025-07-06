@@ -21,6 +21,7 @@ public:
     void Win(AABBColliderComponent *poleCollider);
     void Shoot();
     int GetLivesCount(){return mLivesCount; }
+    void SetPowerUp();
 
 private:
     static const int POLE_SLIDE_TIME = 1; // Time in seconds to slide down the pole
@@ -36,8 +37,11 @@ private:
     float mShootCooldown = 0.5f;
     float mShootTimer = 0;
     int mLivesCount = 3;
+    float mPowerUpTimer = 5;
+    bool mHasPowerUp = false;
 
     class RigidBodyComponent* mRigidBodyComponent;
     class DrawAnimatedComponent* mDrawComponent;
     class AABBColliderComponent* mColliderComponent;
+    class DrawAnimatedComponent* mCircleDrawComponent;
 };

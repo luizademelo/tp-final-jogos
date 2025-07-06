@@ -22,6 +22,7 @@
 #include "Actors/Actor.h"
 #include "Actors/Hero.h"
 #include "Actors/Block.h"
+#include "Actors/Coffee.h"
 #include "Actors/Spawner.h"
 #include "UIElements/UIScreen.h"
 #include "Components/DrawComponents/DrawComponent.h"
@@ -396,7 +397,7 @@ void Game::BuildLevel(int** levelData, int width, int height)
         {24, "../Assets/Sprites/Blocks/Level4/couch.png"},
         {25, "../Assets/Sprites/Blocks/Level4/dumpster.png"},
         {26, "../Assets/Sprites/Blocks/Level4/IdCounter.png"},
-        {27, "../Assets/Sprites/Blocks/Level4/ratchet.png"}
+        {27, "../Assets/Sprites/Blocks/Level4/ratchet.png"},
     };
 
     for (int y = 0; y < LEVEL_HEIGHT; ++y)
@@ -414,6 +415,11 @@ void Game::BuildLevel(int** levelData, int width, int height)
             {
                 Spawner* spawner = new Spawner(this, SPAWN_DISTANCE);
                 spawner->SetPosition(Vector2(x * TILE_SIZE, y * TILE_SIZE));
+            }
+            else if (tile == 97) // Collectable
+            {
+                Coffee* coffee = new Coffee(this);
+                coffee->SetPosition(Vector2(x * TILE_SIZE, y * TILE_SIZE));
             }
             else // Blocks
             {

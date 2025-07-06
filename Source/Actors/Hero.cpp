@@ -4,8 +4,10 @@
 
 #include "Hero.h"
 #include "Block.h"
+#include "Coffee.h"
 #include "Shot.h"
 #include "../Game.h"
+#include "../Random.h"
 #include "../Components/DrawComponents/DrawAnimatedComponent.h"
 #include "../Components/DrawComponents/DrawPolygonComponent.h"
 
@@ -88,6 +90,13 @@ void Hero::OnHandleKeyPress(const int key, const bool isPressed)
 void Hero::OnUpdate(float deltaTime)
 {
     mShootTimer -= deltaTime;
+    if (mHasPowerUp) {
+        mPowerUpTimer -= deltaTime;
+        SDL_Log("Power up: %d", mPowerUpTimer);
+        if (mPowerUpTimer <= 0.0f) {
+            mHasPowerUp = false;
+        }
+    }
 
     // Check if Hero is off the ground
     if (mRigidBodyComponent && mRigidBodyComponent->GetVelocity().y != 0) {
@@ -164,6 +173,9 @@ void Hero::ManageAnimations()
 
 void Hero::Kill()
 {
+    if (mHasPowerUp) {
+        return;
+    }
     mLivesCount -= 1;
     if (mLivesCount > 0) {
         mGame->GetAudio()->PlaySound("Ouch.mp3");
@@ -221,6 +233,11 @@ void Hero::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* 
     {
         mIsOnStairs = true;
         Win(other);
+    }else if (other->GetLayer() == ColliderLayer::Coffee) {
+        this->SetPowerUp();
+        Coffee* coffee = static_cast<Coffee*>(other->GetOwner());
+        coffee->SetState(ActorState::Destroy);
+        mGame->GetAudio()->PlaySound("Collect.mp3");
     }
 }
 
@@ -245,6 +262,11 @@ void Hero::OnVerticalCollision(const float minOverlap, AABBColliderComponent* ot
             Block* block = static_cast<Block*>(other->GetOwner());
             block->OnBump();
         }
+    }else if (other->GetLayer() == ColliderLayer::Coffee) {
+        this->SetPowerUp();
+        Coffee* coffee = static_cast<Coffee*>(other->GetOwner());
+        coffee->SetState(ActorState::Destroy);
+        mGame->GetAudio()->PlaySound("Collect.mp3");
     }
 }
 
@@ -259,4 +281,9 @@ void Hero::Shoot() {
     // pos.y -= 20;
     shot->SetPosition(pos);
     shot->GetComponent<DrawAnimatedComponent>()->SetScale(0.5f);
+}
+
+void Hero::SetPowerUp() {
+    mPowerUpTimer = 5;
+    mHasPowerUp = true;
 }
