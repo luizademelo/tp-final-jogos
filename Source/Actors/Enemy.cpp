@@ -73,7 +73,7 @@ void Enemy::OnUpdate(float deltaTime)
     }else {
           mShootTimer -= deltaTime;
         if (mShootTimer <= 0.0f) {
-            //ShootProjectile();
+            ShootProjectile();
             mShootTimer = mShootCooldown;
         }
     }

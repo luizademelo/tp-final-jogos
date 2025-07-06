@@ -215,7 +215,7 @@ void Hero::Kill()
     
     // Se chegou aqui, não tem mais vidas
     mIsDying = true;
-    // mGame->SetGamePlayState(Game::GamePlayState::GameOver);
+
     mDrawComponent->SetAnimation("Dead");
 
     // Disable collider and rigid body
@@ -226,14 +226,7 @@ void Hero::Kill()
     mGame->GetAudio()->PlaySound("DeadHero.mp3");
 
     mGame->SetGameScene(Game::GameScene::GameOver, 2.0f);
-    // if (mLivesCount <= 0)
-    // {
-    //     mGame->SetGameScene(Game::GameScene::GameOver, 2.0f);
-    // }
-    // else
-    // {
-    //     mGame->ResetGameScene(3.5f); // Reset the game scene after 3 seconds
-    // }
+
 }
 
 void Hero::Win(AABBColliderComponent *poleCollider)
