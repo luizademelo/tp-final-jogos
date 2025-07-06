@@ -63,6 +63,8 @@ add_executable(${PROJECT_NAME}
         Source/Actors/Shot.cpp
         Source/Actors/Coffee.h
         Source/Actors/Coffee.cpp
+        Source/Actors/LifeHeart.h
+        Source/Actors/LifeHeart.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2 SDL2_image::SDL2_image SDL2_ttf::SDL2_ttf SDL2_mixer::SDL2_mixer)

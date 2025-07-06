@@ -5,6 +5,7 @@
 #pragma once
 
 #include "Actor.h"
+#include "LifeHeart.h"
 
 class Enemy : public Actor
 {
@@ -29,4 +30,5 @@ private:
     class RigidBodyComponent* mRigidBodyComponent;
     class DrawAnimatedComponent* mDrawComponent;
     class AABBColliderComponent* mColliderComponent;
+    LifeHeart* mLifeBar;
 };
