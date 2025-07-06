@@ -607,13 +607,13 @@ void Game::TogglePause()
         if (mGamePlayState == GamePlayState::Playing)
         {
             mGamePlayState = GamePlayState::Paused;
-            mAudio->PlaySound("Coin.wav");
+            mAudio->PlaySound("Click.mp3");
             mAudio->PauseSound(mMusicHandle);
         }
         else if (mGamePlayState == GamePlayState::Paused)
         {
             mGamePlayState = GamePlayState::Playing;
-            mAudio->PlaySound("Coin.wav");
+            mAudio->PlaySound("Click.mp3");
             mAudio->ResumeSound(mMusicHandle);
         }
     }
