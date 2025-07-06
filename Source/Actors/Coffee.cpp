@@ -12,7 +12,7 @@ Coffee::Coffee(Game* game, const bool isStatic) : Actor(game) {
     mDrawComponent = new DrawAnimatedComponent(this,
                                                  "../Assets/Sprites/Collectables/Coffee/texture.png",
                                                  "../Assets/Sprites/Collectables/Coffee/texture.json");
-    mColliderComponent = new AABBColliderComponent(this, 0, 0, Game::TILE_SIZE, Game::TILE_SIZE, ColliderLayer::Coffee, isStatic);
+    mColliderComponent = new AABBColliderComponent(this, 0, 0, 24, 19, ColliderLayer::Coffee, isStatic);
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f, 0.0f, false);
     mDrawComponent->AddAnimation("Static", {0});
     mDrawComponent->SetAnimation("Static");
