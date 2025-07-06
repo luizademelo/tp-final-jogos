@@ -17,6 +17,7 @@ HUD::HUD(class Game* game, const std::string& fontName)
     mLevelName = AddText("Nível 1", Vector2(mGame->GetWindowWidth() - 300.0f + CHAR_WIDTH, HUD_POS_Y ), Vector2(CHAR_WIDTH * 3, WORD_HEIGHT), POINT_SIZE);
 
     AddText("Nerdovaldo", Vector2(40.0f, HUD_POS_Y), Vector2(CHAR_WIDTH * 10, WORD_HEIGHT), POINT_SIZE);
+    mPowerUp = AddText("Invencibilidade desativada", Vector2(40.0f, HUD_POS_Y + 50), Vector2(CHAR_WIDTH * 26, WORD_HEIGHT), POINT_SIZE);
     // mScoreCounter = AddText("000000", Vector2(40.0f, HUD_POS_Y + WORD_OFFSET), Vector2(CHAR_WIDTH * 6, WORD_HEIGHT), POINT_SIZE);
     for (int i = 0; i < mLivesCount; i++) {
         UIImage* heart = AddImage("../Assets/Sprites/Misc/Heart.png",
@@ -55,4 +56,13 @@ void HUD::SetLifeCount(int lifeCount)
     }
 
     mLivesCount = lifeCount;
+}
+
+void HUD::SetPowerUp(bool hasPowerUp) {
+    if (hasPowerUp) {
+        mPowerUp->SetText("Invencibilidade ativada!");
+    }else {
+        mPowerUp->SetText("");
+    }
+
 }

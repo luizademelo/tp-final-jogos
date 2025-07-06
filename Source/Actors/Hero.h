@@ -22,6 +22,7 @@ public:
     void Shoot();
     int GetLivesCount(){return mLivesCount; }
     void SetPowerUp();
+    bool HasPowerUp(){return mHasPowerUp; }
 
 private:
     static const int POLE_SLIDE_TIME = 1; // Time in seconds to slide down the pole
