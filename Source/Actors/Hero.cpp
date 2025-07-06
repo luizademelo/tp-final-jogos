@@ -272,11 +272,16 @@ void Hero::OnVerticalCollision(const float minOverlap, AABBColliderComponent* ot
 
 void Hero::Shoot() {
     Vector2 velocity = Vector2(100.0f, 0.0f); // Shoots right
-    if (mDrawComponent->GetOwner()->GetRotation() == Math::Pi) {
+    bool isLeft = mDrawComponent->GetOwner()->GetRotation() == Math::Pi ? true : false;
+    if (isLeft) {
         velocity.x = -100;
     }
     auto shot = new Shot(GetGame(), velocity, ColliderLayer::Player, "../Assets/Sprites/Shots/PaperPlane/texture.png", "../Assets/Sprites/Shots/PaperPlane/texture.json");
     shot->SetScale(3.0f);
+    if (isLeft) {
+        shot->SetRotation(Math::Pi);
+    }
+
     Vector2 dir = mDrawComponent->GetOwner()->GetRotation() == Math::Pi ? Vector2(-1, 0) : Vector2(1, 0);
     Vector2 pos = GetPosition() + dir * Game::TILE_SIZE ;
     shot->SetPosition(pos);
