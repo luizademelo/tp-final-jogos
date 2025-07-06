@@ -1,0 +1,40 @@
+{
+  "frames": [
+    {
+      "filename": "PaperPlane (1).png",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 37,
+        "h": 13
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 3,
+        "y": 14,
+        "w": 37,
+        "h": 13
+      },
+      "sourceSize": {
+        "w": 40,
+        "h": 32
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  ],
+  "meta": {
+    "app": "http://free-tex-packer.com",
+    "version": "0.6.7",
+    "image": "texture.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 37,
+      "h": 13
+    },
+    "scale": 1
+  }
+}

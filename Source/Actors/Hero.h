@@ -43,5 +43,5 @@ private:
     class RigidBodyComponent* mRigidBodyComponent;
     class DrawAnimatedComponent* mDrawComponent;
     class AABBColliderComponent* mColliderComponent;
-    class DrawAnimatedComponent* mCircleDrawComponent;
+    class DrawSpriteComponent* mCircleDrawComponent;
 };

@@ -275,12 +275,11 @@ void Hero::Shoot() {
     if (mDrawComponent->GetOwner()->GetRotation() == Math::Pi) {
         velocity.x = -100;
     }
-    auto shot = new Shot(GetGame(), velocity, ColliderLayer::Player, "../Assets/Sprites/Shots/Bullets/texture.png", "../Assets/Sprites/Shots/Bullets/texture.json");
+    auto shot = new Shot(GetGame(), velocity, ColliderLayer::Player, "../Assets/Sprites/Shots/PaperPlane/texture.png", "../Assets/Sprites/Shots/PaperPlane/texture.json");
+    shot->SetScale(3.0f);
     Vector2 dir = mDrawComponent->GetOwner()->GetRotation() == Math::Pi ? Vector2(-1, 0) : Vector2(1, 0);
     Vector2 pos = GetPosition() + dir * Game::TILE_SIZE ;
-    // pos.y -= 20;
     shot->SetPosition(pos);
-    shot->GetComponent<DrawAnimatedComponent>()->SetScale(0.5f);
 }
 
 void Hero::SetPowerUp() {
