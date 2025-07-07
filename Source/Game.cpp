@@ -232,7 +232,7 @@ void Game::ChangeScene()
         mHUD = new HUD(this, "../Assets/Fonts/Movistar.ttf");
 
         // Reset HUD
-        mGameTimeLimit = 400;
+        mGameTimeLimit = 300;
         mHUD->SetTime(mGameTimeLimit);
         mHUD->SetLevelName("Nivel 1");
 
@@ -255,7 +255,7 @@ void Game::ChangeScene()
         mHUD = new HUD(this, "../Assets/Fonts/Movistar.ttf");
 
         // Reset HUD
-        mGameTimeLimit = 400;
+        mGameTimeLimit = 300;
         mHUD->SetTime(mGameTimeLimit);
         mHUD->SetLevelName("Nivel 2");
 
@@ -278,7 +278,7 @@ void Game::ChangeScene()
         mHUD = new HUD(this, "../Assets/Fonts/Movistar.ttf");
 
         // Reset HUD
-        mGameTimeLimit = 400;
+        mGameTimeLimit = 300;
         mHUD->SetTime(mGameTimeLimit);
         mHUD->SetLevelName("Nivel 3");
 
@@ -301,7 +301,7 @@ void Game::ChangeScene()
         mHUD = new HUD(this, "../Assets/Fonts/Movistar.ttf");
 
         // Reset HUD
-        mGameTimeLimit = 400;
+        mGameTimeLimit = 300;
         mHUD->SetTime(mGameTimeLimit);
         mHUD->SetLevelName("Nivel 4");
 
