@@ -357,8 +357,8 @@ void Game::LoadHowToPlay() {
     UIScreen* menu = new UIScreen(this, "../Assets/Fonts/SMB.ttf");
     menu->AddText("A -> Andar para esquerda", Vector2((GetWindowWidth() / 2) - 150, 100), Vector2(300, 40));
     menu->AddText("D -> Andar para direita", Vector2((GetWindowWidth() / 2) - 150, 200), Vector2(300, 40));
-    menu->AddText("Espaço -> Pular", Vector2((GetWindowWidth() / 2) - 150, 300), Vector2(300, 40));
-    menu->AddText("X -> Atirar", Vector2((GetWindowWidth() / 2) - 150, 400), Vector2(300, 40));
+    menu->AddText("W -> Pular", Vector2((GetWindowWidth() / 2) - 150, 300), Vector2(300, 40));
+    menu->AddText("Espaço -> Atirar", Vector2((GetWindowWidth() / 2) - 150, 400), Vector2(300, 40));
 
     menu->AddButton("Voltar", Vector2((GetWindowWidth() / 2) - 150, 600), Vector2(300, 40), [this]() {SetGameScene(GameScene::MainMenu);});
 }

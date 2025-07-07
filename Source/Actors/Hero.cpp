@@ -66,7 +66,7 @@ void Hero::OnProcessInput(const uint8_t* state)
         mIsRunning = false;
     }
 
-    if (state[SDL_SCANCODE_X] && mShootTimer <= 0.0f) {
+    if (state[SDL_SCANCODE_SPACE] && mShootTimer <= 0.0f) {
         Shoot();
         mShootTimer = mShootCooldown;
     }
@@ -81,7 +81,7 @@ void Hero::OnHandleKeyPress(const int key, const bool isPressed)
     if(mGame->GetGamePlayState() != Game::GamePlayState::Playing) return;
 
     // Jump
-    if (key == SDLK_SPACE && isPressed && mIsOnGround)
+    if (key == SDLK_w && isPressed && mIsOnGround)
     {
         mRigidBodyComponent->SetVelocity(Vector2(mRigidBodyComponent->GetVelocity().x, mJumpSpeed));
         mIsOnGround = false;
