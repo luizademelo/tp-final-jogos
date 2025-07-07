@@ -66,27 +66,27 @@ Enemy::Enemy(Game* game, EnemyType type, float forwardSpeed, float deathTime)
 void Enemy::ConfigureForType(EnemyType type) {
     switch(type) {
         case ENEMY_TYPE1:
-            // Inimigo padrão (nível 1)
+            // Inimigo padrão (nível 1) - Email
             mDrawComponent->AddAnimation("walk", {4,5,6,7});
             mDrawComponent->SetAnimation("walk");
             mDrawComponent->SetAnimFPS(10.0f);
             mDrawComponent->SetScale(3.0f);
-            mShootCooldown = 2.0f;
+            mShootCooldown = 2.5f; // Atira mais lentamente
             break;
             
         case ENEMY_TYPE2:
-            // Inimigo mais rápido (nível 2)
+            // Inimigo mais rápido (nível 2) - Staple
             mDrawComponent->AddAnimation("walk", {4,5,6,7});
             mDrawComponent->SetAnimation("walk");
             mDrawComponent->SetAnimFPS(12.0f); // Animação mais rápida
             mDrawComponent->SetScale(3.0f);
             mForwardSpeed = 150.0f; // Movimentação mais rápida
             mRigidBodyComponent->SetVelocity(Vector2(-mForwardSpeed, 0.0f));
-            mShootCooldown = 1.8f; // Atira um pouco mais rápido
+            mShootCooldown = 2.0f; // Atira um pouco mais rápido
             break;
             
         case ENEMY_TYPE3:
-            // Inimigo mais forte (nível 3)
+            // Inimigo mais forte (nível 3) - Email
             mDrawComponent->AddAnimation("walk", {4,5,6,7});
             mDrawComponent->SetAnimation("walk");
             mDrawComponent->SetAnimFPS(10.0f);
@@ -95,7 +95,7 @@ void Enemy::ConfigureForType(EnemyType type) {
             break;
             
         case ENEMY_TYPE4:
-            // Inimigo final (nível 4)
+            // Inimigo final (nível 4) - Staple
             mDrawComponent->AddAnimation("walk", {4,5,6,7});
             mDrawComponent->SetAnimation("walk");
             mDrawComponent->SetAnimFPS(14.0f); // Animação mais rápida
@@ -190,10 +190,35 @@ void Enemy::ShootProjectile()
     if (mRigidBodyComponent->GetVelocity().x > 0.0f) {
         velocity.x *= -1;
     }
-    auto shot = new Shot(GetGame(), velocity, ColliderLayer::EnemyShoot, "../Assets/Sprites/Shots/Email/texture.png", "../Assets/Sprites/Shots/Email/texture.json");
+    
+    // Selecionar o tipo de projétil com base no tipo de inimigo
+    std::string texturePath;
+    std::string jsonPath;
+    float scale = 0.5f;
+    int yOffset = 0;
+    
+    switch(mType) {
+        case ENEMY_TYPE1:
+        case ENEMY_TYPE3:
+            texturePath = "../Assets/Sprites/Shots/Email/texture.png";
+            jsonPath = "../Assets/Sprites/Shots/Email/texture.json";
+            scale = 0.7f;
+            yOffset = 5; 
+            break;
+            
+        case ENEMY_TYPE2:
+        case ENEMY_TYPE4:
+            texturePath = "../Assets/Sprites/Shots/staples/texture.png";
+            jsonPath = "../Assets/Sprites/Shots/staples/texture.json";
+            scale = 0.5f;
+            yOffset = 0;
+            break;
+    }
+    
+    auto shot = new Shot(GetGame(), velocity, ColliderLayer::EnemyShoot, texturePath, jsonPath);
 
-    Vector2 pos = Vector2(GetPosition().x,  GetGame()->GetWindowHeight() - (3 * Game::TILE_SIZE));
+    Vector2 pos = Vector2(GetPosition().x, GetGame()->GetWindowHeight() - (3 * Game::TILE_SIZE) + yOffset);
     shot->SetPosition(pos);
-    shot->GetComponent<DrawAnimatedComponent>()->SetScale(0.5f);
+    shot->GetComponent<DrawAnimatedComponent>()->SetScale(scale);
 }
 
