@@ -18,6 +18,7 @@ public:
 
     void OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) override;
     void OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) override;
+    void Destroy();
 
 private:
     RigidBodyComponent* mRigidBodyComponent;

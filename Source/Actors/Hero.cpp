@@ -252,11 +252,12 @@ void Hero::Win(AABBColliderComponent *poleCollider)
 
 void Hero::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other)
 {
-    if (other->GetLayer() == ColliderLayer::Enemy && mImmunityTimer <= 0.0f) {
+    if ((other->GetLayer() == ColliderLayer::Enemy || other->GetLayer() == ColliderLayer::EnemyShoot) && mImmunityTimer <= 0.0f) {
         // Se não tem power-up, perde vida
         if (!mHasPowerUp) {
+
             // Determinar direção do impulso (contrária à colisão)
-            float knockbackDirection = (minOverlap > 0) ? -1.0f : 1.0f;
+            float knockbackDirection = (minOverlap < 0) ? -1.0f : 1.0f;
             float knockbackForce = 300.0f;
 
             // Aplicar impulso horizontal e pequeno pulo
@@ -267,6 +268,11 @@ void Hero::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* 
             
             // Reduzir vida
             mLivesCount--;
+
+            if (other->GetLayer() == ColliderLayer::EnemyShoot) {
+                Shot* shoot = static_cast<Shot*>(other->GetOwner());
+                shoot->Destroy();
+            }
 
             // Se ficou sem vidas, morre
             if (mLivesCount <= 0) {
@@ -336,19 +342,22 @@ void Hero::OnVerticalCollision(const float minOverlap, AABBColliderComponent* ot
 }
 
 void Hero::Shoot() {
-    Vector2 velocity = Vector2(100.0f, 0.0f); // Shoots right
-    bool isLeft = mDrawComponent->GetOwner()->GetRotation() == Math::Pi ? true : false;
+    Vector2 velocity = Vector2(1300.0f, 0.0f); // Shoots right
+    bool isLeft = mDrawComponent->GetOwner()->GetRotation() == Math::Pi;
     if (isLeft) {
-        velocity.x = -100;
+        velocity.x *= -1;
     }
-    auto shot = new Shot(GetGame(), velocity, ColliderLayer::Player, "../Assets/Sprites/Shots/PaperPlane/texture.png", "../Assets/Sprites/Shots/PaperPlane/texture.json");
+    auto shot = new Shot(GetGame(), velocity, ColliderLayer::PlayerShoot, "../Assets/Sprites/Shots/PaperPlane/texture.png", "../Assets/Sprites/Shots/PaperPlane/texture.json");
     shot->SetScale(3.0f);
     if (isLeft) {
         shot->SetRotation(Math::Pi);
     }
 
-    Vector2 dir = mDrawComponent->GetOwner()->GetRotation() == Math::Pi ? Vector2(-1, 0) : Vector2(1, 0);
-    Vector2 pos = GetPosition() + dir * Game::TILE_SIZE ;
+    float regularY = 475.0f;
+    float diff =  regularY - GetPosition().y;
+
+    int dir = mDrawComponent->GetOwner()->GetRotation() == Math::Pi ? -Game::TILE_SIZE/2 : Game::TILE_SIZE/2;
+    Vector2 pos = Vector2(GetPosition().x + dir,  (GetGame()->GetWindowHeight() - (3 * Game::TILE_SIZE)) - diff);
     shot->SetPosition(pos);
 }
 

@@ -108,37 +108,26 @@ void Enemy::OnHorizontalCollision(const float minOverlap, AABBColliderComponent*
         mDirectionChangeTimer = 0.1f;
     }
 
-    // if (other->GetLayer() == ColliderLayer::Player) {
-    //     Actor* player = other->GetOwner();
-    //     RigidBodyComponent* playerRigidBody = player->GetComponent<RigidBodyComponent>();
-    //
-    //     // Só mata o player se ele não estiver caindo sobre o inimigo
-    //     if (playerRigidBody && playerRigidBody->GetVelocity().y <= 0) {
-    //         // Player não está caindo, então deve morrer
-    //         player->OnHorizontalCollision(minOverlap, mColliderComponent);
-    //     }
-    // }
+    else if (other->GetLayer() == ColliderLayer::PlayerShoot) {
+        this->Kill();
+    }
+
 }
 
 void Enemy::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other)
 {
-    // if (other->GetLayer() == ColliderLayer::Player) {
-    //     // Se o player está colidindo por baixo do inimigo (minOverlap negativo)
-    //     if (minOverlap < 0) {
-    //         other->GetOwner()->OnVerticalCollision(minOverlap, mColliderComponent);
-    //     }
-    // }
+
 }
 
 void Enemy::ShootProjectile()
 {
-    Vector2 velocity = Vector2(-150.0f, 0.0f); // Shoots left
+    Vector2 velocity = Vector2(-1400.0f, 0.0f); // Shoots left
     if (mRigidBodyComponent->GetVelocity().x > 0.0f) {
-        velocity.x = 150;
+        velocity.x *= -1;
     }
-    auto shot = new Shot(GetGame(), velocity, ColliderLayer::Enemy, "../Assets/Sprites/Shots/Email/texture.png", "../Assets/Sprites/Shots/Email/texture.json");
-    Vector2 dir = mRigidBodyComponent->GetVelocity().x < 0 ? Vector2(-1, 0) : Vector2(1, 0);
-    Vector2 pos = GetPosition() + dir * Game::TILE_SIZE * 0.5f;
+    auto shot = new Shot(GetGame(), velocity, ColliderLayer::EnemyShoot, "../Assets/Sprites/Shots/Email/texture.png", "../Assets/Sprites/Shots/Email/texture.json");
+
+    Vector2 pos = Vector2(GetPosition().x,  GetGame()->GetWindowHeight() - (3 * Game::TILE_SIZE));
     shot->SetPosition(pos);
     shot->GetComponent<DrawAnimatedComponent>()->SetScale(0.5f);
 }

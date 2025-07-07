@@ -9,17 +9,18 @@
 Shot::Shot(Game* game, const Vector2& velocity, ColliderLayer layer, std::string spriteSheetPath, std::string spriteSheetData)
     : Actor(game)
 {
-
+    mColliderLayer = layer;
     mDrawComponent = new DrawAnimatedComponent(this, spriteSheetPath, spriteSheetData);
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f);
     mRigidBodyComponent->SetVelocity(velocity);
-    mColliderComponent = new AABBColliderComponent(this, 0, 0,
-                                                   Game::TILE_SIZE, Game::TILE_SIZE,
-                                                   layer);
+    mRigidBodyComponent->SetApplyGravity(false);
+    mColliderComponent = mColliderLayer == ColliderLayer::PlayerShoot
+                                        ? new AABBColliderComponent(this, 0, 0,36, 12, mColliderLayer)
+                                        : new AABBColliderComponent(this, 3, 5,28, 16, mColliderLayer);
     mDrawComponent->AddAnimation("Normal", {0});
     mDrawComponent->SetAnimation("Normal");
     mDrawComponent->SetAnimFPS(5.0f);
-    mColliderLayer = layer;
+
 }
 
 void Shot::OnUpdate(float deltaTime)
@@ -28,26 +29,30 @@ void Shot::OnUpdate(float deltaTime)
     if (mTimer > mLivenessTime) {
         mState = ActorState::Destroy;
     }
-
-
 }
-
 
 void Shot::OnHorizontalCollision(const float minOverlap, AABBColliderComponent* other) {
-    if (this->mColliderLayer == ColliderLayer::Player && other->GetLayer() == ColliderLayer::Enemy) {
-        other->GetOwner()->Kill();
+
+    this->Destroy();
+
+    if (other->GetLayer() == ColliderLayer::Player || other->GetLayer() == ColliderLayer::Enemy) {
+        other->GetOwner()->OnHorizontalCollision(minOverlap, mColliderComponent);
     }
-    if (this->mColliderLayer == ColliderLayer::Enemy && other->GetLayer() == ColliderLayer::Player) {
-        other->GetOwner()->Kill();
+
+    if (other->GetLayer() == ColliderLayer::PlayerShoot || other->GetLayer() == ColliderLayer::EnemyShoot) {
+        auto shot = static_cast<Shot*>(other->GetOwner());
+        shot->Destroy();
     }
-    if (this->mColliderLayer == ColliderLayer::Player && other->GetLayer() == ColliderLayer::Blocks) {
-        mGame->GetAudio()->PlaySound("wood.wav");
-    }
-    mState = ActorState::Destroy;
+
 }
 void Shot::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other) {
-    // if (other->GetLayer() != ColliderLayer::Blocks && other->GetLayer() != ColliderLayer::Pole) {
-    //     mState = ActorState::Destroy;
-    // }
+
+}
+
+void Shot::Destroy() {
+    mRigidBodyComponent->SetVelocity(Vector2(0, 0));
+    mColliderComponent->SetEnabled(false);
+    mGame->GetAudio()->PlaySound("wood.wav");
+    mState = ActorState::Destroy;
 }
 
