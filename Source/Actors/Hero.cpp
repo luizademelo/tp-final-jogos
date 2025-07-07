@@ -312,7 +312,7 @@ void Hero::OnVerticalCollision(const float minOverlap, AABBColliderComponent* ot
             mRigidBodyComponent->SetVelocity(Vector2(mRigidBodyComponent->GetVelocity().x, -200.0f));
             
             // Play stomp sound
-            mGame->GetAudio()->PlaySound("Stomp.wav");
+            mGame->GetAudio()->PlaySound("Bump1.mp3");
         }
         else {
             // Se não está pisando por cima, o herói deve morrer
@@ -326,7 +326,7 @@ void Hero::OnVerticalCollision(const float minOverlap, AABBColliderComponent* ot
         if (!mIsOnGround)
         {
             // Play bump sound
-            mGame->GetAudio()->PlaySound("Bump.wav");
+            mGame->GetAudio()->PlaySound("Bump1.mp3");
 
             // Cast actor to Block to call OnBump
             Block* block = static_cast<Block*>(other->GetOwner());
