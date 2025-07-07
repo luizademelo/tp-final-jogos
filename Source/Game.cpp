@@ -670,6 +670,7 @@ void Game::UpdateGame()
         UpdateLevelTime(deltaTime);
 
         UpdateLivesCount(mHero->GetLivesCount());
+        mHUD->SetPowerUp(mHero->HasPowerUp());
     }
 
     UpdateSceneManager(deltaTime);

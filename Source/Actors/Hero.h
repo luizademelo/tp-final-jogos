@@ -22,6 +22,7 @@ public:
     void Shoot();
     int GetLivesCount(){return mLivesCount; }
     void SetPowerUp();
+    bool HasPowerUp(){return mHasPowerUp; }
 
     void SetImmunityTimer(float seconds) {
         mImmunityTimer = seconds;

@@ -25,6 +25,7 @@ public:
 
     void SetLevelName(const std::string& levelName);
     void SetLifeCount(int lifeCount);
+    void SetPowerUp(bool hasPowerUp);
 
 private:
     // HUD elements
@@ -34,4 +35,5 @@ private:
     int mLivesCount = 3;
     UIText* mTimeText;
     std::vector<UIImage*> mHearts;
+    UIText* mPowerUp;
 };
