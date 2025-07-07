@@ -838,11 +838,11 @@ void Game::GenerateOutput()
         }
     }
 
-    if (GetGameScene() == GameScene::Level1) {
-        for (auto collider : this->GetNearbyColliders(GetHero()->GetPosition())) {
-            collider->DrawCollider(mRenderer);
-        }
-    }
+    // if (GetGameScene() == GameScene::Level1) {
+    //     for (auto collider : this->GetNearbyColliders(GetHero()->GetPosition())) {
+    //         collider->DrawCollider(mRenderer);
+    //     }
+    // }
 
     // Sort drawables by draw order
     std::sort(drawables.begin(), drawables.end(),
