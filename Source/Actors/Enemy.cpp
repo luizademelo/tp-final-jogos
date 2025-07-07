@@ -11,13 +11,13 @@
 #include "../Components/DrawComponents/DrawPolygonComponent.h"
 #include "../Random.h"
 
-Enemy::Enemy(Game* game, float forwardSpeed, float deathTime)
+Enemy::Enemy(Game* game, EnemyType type, float forwardSpeed, float deathTime)
         : Actor(game)
         , mDyingTimer(deathTime)
         , mIsDying(false)
         , mForwardSpeed(forwardSpeed)
-        , mDirectionChangeTimer(0.0f)  
-
+        , mDirectionChangeTimer(0.0f)
+        , mType(type)  
 {
     mRigidBodyComponent = new RigidBodyComponent(this, 1.0f);
     mColliderComponent = new AABBColliderComponent(this, 
@@ -28,18 +28,83 @@ Enemy::Enemy(Game* game, float forwardSpeed, float deathTime)
                       ColliderLayer::Enemy);
     mRigidBodyComponent->SetVelocity(Vector2(-mForwardSpeed, 0.0f));
     
-    mDrawComponent = new DrawAnimatedComponent(this,
-                                                  "../Assets/Sprites/Enemy/texture.png",
-                                                  "../Assets/Sprites/Enemy/texture.json");
+    // Selecionar a textura com base no tipo
+    std::string texturePath;
+    std::string jsonPath;
+    
+    switch(type) {
+        case ENEMY_TYPE1:
+            texturePath = "../Assets/Sprites/Enemy/texture.png";
+            jsonPath = "../Assets/Sprites/Enemy/texture.json";
+            break;
+        case ENEMY_TYPE2:
+            texturePath = "../Assets/Sprites/Enemy2/texture.png";
+            jsonPath = "../Assets/Sprites/Enemy2/texture.json";
+            break;
+        case ENEMY_TYPE3:
+            texturePath = "../Assets/Sprites/Enemy3/texture.png";
+            jsonPath = "../Assets/Sprites/Enemy3/texture.json";
+            break;
+        case ENEMY_TYPE4:
+            texturePath = "../Assets/Sprites/Enemy4/texture.png";
+            jsonPath = "../Assets/Sprites/Enemy4/texture.json";
+            break;
+    }
+    
+    mDrawComponent = new DrawAnimatedComponent(this, texturePath, jsonPath);
 
+    // Configurações básicas para todos os tipos
     mDrawComponent->AddAnimation("Dead", {16});
     mDrawComponent->AddAnimation("Idle", {5});
-    mDrawComponent->AddAnimation("walk", {4,5,6,7});
-    mDrawComponent->SetAnimation("walk");
-    mDrawComponent->SetAnimFPS(10.0f);
-    mDrawComponent->SetScale(3.0f);
-
+    
+    // Configurações específicas por tipo
+    ConfigureForType(type);
+    
     SetRotation(Math::Pi);
+}
+
+void Enemy::ConfigureForType(EnemyType type) {
+    switch(type) {
+        case ENEMY_TYPE1:
+            // Inimigo padrão (nível 1)
+            mDrawComponent->AddAnimation("walk", {4,5,6,7});
+            mDrawComponent->SetAnimation("walk");
+            mDrawComponent->SetAnimFPS(10.0f);
+            mDrawComponent->SetScale(3.0f);
+            mShootCooldown = 2.0f;
+            break;
+            
+        case ENEMY_TYPE2:
+            // Inimigo mais rápido (nível 2)
+            mDrawComponent->AddAnimation("walk", {4,5,6,7});
+            mDrawComponent->SetAnimation("walk");
+            mDrawComponent->SetAnimFPS(12.0f); // Animação mais rápida
+            mDrawComponent->SetScale(3.0f);
+            mForwardSpeed = 150.0f; // Movimentação mais rápida
+            mRigidBodyComponent->SetVelocity(Vector2(-mForwardSpeed, 0.0f));
+            mShootCooldown = 1.8f; // Atira um pouco mais rápido
+            break;
+            
+        case ENEMY_TYPE3:
+            // Inimigo mais forte (nível 3)
+            mDrawComponent->AddAnimation("walk", {4,5,6,7});
+            mDrawComponent->SetAnimation("walk");
+            mDrawComponent->SetAnimFPS(10.0f);
+            mDrawComponent->SetScale(3.5f); // Maior
+            mShootCooldown = 1.5f; // Atira mais rápido
+            break;
+            
+        case ENEMY_TYPE4:
+            // Inimigo final (nível 4)
+            mDrawComponent->AddAnimation("walk", {4,5,6,7});
+            mDrawComponent->SetAnimation("walk");
+            mDrawComponent->SetAnimFPS(14.0f); // Animação mais rápida
+            mDrawComponent->SetScale(4.0f); // Muito maior
+            mForwardSpeed = 180.0f; // Mais rápido
+            mRigidBodyComponent->SetVelocity(Vector2(-mForwardSpeed, 0.0f));
+            mShootCooldown = 1.0f; // Atira muito mais rápido
+            break;
+    }
 }
 
 void Enemy::Kill()
@@ -108,37 +173,26 @@ void Enemy::OnHorizontalCollision(const float minOverlap, AABBColliderComponent*
         mDirectionChangeTimer = 0.1f;
     }
 
-    // if (other->GetLayer() == ColliderLayer::Player) {
-    //     Actor* player = other->GetOwner();
-    //     RigidBodyComponent* playerRigidBody = player->GetComponent<RigidBodyComponent>();
-    //
-    //     // Só mata o player se ele não estiver caindo sobre o inimigo
-    //     if (playerRigidBody && playerRigidBody->GetVelocity().y <= 0) {
-    //         // Player não está caindo, então deve morrer
-    //         player->OnHorizontalCollision(minOverlap, mColliderComponent);
-    //     }
-    // }
+    else if (other->GetLayer() == ColliderLayer::PlayerShoot) {
+        this->Kill();
+    }
+
 }
 
 void Enemy::OnVerticalCollision(const float minOverlap, AABBColliderComponent* other)
 {
-    // if (other->GetLayer() == ColliderLayer::Player) {
-    //     // Se o player está colidindo por baixo do inimigo (minOverlap negativo)
-    //     if (minOverlap < 0) {
-    //         other->GetOwner()->OnVerticalCollision(minOverlap, mColliderComponent);
-    //     }
-    // }
+
 }
 
 void Enemy::ShootProjectile()
 {
-    Vector2 velocity = Vector2(-150.0f, 0.0f); // Shoots left
+    Vector2 velocity = Vector2(-1400.0f, 0.0f); // Shoots left
     if (mRigidBodyComponent->GetVelocity().x > 0.0f) {
-        velocity.x = 150;
+        velocity.x *= -1;
     }
-    auto shot = new Shot(GetGame(), velocity, ColliderLayer::Enemy, "../Assets/Sprites/Shots/Email/texture.png", "../Assets/Sprites/Shots/Email/texture.json");
-    Vector2 dir = mRigidBodyComponent->GetVelocity().x < 0 ? Vector2(-1, 0) : Vector2(1, 0);
-    Vector2 pos = GetPosition() + dir * Game::TILE_SIZE * 0.5f;
+    auto shot = new Shot(GetGame(), velocity, ColliderLayer::EnemyShoot, "../Assets/Sprites/Shots/Email/texture.png", "../Assets/Sprites/Shots/Email/texture.json");
+
+    Vector2 pos = Vector2(GetPosition().x,  GetGame()->GetWindowHeight() - (3 * Game::TILE_SIZE));
     shot->SetPosition(pos);
     shot->GetComponent<DrawAnimatedComponent>()->SetScale(0.5f);
 }
