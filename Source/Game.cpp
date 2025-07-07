@@ -968,8 +968,8 @@ void Game::Shutdown()
     }
     mFonts.clear();
 
-    delete mAudio;
-    mAudio = nullptr;
+    // delete mAudio;
+    // mAudio = nullptr;
 
     Mix_CloseAudio();
 
